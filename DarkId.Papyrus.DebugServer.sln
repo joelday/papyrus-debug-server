@@ -1,0 +1,36 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.28803.156
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "DarkId.Papyrus.DebugServer", "src\DarkId.Papyrus.DebugServer\DarkId.Papyrus.DebugServer.vcxproj", "{A9464B8F-9C36-4567-97C1-DC7E4E9E0CE1}"
+EndProject
+Project("{2150E333-8FDC-42A3-9474-1A3956D46DE8}") = "F4SE", "F4SE", "{C904648F-30B9-4F27-A81F-683F7C1AB682}"
+EndProject
+Project("{8BC9CEB8-8B4A-11D0-8D11-00A0C91BC942}") = "common_vc14", "dependencies\f4se\src\common\common_vc14.vcxproj", "{472E19AB-DEF0-42DF-819B-18722E8DC822}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|x64 = Debug|x64
+		Release|x64 = Release|x64
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{A9464B8F-9C36-4567-97C1-DC7E4E9E0CE1}.Debug|x64.ActiveCfg = Debug|x64
+		{A9464B8F-9C36-4567-97C1-DC7E4E9E0CE1}.Debug|x64.Build.0 = Debug|x64
+		{A9464B8F-9C36-4567-97C1-DC7E4E9E0CE1}.Release|x64.ActiveCfg = Release|x64
+		{A9464B8F-9C36-4567-97C1-DC7E4E9E0CE1}.Release|x64.Build.0 = Release|x64
+		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Debug|x64.ActiveCfg = Debug|x64
+		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Debug|x64.Build.0 = Debug|x64
+		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Release|x64.ActiveCfg = Release|x64
+		{472E19AB-DEF0-42DF-819B-18722E8DC822}.Release|x64.Build.0 = Release|x64
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(NestedProjects) = preSolution
+		{472E19AB-DEF0-42DF-819B-18722E8DC822} = {C904648F-30B9-4F27-A81F-683F7C1AB682}
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {A97B8C75-C053-43B8-B69C-5C29DA9976E6}
+	EndGlobalSection
+EndGlobal
