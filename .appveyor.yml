@@ -1,0 +1,16 @@
+version: 1.0.{build}
+
+image: Visual Studio 2019
+
+configuration: Release
+platform: x64
+
+build:
+  project: DarkId.Papyrus.DebugServer.sln
+  verbosity: minimal
+
+install:
+  - cmd: vcpkg install fruit:x64-windows websocketpp:x64-windows jsoncpp:x64-windows
+
+cache:
+  - C:\tools\vcpkg\installed -> .appveyor.yml
