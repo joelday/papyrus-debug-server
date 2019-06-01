@@ -1,6 +1,8 @@
 //{{NO_DEPENDENCIES}}
 // Microsoft Visual C++ generated include file.
 // Used by DarkId.Papyrus.DebugServer.rc
+//
+#define VS_VERSION_INFO                 1
 
 // Next default values for new objects
 // 

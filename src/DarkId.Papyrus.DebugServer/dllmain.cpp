@@ -1,21 +1,15 @@
 #include "f4se/PluginAPI.h"
 #include "f4se_common/f4se_version.h"
 
-#include <string>
-
 #include <shlobj.h>
 
-const char* g_pluginName = "TestPlugin";
+const char* g_pluginName = "DarkId.Papyrus.DebugServer";
 
 UInt32 g_version = 1;
-
-PluginHandle			    g_pluginHandle = kPluginHandle_Invalid;
-
-F4SEPapyrusInterface* g_papyrus = nullptr;
+PluginHandle g_pluginHandle = kPluginHandle_Invalid;
 
 extern "C"
 {
-
     bool F4SEPlugin_Query(const F4SEInterface* f4se, PluginInfo* info)
     {
         gLog.OpenRelative(CSIDL_MYDOCUMENTS, ("\\My Games\\Fallout4\\F4SE\\" + std::string(g_pluginName) + ".log").c_str());
@@ -47,29 +41,11 @@ extern "C"
             return false;
         } 
 
-        // get the papyrus interface and query its version
-        g_papyrus = (F4SEPapyrusInterface*)f4se->QueryInterface(kInterface_Papyrus);
-        if (!g_papyrus)
-        {
-            _MESSAGE("couldn't get papyrus interface");
-            return false;
-        }
-        else {
-            _MESSAGE("got papyrus interface");
-        }
-
         return true;
     }
 
     bool F4SEPlugin_Load(const F4SEInterface * f4se)
     {
-        _MESSAGE("load");
-
-        if (g_papyrus)
-        {
-            _MESSAGE("Papyrus Register Succeeded");
-        }
-
         return true;
     }
 
