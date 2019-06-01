@@ -1,4 +1,4 @@
-LIBRARY	"DarkId.Papyrus.DebugServer"
+LIBRARY	"DarkId.Papyrus.DebugServer.dll"
 EXPORTS
 F4SEPlugin_Query
 F4SEPlugin_Load
