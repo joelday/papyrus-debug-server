@@ -19,9 +19,9 @@ install:
   - git branch master origin/master
   - git checkout master
   - .\bootstrap-vcpkg.bat
-  - vcpkg install fruit:x64-windows websocketpp:x64-windows jsoncpp:x64-windows
+  - vcpkg install websocketpp:x64-windows
   - vcpkg integrate install
   - cd %APPVEYOR_BUILD_FOLDER%
 
 cache:
-  - c:\tools\vcpkg\installed
+  - c:\tools\vcpkg\installed -> .appveyor.yml

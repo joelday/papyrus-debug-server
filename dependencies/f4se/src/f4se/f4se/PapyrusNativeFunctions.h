@@ -43,7 +43,8 @@ public:
 	virtual void			Unk_0E() = 0;
 	virtual UInt32			Invoke(void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3) = 0;
 	virtual BSFixedString *	GetSourceFile() = 0;	// guess
-	virtual bool			Unk_11(UInt32 arg0, UInt32 * arg1) = 0;
+    // DebugServer: Changed this to GetLineNumber
+    virtual bool			GetLineNumber(UInt32 instructionPosition, UInt32* lineNumber) = 0;
 	virtual bool			GetParamName(UInt32 idx, BSFixedString * out) = 0;
 	virtual UInt32			GetUnk41() = 0;
 	virtual void			SetUnk41(UInt8 arg) = 0;

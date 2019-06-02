@@ -10,8 +10,8 @@
 // 4312 - pointer extension
 #pragma warning(disable: 4018 4200 4244 4267 4305 4288 4312 4311)
 
-// winxp and above
-#define _WIN32_WINNT	0x0501
+// Debug Server: Changed to Win7
+#define _WIN32_WINNT 0x0601
 
 #include <cstdlib>
 #include <cstdio>
