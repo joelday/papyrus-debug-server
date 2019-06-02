@@ -8,21 +8,21 @@
 // 4288 - disable warning for crap microsoft extension screwing up the scope of variables defined in for loops
 // 4311 - pointer truncation
 // 4312 - pointer extension
-// 4996 - deprecated
-// 26495 - uninitialized
-#pragma warning(disable: 4018 4200 4244 4267 4305 4288 4312 4311 4996)
+#pragma warning(disable: 4018 4200 4244 4267 4305 4288 4312 4311)
 
 // winxp and above
 #define _WIN32_WINNT	0x0501
 
 #include <cstdlib>
 #include <cstdio>
-#include <cstring>
 #include <string>
+#include <cstring>
+
+#include <winsock2.h>
+#include <Windows.h>
+
 #include "common/ITypes.h"
 #include "common/IErrors.h"
 #include "common/IDynamicCreate.h"
 #include "common/IDebugLog.h"
 #include "common/ISingleton.h"
-#include <winsock2.h>
-#include <Windows.h>

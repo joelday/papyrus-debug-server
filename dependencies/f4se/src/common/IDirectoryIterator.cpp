@@ -1,5 +1,4 @@
 #include "IDirectoryIterator.h"
-#include <string>
 
 IDirectoryIterator::IDirectoryIterator(const char * path, const char * match)
 :m_searchHandle(INVALID_HANDLE_VALUE), m_done(false)

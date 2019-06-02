@@ -57,6 +57,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <ForcedIncludeFiles>$(SolutionDir)dependencies\f4se\src\common\IPrefix.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <LinkIncremental>true</LinkIncremental>
@@ -82,6 +83,7 @@
       <LanguageStandard>stdcpp17</LanguageStandard>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <ForcedIncludeFiles>$(SolutionDir)dependencies\f4se\src\common\IPrefix.h;%(ForcedIncludeFiles)</ForcedIncludeFiles>
+      <AdditionalOptions>/Zc:twoPhase- %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <LinkIncremental>true</LinkIncremental>
@@ -94,24 +96,26 @@
     </Link>
   </ItemDefinitionGroup>
   <ItemGroup>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameTypes.h" />
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameUtilities.h" />
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusNativeFunctions.h" />
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusVM.h" />
     <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PluginAPI.h" />
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\BranchTrampoline.h" />
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\f4se_version.h" />
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\Relocation.h" />
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\SafeWrite.h" />
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\Utilities.h" />
     <ClInclude Include="resource.h" />
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\BranchTrampoline.cpp" />
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\Relocation.cpp" />
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\SafeWrite.cpp" />
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\Utilities.cpp" />
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameTypes.cpp" />
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameUtilities.cpp" />
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusNativeFunctions.cpp" />
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusVM.cpp" />
     <ClCompile Include="dllmain.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ProjectReference Include="..\..\dependencies\f4se\src\common\common_vc14.vcxproj">
       <Project>{472e19ab-def0-42df-819b-18722e8dc822}</Project>
+    </ProjectReference>
+    <ProjectReference Include="..\..\dependencies\f4se\src\f4se\f4se_common\f4se_common.vcxproj">
+      <Project>{20c6411c-596f-4b85-be4e-8bc91f59d8a6}</Project>
     </ProjectReference>
   </ItemGroup>
   <ItemGroup>

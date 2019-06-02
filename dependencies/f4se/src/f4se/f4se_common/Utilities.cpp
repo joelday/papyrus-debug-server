@@ -1,3 +1,6 @@
+#undef NOT_BUILD_WINDOWS_DEPRECATE
+#pragma warning(disable: 4996)
+
 #include "Utilities.h"
 #include <string>
 

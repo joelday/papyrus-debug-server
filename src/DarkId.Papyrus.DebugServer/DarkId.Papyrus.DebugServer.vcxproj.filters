@@ -8,44 +8,38 @@
     <Filter Include="F4SE">
       <UniqueIdentifier>{f04c19c9-44e2-4a8f-8a70-8aa5afbd3ca2}</UniqueIdentifier>
     </Filter>
-    <Filter Include="F4SE_Common">
-      <UniqueIdentifier>{0583c895-2672-40c9-a5a6-9010cf156465}</UniqueIdentifier>
-    </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\BranchTrampoline.h">
-      <Filter>F4SE_Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\f4se_version.h">
-      <Filter>F4SE_Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\Relocation.h">
-      <Filter>F4SE_Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\SafeWrite.h">
-      <Filter>F4SE_Common</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se_common\Utilities.h">
-      <Filter>F4SE_Common</Filter>
-    </ClInclude>
     <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PluginAPI.h">
       <Filter>F4SE</Filter>
     </ClInclude>
     <ClInclude Include="resource.h" />
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusVM.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusNativeFunctions.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameTypes.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameUtilities.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\BranchTrampoline.cpp">
-      <Filter>F4SE_Common</Filter>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusVM.cpp">
+      <Filter>F4SE</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\Relocation.cpp">
-      <Filter>F4SE_Common</Filter>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusNativeFunctions.cpp">
+      <Filter>F4SE</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\SafeWrite.cpp">
-      <Filter>F4SE_Common</Filter>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameTypes.cpp">
+      <Filter>F4SE</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se_common\Utilities.cpp">
-      <Filter>F4SE_Common</Filter>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameUtilities.cpp">
+      <Filter>F4SE</Filter>
     </ClCompile>
   </ItemGroup>
   <ItemGroup>

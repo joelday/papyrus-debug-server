@@ -227,7 +227,7 @@ inline bool FloatEqual(float a, float b) { float magnitude = a - b; if(magnitude
 class Vector2
 {
 	public:
-		Vector2() { }
+		Vector2() : x(0), y(0) { }
 		Vector2(const Vector2 & in)					{ x = in.x; y = in.y; }
 		Vector2(float inX, float inY)				{ x = inX; y = inY; }
 		~Vector2() { }
