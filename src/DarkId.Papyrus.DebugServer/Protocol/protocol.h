@@ -15,7 +15,7 @@ struct Thread
     std::string name;
     bool running;
 
-	Thread() {}
+    Thread() {}
     Thread(int id, std::string name, bool running) : id(id), name(name), running(running) {}
 };
 
@@ -23,7 +23,7 @@ struct Source
 {
     std::string name;
     std::string path;
-	int sourceReference;
+    int sourceReference;
 
     Source(std::string name = std::string(), std::string path = std::string(), int sourceReference = 0) : name(name), path(path), sourceReference(sourceReference) {}
     bool IsNull() const { return name.empty() && path.empty() && sourceReference == 0; }
@@ -57,8 +57,8 @@ struct StackFrame
     uint32_t GetLevel() const { return id & 0xFFFFFFFFul; }
     int GetThreadId() const { return id >> 32; }
 
-	static uint32_t GetLevel(uint64_t id) { return id & 0xFFFFFFFFul; }
-	static int GetThreadId(uint64_t id) { return id >> 32; }
+    static uint32_t GetLevel(uint64_t id) { return id & 0xFFFFFFFFul; }
+    static int GetThreadId(uint64_t id) { return id >> 32; }
 };
 
 struct Breakpoint
@@ -128,10 +128,10 @@ struct StoppedEvent
 
 struct ContinuedEvent
 {
-	int threadId;
-	bool allThreadsContinued;
+    int threadId;
+    bool allThreadsContinued;
 
-	ContinuedEvent(int threadId = 0) : threadId(threadId), allThreadsContinued(true) {}
+    ContinuedEvent(int threadId = 0) : threadId(threadId), allThreadsContinued(true) {}
 };
 
 struct BreakpointEvent
@@ -196,22 +196,22 @@ struct ModuleEvent
 
 enum LoadedSourceReason
 {
-	SourceNew,
-	SourceChanged,
-	SourceRemoved
+    SourceNew,
+    SourceChanged,
+    SourceRemoved
 };
 
 struct LoadedSourceEvent
 {
-	LoadedSourceReason reason;
-	Source source;
-	LoadedSourceEvent(LoadedSourceReason reason, const Source& source) : reason(reason), source(source) {}
+    LoadedSourceReason reason;
+    Source source;
+    LoadedSourceEvent(LoadedSourceReason reason, const Source& source) : reason(reason), source(source) {}
 };
 
 struct Scope
 {
     std::string name;
-	uint64_t variablesReference;
+    uint64_t variablesReference;
     int namedVariables;
     int indexedVariables;
     bool expensive;

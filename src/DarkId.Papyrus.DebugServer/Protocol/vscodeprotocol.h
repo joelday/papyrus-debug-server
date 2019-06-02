@@ -19,11 +19,11 @@ class VSCodeProtocol : public Protocol
     static const std::string LOG_EVENT;
 
     std::mutex m_outMutex;
-	std::mutex m_inMutex;
+    std::mutex m_inMutex;
 
-	std::function<void(std::string)> m_sendCallback;
+    std::function<void(std::string)> m_sendCallback;
 
-	std::queue<std::string>* m_inputQueue;
+    std::queue<std::string>* m_inputQueue;
 
     uint64_t m_seqCounter;
 
@@ -39,8 +39,8 @@ class VSCodeProtocol : public Protocol
 public:
 
     VSCodeProtocol(std::function<void(std::string)> sendCallback) : Protocol(), m_seqCounter(1), m_sendCallback(sendCallback) {
-		m_inputQueue = new std::queue<std::string>();
-	}
+        m_inputQueue = new std::queue<std::string>();
+    }
 
     void OverrideLaunchCommand(const std::string &fileExec, const std::vector<std::string> &args)
     {
@@ -48,9 +48,9 @@ public:
         m_execArgs = args;
     }
 
-	void Exit();
+    void Exit();
 
-	void Receive(std::string message);
+    void Receive(std::string message);
 
     void EmitInitializedEvent() override;
     void EmitStoppedEvent(StoppedEvent event) override;
@@ -59,7 +59,7 @@ public:
     void EmitContinuedEvent(ContinuedEvent event) override;
     void EmitThreadEvent(ThreadEvent event) override;
     void EmitModuleEvent(ModuleEvent event) override;
-	void EmitLoadedSourceEvent(LoadedSourceEvent event) override;
+    void EmitLoadedSourceEvent(LoadedSourceEvent event) override;
     void EmitOutputEvent(OutputEvent event) override;
     void EmitBreakpointEvent(BreakpointEvent event) override;
     void Cleanup() override;

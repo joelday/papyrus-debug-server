@@ -60,8 +60,8 @@ public:
     virtual HRESULT Evaluate(uint64_t frameId, const std::string &expression, Variable &variable, std::string &output) = 0;
     virtual HRESULT SetVariable(const std::string &name, const std::string &value, uint32_t ref, std::string &output) = 0;
     virtual HRESULT SetVariableByExpression(uint64_t frameId, const std::string &name, const std::string &value, std::string &output) = 0;
-	virtual HRESULT GetSource(Source &source, std::string& output) = 0;
-	virtual HRESULT GetLoadedSources(std::vector<Source>& sources) = 0;
+    virtual HRESULT GetSource(Source &source, std::string& output) = 0;
+    virtual HRESULT GetLoadedSources(std::vector<Source>& sources) = 0;
 };
 
 class Protocol
@@ -81,9 +81,9 @@ public:
     virtual void EmitContinuedEvent(ContinuedEvent event) = 0;
     virtual void EmitThreadEvent(ThreadEvent event) = 0;
     virtual void EmitModuleEvent(ModuleEvent event) = 0;
-	virtual void EmitLoadedSourceEvent(LoadedSourceEvent event) = 0;
+    virtual void EmitLoadedSourceEvent(LoadedSourceEvent event) = 0;
     virtual void EmitOutputEvent(OutputEvent event) = 0;
-	virtual void EmitBreakpointEvent(BreakpointEvent event) = 0;
+    virtual void EmitBreakpointEvent(BreakpointEvent event) = 0;
     virtual void Cleanup() = 0;
     virtual void CommandLoop() = 0;
     virtual ~Protocol() {}

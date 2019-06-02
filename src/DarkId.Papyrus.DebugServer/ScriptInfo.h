@@ -3,11 +3,11 @@
 
 class ScriptInfo
 {
-	Pex::Binary* m_pexBinary;
+    Pex::Binary* m_pexBinary;
 
 
 public:
-	ScriptInfo();
-	~ScriptInfo();
+    ScriptInfo();
+    ~ScriptInfo();
 };
 

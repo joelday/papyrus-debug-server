@@ -90,17 +90,17 @@ namespace DarkId::Papyrus::DebugServer::Game
     class ScriptFunction : public IFunction
     {
     public:
-        BSFixedString	m_fnName;		// 10
-        BSFixedString	m_className;	// 18
-        BSFixedString	m_stateName;	// 20
-        UInt64			m_retnType;		// 28
-        NativeFunctionBase::ParameterInfo	m_params; // 30
-        bool			m_isStatic;		// 40
-        UInt8			m_unk41;		// 41
-        bool			m_isLatent;		// 42 (probably invalid here)
-        UInt8			m_pad43;		// 43
-        UInt32			m_unk44;		// 44
-        UInt64	m_instructionMetadata;	// 48 (multiple smaller unknown values)
+        BSFixedString m_fnName; // 10
+        BSFixedString m_className; // 18
+        BSFixedString m_stateName; // 20
+        UInt64 m_retnType; // 28
+        NativeFunctionBase::ParameterInfo m_params; // 30
+        bool m_isStatic; // 40
+        UInt8 m_unk41; // 41
+        bool m_isLatent; // 42 (probably invalid here)
+        UInt8 m_pad43; // 43
+        UInt32 m_unk44; // 44
+        UInt64 m_instructionMetadata; // 48 (multiple smaller unknown values)
 
         UInt64* m_data; // 50
         UInt64* m_unk58; // 58

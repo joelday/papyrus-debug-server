@@ -15,19 +15,19 @@ using json = nlohmann::json;
 
 void from_json(const nlohmann::json& value, Source& source)
 {
-	source.name = value.value("name", std::string());
-	source.path = value.value("path", std::string());
+    source.name = value.value("name", std::string());
+    source.path = value.value("path", std::string());
 
-	if (value.find("sourceReference") != value.end())
-	{
-		source.sourceReference = value["sourceReference"];
-	}
+    if (value.find("sourceReference") != value.end())
+    {
+        source.sourceReference = value["sourceReference"];
+    }
 }
 
 void to_json(json &j, const Source &s) {
     j = json{{"name", s.name},
              {"path", s.path},
-			 {"sourceReference", s.sourceReference}};
+             {"sourceReference", s.sourceReference}};
 }
 
 void to_json(json &j, const Breakpoint &b) {
@@ -36,8 +36,8 @@ void to_json(json &j, const Breakpoint &b) {
         {"verified", b.verified},
         {"message",  b.message}};
 
-	if (!b.source.IsNull())
-		j["source"] = b.source;
+    if (!b.source.IsNull())
+        j["source"] = b.source;
 }
 
 void to_json(json &j, const StackFrame &f) {
@@ -124,12 +124,12 @@ void VSCodeProtocol::EmitStoppedEvent(StoppedEvent event)
 
 void VSCodeProtocol::EmitContinuedEvent(ContinuedEvent event)
 {
-	json body;
+    json body;
 
-	body["threadId"] = event.threadId;
-	body["allThreadsContinued"] = event.allThreadsContinued;
+    body["threadId"] = event.threadId;
+    body["allThreadsContinued"] = event.allThreadsContinued;
 
-	EmitEvent("continued", body);
+    EmitEvent("continued", body);
 }
 
 void VSCodeProtocol::EmitExitedEvent(ExitedEvent event)
@@ -203,24 +203,24 @@ void VSCodeProtocol::EmitModuleEvent(ModuleEvent event)
 
 void VSCodeProtocol::EmitLoadedSourceEvent(LoadedSourceEvent event)
 {
-	json body;
+    json body;
 
-	switch (event.reason)
-	{
-	case ModuleNew:
-		body["reason"] = "new";
-		break;
-	case ModuleChanged:
-		body["reason"] = "changed";
-		break;
-	case ModuleRemoved:
-		body["reason"] = "removed";
-		break;
-	}
+    switch (event.reason)
+    {
+    case ModuleNew:
+        body["reason"] = "new";
+        break;
+    case ModuleChanged:
+        body["reason"] = "changed";
+        break;
+    case ModuleRemoved:
+        body["reason"] = "removed";
+        break;
+    }
 
-	body["source"] = event.source;
+    body["source"] = event.source;
 
-	EmitEvent("loadedSource", body);
+    EmitEvent("loadedSource", body);
 }
 
 void VSCodeProtocol::EmitOutputEvent(OutputEvent event)
@@ -291,10 +291,10 @@ void VSCodeProtocol::Cleanup()
 
 void VSCodeProtocol::EmitEvent(const std::string &name, const nlohmann::json &body)
 {
-	if (m_exit)
-	{
-		return;
-	}
+    if (m_exit)
+    {
+        return;
+    }
 
     std::lock_guard<std::mutex> lock(m_outMutex);
     json response;
@@ -303,7 +303,7 @@ void VSCodeProtocol::EmitEvent(const std::string &name, const nlohmann::json &bo
     response["event"] = name;
     response["body"] = body;
 
-	std::string output = response.dump();
+    std::string output = response.dump();
 
     m_sendCallback(output);
 
@@ -317,7 +317,7 @@ typedef std::function<HRESULT(
 void VSCodeProtocol::AddCapabilitiesTo(json &capabilities)
 {
     capabilities["supportsConfigurationDoneRequest"] = true;
-	capabilities["supportsLoadedSourcesRequest"] = true;
+    capabilities["supportsLoadedSourcesRequest"] = true;
     // capabilities["supportsFunctionBreakpoints"] = true;
     // capabilities["supportsConditionalBreakpoints"] = true;
     // capabilities["supportTerminateDebuggee"] = true;
@@ -347,7 +347,7 @@ HRESULT VSCodeProtocol::HandleCommand(const std::string &command, const json &ar
 
         std::vector<Breakpoint> breakpoints;
 
-		Source source = arguments.at("source");
+        Source source = arguments.at("source");
         IfFailRet(m_debugger->SetBreakpoints(source, srcBreakpoints, breakpoints));
 
         body["breakpoints"] = breakpoints;
@@ -505,42 +505,42 @@ HRESULT VSCodeProtocol::HandleCommand(const std::string &command, const json &ar
 
         return S_OK;
     } },
-	{ "source", [this](const json & arguments, json & body) {
-		HRESULT Status;
+    { "source", [this](const json & arguments, json & body) {
+        HRESULT Status;
 
-		Source source(
-			arguments["source"]["name"],
-			arguments["source"]["path"],
-			arguments["source"]["sourceReference"]);
-		
-		std::string content;
-		Status = m_debugger->GetSource(source, content);
+        Source source(
+            arguments["source"]["name"],
+            arguments["source"]["path"],
+            arguments["source"]["sourceReference"]);
+        
+        std::string content;
+        Status = m_debugger->GetSource(source, content);
 
-		if (FAILED(Status))
-		{
-			body["message"] = content;
-			return Status;
-		}
+        if (FAILED(Status))
+        {
+            body["message"] = content;
+            return Status;
+        }
 
-		body["content"] = content;
+        body["content"] = content;
 
-		return S_OK;
-	} },
-	{ "loadedSources", [this](const json & arguments, json & body) {
-		HRESULT Status;
+        return S_OK;
+    } },
+    { "loadedSources", [this](const json & arguments, json & body) {
+        HRESULT Status;
 
-		std::vector<Source> sources;
-		Status = m_debugger->GetLoadedSources(sources);
+        std::vector<Source> sources;
+        Status = m_debugger->GetLoadedSources(sources);
 
-		if (FAILED(Status))
-		{
-			body["message"] = "Failed to get loaded sources.";
-			return Status;
-		}
+        if (FAILED(Status))
+        {
+            body["message"] = "Failed to get loaded sources.";
+            return Status;
+        }
 
-		body["sources"] = sources;
+        body["sources"] = sources;
 
-		return S_OK;
+        return S_OK;
 } },
     { "setFunctionBreakpoints", [this](const json &arguments, json &body) {
         HRESULT Status = S_OK;
@@ -592,34 +592,34 @@ HRESULT VSCodeProtocol::HandleCommand(const std::string &command, const json &ar
 
 void VSCodeProtocol::Exit()
 {
-	m_exit = true;
+    m_exit = true;
 }
 
 void VSCodeProtocol::Receive(std::string message)
 {
-	std::lock_guard<std::mutex> lock(m_inMutex);
-	m_inputQueue->push(message);
+    std::lock_guard<std::mutex> lock(m_inMutex);
+    m_inputQueue->push(message);
 }
 
 void VSCodeProtocol::CommandLoop()
 {
     while (!m_exit)
     {
-		std::string requestText;
+        std::string requestText;
 
-		while (!m_exit)
-		{
-			std::lock_guard<std::mutex> lock(m_inMutex);
+        while (!m_exit)
+        {
+            std::lock_guard<std::mutex> lock(m_inMutex);
 
-			if (!m_inputQueue->empty())
-			{
-				requestText = m_inputQueue->front();
-				m_inputQueue->pop();
-				break;
-			}
+            if (!m_inputQueue->empty())
+            {
+                requestText = m_inputQueue->front();
+                m_inputQueue->pop();
+                break;
+            }
 
-			Sleep(10);
-		}
+            Sleep(10);
+        }
 
         if (requestText.empty())
             break;
@@ -631,10 +631,10 @@ void VSCodeProtocol::CommandLoop()
 
         json request = json::parse(requestText, NULL, false);
 
-		if (request.find("command") == request.end())
-		{
-			continue;
-		}
+        if (request.find("command") == request.end())
+        {
+            continue;
+        }
 
         std::string command = request.at("command");
         // assert(request["type"] == "request");
@@ -675,10 +675,10 @@ void VSCodeProtocol::CommandLoop()
             }
             std::string output = response.dump();
 
-			if (!m_exit)
-			{
-				m_sendCallback(output);
-			}
+            if (!m_exit)
+            {
+                m_sendCallback(output);
+            }
         }
     }
 
@@ -693,5 +693,5 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	_MESSAGE("%s: %s", prefix.c_str(), text.c_str());
+    _MESSAGE("%s: %s", prefix.c_str(), text.c_str());
 }
