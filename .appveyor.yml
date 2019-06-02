@@ -10,8 +10,14 @@ build:
   verbosity: minimal
 
 install:
+  - if not exist c:\tools\vcpkg mkdir c:\tools\vcpkg
   - cd c:\tools\vcpkg
-  - git pull
+  - rm -rf .git
+  - git init
+  - git remote add origin https://github.com/microsoft/vcpkg
+  - git fetch
+  - git branch master origin/master
+  - git checkout master
   - .\bootstrap-vcpkg.bat
   - vcpkg install fruit:x64-windows websocketpp:x64-windows jsoncpp:x64-windows
   - vcpkg integrate install
