@@ -24,4 +24,4 @@ install:
   - cd %APPVEYOR_BUILD_FOLDER%
 
 cache:
-  - c:\tools\vcpkg\installed -> .appveyor.yml
+  - c:\tools\vcpkg\installed -> appveyor.yml
