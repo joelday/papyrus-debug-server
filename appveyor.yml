@@ -30,23 +30,12 @@ install:
 cache:
   - c:\tools\vcpkg\installed
 
+artifacts:
+  - path: bin/x64/Release/DarkId.Papyrus.DebugServer.dll
+
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 success $env:WEBHOOK_URL
 on_failure:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 failure $env:WEBHOOK_URL
-
-deploy:
-  release: DarkId.Papyrus.DebugServer-v$(appveyor_build_version)
-  description: 'Debug adapter protocol F4SE plugin DLL'
-  provider: GitHub
-  tag: $(APPVEYOR_REPO_TAG_NAME)
-  auth_token:
-    secure: Yag0IwOJ5O1jhgDbVzuXzdHJmGWfRT5m74rXFHb5ZV4scXIsp4jX/Qp1RIbcOcMZ
-  artifact: bin/x64/Release/DarkId.Papyrus.DebugServer.dll
-  draft: false
-  prerelease: false
-  on:
-    branch: master
-    APPVEYOR_REPO_TAG: true
