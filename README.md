@@ -10,7 +10,8 @@ File any issues here: https://github.com/joelday/papyrus-lang/issues
 
 ### Acknowledgements
 
-https://github.com/Orvid/Champollion\
+https://github.com/Orvid/Champollion
+
 https://github.com/Samsung/netcoredbg
 
-Special thanks to everyone in the xSE, Modding Tools and Papyrus Language Tools Discord channels.
+Special thanks to everyone in the xSE, Modding Tools and Papyrus Language Tools Discord servers.
