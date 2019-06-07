@@ -56,6 +56,27 @@ namespace DarkId::Papyrus::DebugServer
             return g_cleanupStackEvent.remove(handle);
         }
 
+        eventpp::CallbackList<void(TESInitScriptEvent*)> g_initScriptEvent;
+
+        InitScriptEventHandle SubscribeToInitScript(std::function<void(TESInitScriptEvent*)> handler)
+        {
+            return g_initScriptEvent.append(handler);
+        }
+
+        bool UnsubscribeFromInitScript(InitScriptEventHandle handle)
+        {
+            return g_initScriptEvent.remove(handle);
+        }
+
+        class ScriptInitEventSink : public BSTEventSink<TESInitScriptEvent>
+        {
+            EventResult ReceiveEvent(TESInitScriptEvent* evn, void* dispatcher) override {
+                g_initScriptEvent(evn);
+
+                return kEvent_Continue;
+            };
+        };
+
         RelocAddr<uintptr_t> InstructionExecute(0x0276e9bd);
 
         void InstructionExecute_Hook(Game::CodeTasklet* tasklet, Pex::OpCode opCode)
@@ -252,7 +273,12 @@ namespace DarkId::Papyrus::DebugServer
                     CleanupStack_Original = (_CleanupStack)codeBuf;
 
                     g_branchTrampoline.Write5Branch(CleanupStack.GetUIntPtr(), (uintptr_t)CleanupStack_Hook);
-                }
+                } 
+                
+                GetEventDispatcher<TESInitScriptEvent>()->AddEventSink(new ScriptInitEventSink());
+
+                //TSInit
+                //TESInitScriptEvent* eventSink = (*g_gameVM)->m_eventSinks[GameVM::kEventSink_InitScript]
 
                 //{
                 //    struct ScriptFunctionInvoke_Code : Xbyak::CodeGenerator {

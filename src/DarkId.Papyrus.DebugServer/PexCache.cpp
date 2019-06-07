@@ -11,6 +11,11 @@ namespace DarkId::Papyrus::DebugServer
     {
     }
 
+    bool PexCache::HasScript(int scriptReference)
+    {
+        return m_scripts.find(scriptReference) != m_scripts.end();
+    }
+
     int PexCache::GetScriptReference(const char* scriptName)
     {
         std::hash<std::string> hasher;

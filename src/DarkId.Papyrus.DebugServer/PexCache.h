@@ -11,6 +11,7 @@ namespace DarkId::Papyrus::DebugServer
         PexCache();
         ~PexCache();
 
+        bool HasScript(int scriptReference);
         int GetScriptReference(const char* scriptName);
 
         Pex::Binary* GetScript(const char* scriptName);

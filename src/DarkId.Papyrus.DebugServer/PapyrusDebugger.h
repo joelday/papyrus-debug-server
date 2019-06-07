@@ -34,7 +34,7 @@ namespace DarkId::Papyrus::DebugServer
         HRESULT Continue() override;
         HRESULT Pause() override;
         HRESULT GetThreads(std::vector<Thread>& threads) override;
-        HRESULT SetBreakpoints(const Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints) override;
+        HRESULT SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints) override;
         HRESULT SetFunctionBreakpoints(const std::vector<FunctionBreakpoint>& funcBreakpoints, std::vector<Breakpoint>& breakpoints) override { return 0; }
         void InsertExceptionBreakpoint(const std::string& name, Breakpoint& breakpoint) override { }
         HRESULT GetStackTrace(int threadId, int startFrame, int levels, std::vector<StackFrame>& stackFrames, int& totalFrames) override;
@@ -78,9 +78,11 @@ namespace DarkId::Papyrus::DebugServer
         RuntimeEvents::CreateStackEventHandle m_createStackEventHandle;
         RuntimeEvents::CleanupStackEventHandle m_cleanupStackEventHandle;
         RuntimeEvents::InstructionExecutionEventHandle m_instructionExecutionEventHandle;
+        RuntimeEvents::InitScriptEventHandle m_initScriptEventHandle;
 
         UInt64 CacheValue(VMValue* value);
 
+        void InitScriptEvent(TESInitScriptEvent* initEvent);
         void StackCreated(Game::VMStackData* stackData);
         void StackCleanedUp(UInt32 stackId);
         void InstructionExecution(Game::CodeTasklet* tasklet, Pex::OpCode opCode);

@@ -23,6 +23,10 @@ namespace DarkId::Papyrus::DebugServer
         CleanupStackEventHandle SubscribeToCleanupStack(std::function<void(UInt32)> handler);
         bool UnsubscribeFromCleanupStack(CleanupStackEventHandle handle);
 
+        typedef eventpp::CallbackList<void(TESInitScriptEvent*)>::Handle InitScriptEventHandle;
+        InitScriptEventHandle SubscribeToInitScript(std::function<void(TESInitScriptEvent*)> handler);
+        bool UnsubscribeFromInitScript(InitScriptEventHandle handle);
+
         namespace Internal
         {
             void CommitHooks();

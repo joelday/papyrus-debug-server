@@ -53,17 +53,49 @@ namespace DarkId::Papyrus::DebugServer
         m_instructionExecutionEventHandle =
             RuntimeEvents::SubscribeToInstructionExecution(
                 std::bind(&PapyrusDebugger::InstructionExecution, this, std::placeholders::_1, std::placeholders::_2));
+
+        m_initScriptEventHandle = RuntimeEvents::SubscribeToInitScript(std::bind(&PapyrusDebugger::InitScriptEvent, this, std::placeholders::_1));
+    }
+
+    void PapyrusDebugger::InitScriptEvent(TESInitScriptEvent* initEvent)
+    {
+       
     }
 
     void PapyrusDebugger::StackCreated(Game::VMStackData* stackData)
     {
-        UInt32 stackId = stackData->stackId;
-
-        m_tasks->AddTask(new FuncTask([this, stackId]()
+        m_tasks->AddTask(new FuncTask([this, stackData]()
             {
                 if (m_closed)
                 {
                     return;
+                }
+
+                UInt32 stackId = stackData->stackId;
+
+                // This is sortof a brute force attempt to find newly loaded scripts and emit the event.
+                if (stackData->currentStackFrame)
+                {
+                    auto frame = stackData->currentStackFrame;
+
+                    auto name = frame->identifier ? frame->identifier->m_typeInfo->m_typeName.c_str() :
+                        frame->baseValueTypeInfo ? frame->baseValueTypeInfo->m_typeName.c_str() : NULL;
+
+                    if (name)
+                    {
+                        int sourceReference = m_pexCache->GetScriptReference(name);
+                        if (!m_pexCache->HasScript(sourceReference))
+                        {
+                            std::set<int> unused;
+
+                            Source sourceData;
+                            if (GetSourceData(name, sourceData, unused))
+                            {
+                                LoadedSourceEvent loadedSourceEvent(LoadedSourceReason::SourceNew, sourceData);
+                                m_protocol->EmitLoadedSourceEvent(loadedSourceEvent);
+                            }
+                        }
+                    }
                 }
 
                 m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
@@ -183,26 +215,33 @@ namespace DarkId::Papyrus::DebugServer
         }
     }
 
-    HRESULT PapyrusDebugger::SetBreakpoints(const Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints)
+    HRESULT PapyrusDebugger::SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints)
     {
         std::set<int> breakpointLines;
         Pex::Binary* binary = m_pexCache->GetScript(source.name.c_str());
 
+        int sourceReference = m_pexCache->GetScriptReference(source.name.c_str());
+        source.sourceReference = sourceReference;
+
         for (auto srcBreakpoint : srcBreakpoints)
         {
             bool foundLine = false;
-            std::string foundInFunc;
 
             if (binary)
             {
                 for (auto functionInfo : binary->getDebugInfo().getFunctionInfos())
                 {
+                    if (foundLine)
+                    {
+                        break;
+                    }
+
                     for (auto lineNumber : functionInfo.getLineNumbers())
                     {
                         if (srcBreakpoint.line == lineNumber)
                         {
-                            foundInFunc = functionInfo.getFunctionName().asString();
                             foundLine = true;
+                            break;
                         }
                     }
                 }
@@ -220,7 +259,6 @@ namespace DarkId::Papyrus::DebugServer
             breakpoints.push_back(breakpoint);
         }
 
-        int sourceReference = m_pexCache->GetScriptReference(source.name.c_str());
         m_breakpoints[sourceReference] = breakpointLines;
 
         return 0;
@@ -367,35 +405,6 @@ namespace DarkId::Papyrus::DebugServer
         m_vm->m_allStacks.ForEach(forStack);
 
         return 0;
-    }
-
-    bool FindPexFunction(Pex::Binary* scriptBinary, Game::ScriptFunction* scriptFunction, Pex::Function &function)
-    {
-        Pex::Object scriptObject = scriptBinary->getObjects().at(0);
-
-        std::string stateName = scriptFunction->m_stateName.c_str();
-        std::string funcName = scriptFunction->m_fnName.c_str();
-
-        int localsCount = -1;
-        Pex::States states = scriptObject.getStates();
-        for (auto& state : states)
-        {
-            if (state.getName().asString() == stateName)
-            {
-                for (auto& pexFunction : state.getFunctions())
-                {
-                    if (pexFunction.getName().asString() == funcName)
-                    {
-                        function = pexFunction;
-                        return true;
-                    }
-                }
-
-                return false;
-            }
-        }
-
-        return false;
     }
 
     HRESULT PapyrusDebugger::GetScopes(uint64_t frameId, std::vector<Scope>& scopes)
