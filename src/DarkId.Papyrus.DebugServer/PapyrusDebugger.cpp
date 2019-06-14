@@ -64,7 +64,9 @@ namespace DarkId::Papyrus::DebugServer
 
     void PapyrusDebugger::StackCreated(Game::VMStackData* stackData)
     {
-        m_tasks->AddTask(new FuncTask([this, stackData]()
+        UInt32 currentStackId = stackData->stackId;
+
+        m_tasks->AddTask(new FuncTask([this, stackData, currentStackId]()
             {
                 if (m_closed)
                 {
@@ -73,30 +75,37 @@ namespace DarkId::Papyrus::DebugServer
 
                 UInt32 stackId = stackData->stackId;
 
-                // This is sortof a brute force attempt to find newly loaded scripts and emit the event.
-                if (stackData->currentStackFrame)
+                // Dumb way to see if this is invalid now.
+                if (stackId != currentStackId)
                 {
-                    auto frame = stackData->currentStackFrame;
-
-                    auto name = frame->identifier ? frame->identifier->m_typeInfo->m_typeName.c_str() :
-                        frame->baseValueTypeInfo ? frame->baseValueTypeInfo->m_typeName.c_str() : NULL;
-
-                    if (name)
-                    {
-                        int sourceReference = m_pexCache->GetScriptReference(name);
-                        if (!m_pexCache->HasScript(sourceReference))
-                        {
-                            std::set<int> unused;
-
-                            Source sourceData;
-                            if (GetSourceData(name, sourceData, unused))
-                            {
-                                LoadedSourceEvent loadedSourceEvent(LoadedSourceReason::SourceNew, sourceData);
-                                m_protocol->EmitLoadedSourceEvent(loadedSourceEvent);
-                            }
-                        }
-                    }
+                    return;
                 }
+
+                // This is sortof a brute force attempt to find newly loaded scripts and emit the event.
+                // TODO: Hasn't really been working.
+                //if (stackData->currentStackFrame)
+                //{
+                //    auto frame = stackData->currentStackFrame;
+
+                //    auto name = frame->identifier ? frame->identifier->m_typeInfo->m_typeName.c_str() :
+                //        frame->baseValueTypeInfo ? frame->baseValueTypeInfo->m_typeName.c_str() : NULL;
+
+                //    if (name)
+                //    {
+                //        int sourceReference = m_pexCache->GetScriptReference(name);
+                //        if (!m_pexCache->HasScript(sourceReference))
+                //        {
+                //            std::set<int> unused;
+
+                //            Source sourceData;
+                //            if (GetSourceData(name, sourceData, unused))
+                //            {
+                //                LoadedSourceEvent loadedSourceEvent(LoadedSourceReason::SourceNew, sourceData);
+                //                m_protocol->EmitLoadedSourceEvent(loadedSourceEvent);
+                //            }
+                //        }
+                //    }
+                //}
 
                 m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
             }));
@@ -366,21 +375,24 @@ namespace DarkId::Papyrus::DebugServer
     {
         thread.id = stack->stackId;
 
-        Game::VMStackFrame* frame = stack->currentStackFrame;
-        if (!frame)
+        std::vector<Game::VMStackFrame*> frames;
+        GetStackFrames(stack->stackId, frames);
+
+        if (frames.size() == 0)
         {
-            return;
+            thread.name = string_format("%d", thread.id);
         }
+        else
+        {
+            auto frame = frames.back();
+            auto name = frame->identifier ? frame->identifier->m_typeInfo->m_typeName.c_str() :
+                    frame->baseValueTypeInfo ? frame->baseValueTypeInfo->m_typeName.c_str() :
+                    "<unknown>";
 
-        // Currently the "thread" name is based on the top of the stack, which isn't very useful.
-        // This would be better represented by the object reference the stack is associated with
-        auto name = frame->identifier ? frame->identifier->m_typeInfo->m_typeName.c_str() :
-            frame->baseValueTypeInfo ? frame->baseValueTypeInfo->m_typeName.c_str() :
-            "<unknown>";
-
-        thread.name = string_format("%s (%d)", name, thread.id);
-
-        thread.running = true;
+            thread.name = string_format("%s (%d)", name, thread.id);
+        }
+        
+        thread.running = m_state != DebuggerState::kState_Paused;
     }
 
     HRESULT PapyrusDebugger::GetThreads(std::vector<Thread>& threads)
@@ -402,6 +414,7 @@ namespace DarkId::Papyrus::DebugServer
             return true;
         };
 
+        BSReadAndWriteLocker stackLock(&m_vm->stackLock);
         m_vm->m_allStacks.ForEach(forStack);
 
         return 0;
@@ -438,6 +451,12 @@ namespace DarkId::Papyrus::DebugServer
     void PapyrusDebugger::ToVariableData(const char* name, VMValue* value, Variable& out)
     {
         out.name = std::string(name);
+
+        if (!value)
+        {
+            out.value = "None";
+            return;
+        }
 
         UInt8 typeId = value->GetTypeEnum();
 
@@ -496,23 +515,28 @@ namespace DarkId::Papyrus::DebugServer
         case VMValue::kType_Struct:
         {
             VMStructTypeInfo* typeInfo = (VMStructTypeInfo*)value->GetComplexType();
-            if (typeInfo)
+            out.type = typeInfo->m_typeName.c_str();
+
+            if (value->data.strct)
             {
-                out.type = typeInfo->m_typeName.c_str();
                 cacheValue = true;
+            }
+            else
+            {
+                out.value = "None";
             }
         }
         break;
-        // case VMValue::kType_Variable:
-        // {
-
-        // }
-        // break;
+        case VMValue::kType_Variable:
+        {
+            ToVariableData(name, value->data.var, out);
+        }
+        break;
         case VMValue::kType_StringArray:
         case VMValue::kType_IntArray:
         case VMValue::kType_FloatArray:
         case VMValue::kType_BoolArray:
-        // case VMValue::kType_VariableArray:
+        case VMValue::kType_VariableArray:
         case VMValue::kType_IdentifierArray:
         case VMValue::kType_StructArray:
         {
@@ -539,20 +563,27 @@ namespace DarkId::Papyrus::DebugServer
                     case VMValue::kType_BoolArray:
                         elementTypeName = "bool";
                         break;
+                    case VMValue::kType_VariableArray:
+                        elementTypeName = "var";
+                        break;
                 }
             }
 
             if (!value->data.arr)
             {
                 out.value = "None";
+                out.type = string_format("%s[]", elementTypeName.c_str());
             }
-            else if (value->data.arr->arr.count > 0)
+            else
             {
-                cacheValue = true;
-            }
+                out.type = string_format("%s[%d]", elementTypeName.c_str(), value->data.arr->arr.count);
+                out.value = out.type;
 
-            out.type = string_format("%s[]", elementTypeName.c_str());
-            out.value = out.type;
+                if (value->data.arr->arr.count > 0)
+                {
+                    cacheValue = true;
+                }
+            }
         }
         break;
         }
@@ -679,68 +710,23 @@ namespace DarkId::Papyrus::DebugServer
                         variables.push_back(parentVariable);
                     }
 
-                    Pex::Binary* scriptBinary = m_pexCache->GetScript(objectType->m_typeName.c_str());
-                    
-                    Pex::Object object = scriptBinary->getObjects().at(0);
-                    for (Pex::Variable pexVariable : object.getVariables())
+                    int variableCount = objectType->memberData.numMembers;
+                    for (int i = 0; i < variableCount; i++)
                     {
-                        const char* variableName = pexVariable.getName().asString().c_str();
-                        if (variableName[0] == ':')
-                        {
-                            continue;
-                        }
+                        VMValue* variableValue = value->data.id ? &value->data.id->properties[i] : NULL;
 
-                        BSFixedString variableNameStr(variableName);
+                        Variable variable;
 
-                        VMPropertyInfo propertyInfo;
-                        (*GetVMPropertyInfo)(objectType, &propertyInfo, &variableNameStr, true);
-
-                        if (propertyInfo.index == -1)
-                        {
-                            continue;
-                        }
-
-                        VMValue* memberValue = value->data.id ? &value->data.id->properties[propertyInfo.index] : NULL;
+                        VMObjectTypeInfo::PropertyElement propertyElement = objectType->properties->defs[i];
+                        std::string variableName = propertyElement.propertyName.c_str();
                         
-                        Variable variable;
-                        if (pexVariable.getConstFlag())
+                        // Demangle auto property backing variables:
+                        if (variableName.at(0) == ':')
                         {
-                            variable.presentationHint.attributes.push_back("const");
+                            variableName = variableName.substr(2, variableName.length() - 6);
                         }
 
-                        variable.presentationHint.visibility = "private";
-
-                        ToVariableData(variableName, memberValue, variable);
-                        variables.push_back(variable);
-                    }
-                    
-                    for (Pex::Property pexProperty : object.getProperties())
-                    {
-                        if (!pexProperty.hasAutoVar())
-                        {
-                            continue;
-                        }
-
-                        const char* propertyName = pexProperty.getName().asString().c_str();
-
-                        BSFixedString propertyNameStr(propertyName);
-
-                        VMPropertyInfo propertyInfo;
-                        (*GetVMPropertyInfo)(objectType, &propertyInfo, &propertyNameStr, true);
-
-                        if (propertyInfo.index == -1)
-                        {
-                            continue;
-                        }
-
-                        VMValue* memberValue = value->data.id ? &value->data.id->properties[propertyInfo.index] : NULL;
-
-                        Variable variable;
-
-                        variable.presentationHint.kind = "property";
-                        variable.presentationHint.visibility = "public";
-
-                        ToVariableData(propertyName, memberValue, variable);
+                        ToVariableData(variableName.c_str(), variableValue, variable);
                         variables.push_back(variable);
                     }
                 }
@@ -873,7 +859,7 @@ namespace DarkId::Papyrus::DebugServer
         std::vector<Game::VMStackFrame*> frames;
         GetStackFrames(stackId, frames);
 
-        if (level > frames.size() - 1)
+        if (frames.size() == 0 || level > frames.size() - 1)
         {
             return NULL;
         }
