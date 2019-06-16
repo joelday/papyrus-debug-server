@@ -238,6 +238,12 @@
     <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameAPI.h">
       <Filter>F4SE</Filter>
     </ClInclude>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusArgs.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="..\..\dependencies\f4se\src\f4se\f4se\GameExtraData.h">
+      <Filter>F4SE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="dllmain.cpp" />
@@ -357,6 +363,12 @@
       <Filter>F4SE</Filter>
     </ClCompile>
     <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameAPI.cpp">
+      <Filter>F4SE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\PapyrusArgs.cpp">
+      <Filter>F4SE</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\dependencies\f4se\src\f4se\f4se\GameExtraData.cpp">
       <Filter>F4SE</Filter>
     </ClCompile>
   </ItemGroup>

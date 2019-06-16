@@ -594,43 +594,65 @@ namespace DarkId::Papyrus::DebugServer
         }
     }
 
+    // TODO: Abstract variable tree away from VMValue
+    // TODO: Refactor variable building with a compositional model
+
     // TODO: Properly read/reflect on form state.
     void PapyrusDebugger::ToRefVariables(VMRefOrInventoryObj* ref, std::vector<Variable>& variables)
     {
-        //TESObjectREFR* objReference = ref->GetObjectReference();
-        //if (objReference)
-        //{
-        //    Variable reference;
-        //    reference.name = "Reference";
-        //    reference.value = objReference->GetFullName();
+        // TESObjectREFR* objReference = ref->GetObjectReference();
+        // if (objReference)
+        // {
+        //     Variable reference;
+        //     reference.name = "Reference";
+        //     reference.value = objReference->GetFullName();
 
-        //    variables.push_back(reference);
-        //}
+        //     variables.push_back(reference);
 
-        //TESForm* baseForm;
-        //ExtraDataList* extraData;
+        //     Variable reference2;
+        //     reference2.name = "Reference Editor ID";
+        //     reference2.value = objReference->GetEditorID();
 
-        //    if (ref->GetExtraData(&baseForm, &extraData))
-        //    {
-        //        Variable baseFormName;
-        //        baseFormName.name = "Form";
-        //        baseFormName.value = baseForm->GetFullName();
+        //     variables.push_back(reference2);
+        // }
 
-        //        variables.push_back(baseFormName);
+        // TESObjectREFR* ownerReference = ref->GetOwner();
+        // if (ownerReference)
+        // {
+        //     Variable reference;
+        //     reference.name = "Owner";
+        //     reference.value = ownerReference->GetFullName();
 
-        //        Variable baseFormEditorId;
-        //        baseFormEditorId.name = "Editor ID";
-        //        baseFormEditorId.value = baseForm->GetEditorID();
+        //     variables.push_back(reference);
 
-        //        variables.push_back(baseFormEditorId);
-        //    }
-        //}
+        //     Variable reference2;
+        //     reference2.name = "Owner Editor ID";
+        //     reference2.value = ownerReference->GetEditorID();
+
+        //     variables.push_back(reference2);
+        // }
+
+        // TESForm* baseForm;
+        // ExtraDataList* extraData;
+
+        // if (ref->GetExtraData(&baseForm, &extraData))
+        // {
+        //     Variable baseFormName;
+        //     baseFormName.name = "Form";
+        //     baseFormName.value = baseForm->GetFullName();
+
+        //     variables.push_back(baseFormName);
+
+        //     Variable baseFormEditorId;
+        //     baseFormEditorId.name = "Form Editor ID";
+        //     baseFormEditorId.value = baseForm->GetEditorID();
+
+        //     variables.push_back(baseFormEditorId);
+        // }
     }
 
     HRESULT PapyrusDebugger::GetVariables(uint64_t variablesReference, VariablesFilter filter, int start, int count, std::vector<Variable> & variables)
     {
-        // TODO: Can most likely get a lot of cleanup on this area by relying more on parsed Pex.
-
         auto it = m_values.find(variablesReference);
         if (it != m_values.end())
         {
@@ -685,6 +707,11 @@ namespace DarkId::Papyrus::DebugServer
                     {
                         return 1;
                     }
+
+                    // VMRefOrInventoryObj* refObject;
+                    // UnpackValue(&refObject, value);
+
+                    // ToRefVariables(refObject, variables);
 
                     VMObjectTypeInfo* objectType = (VMObjectTypeInfo*)value->GetComplexType();
 
@@ -942,10 +969,12 @@ namespace DarkId::Papyrus::DebugServer
     PapyrusDebugger::~PapyrusDebugger()
     {
         m_closed = true;
-        delete m_pexCache;
 
+        RuntimeEvents::UnsubscribeFromInitScript(m_initScriptEventHandle);
         RuntimeEvents::UnsubscribeFromInstructionExecution(m_instructionExecutionEventHandle);
         RuntimeEvents::UnsubscribeFromCreateStack(m_createStackEventHandle);
         RuntimeEvents::UnsubscribeFromCleanupStack(m_cleanupStackEventHandle);
+
+        delete m_pexCache;
     }
 }

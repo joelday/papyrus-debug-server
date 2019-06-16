@@ -53,13 +53,17 @@ extern "C"
         g_pluginHandle = f4se->GetPluginHandle();
 
         // Check game version
-        if (f4se->runtimeVersion != CURRENT_RELEASE_RUNTIME) {
+        if (f4se->runtimeVersion > CURRENT_RELEASE_RUNTIME) {
             char versionMessage[512];
-            sprintf_s(versionMessage, sizeof(versionMessage), "Your game version: v%d.%d.%d.%d\nExpected version: v%d.%d.%d.%d\n%s will be disabled.",
+            sprintf_s(versionMessage, sizeof(versionMessage), "Your game version: v%d.%d.%d.%d\nExpected versions: v%d.%d.%d.%d-v%d.%d.%d.%d\n%s will be disabled.",
                 GET_EXE_VERSION_MAJOR(f4se->runtimeVersion),
                 GET_EXE_VERSION_MINOR(f4se->runtimeVersion),
                 GET_EXE_VERSION_BUILD(f4se->runtimeVersion),
                 GET_EXE_VERSION_SUB(f4se->runtimeVersion),
+                GET_EXE_VERSION_MAJOR(RUNTIME_VERSION_1_10_130),
+                GET_EXE_VERSION_MINOR(RUNTIME_VERSION_1_10_130),
+                GET_EXE_VERSION_BUILD(RUNTIME_VERSION_1_10_130),
+                GET_EXE_VERSION_SUB(RUNTIME_VERSION_1_10_130),
                 GET_EXE_VERSION_MAJOR(CURRENT_RELEASE_RUNTIME),
                 GET_EXE_VERSION_MINOR(CURRENT_RELEASE_RUNTIME),
                 GET_EXE_VERSION_BUILD(CURRENT_RELEASE_RUNTIME),
