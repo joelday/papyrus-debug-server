@@ -68,6 +68,7 @@ namespace DarkId::Papyrus::DebugServer
         Protocol* m_protocol;
         PexCache* m_pexCache;
 
+        std::mutex m_instructionMutex;
         std::map<int, std::set<int>> m_breakpoints;
 
         std::set<int> m_deadStackIds;

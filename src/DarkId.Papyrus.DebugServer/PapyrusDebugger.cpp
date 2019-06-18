@@ -142,6 +142,8 @@ namespace DarkId::Papyrus::DebugServer
 
     void PapyrusDebugger::InstructionExecution(Game::CodeTasklet* tasklet, Pex::OpCode opCode)
     {
+        std::lock_guard<std::mutex> lock(m_instructionMutex);
+
         IFunction* func = tasklet->stackFrame->function;
 
         // TODO: Excessive nesting.

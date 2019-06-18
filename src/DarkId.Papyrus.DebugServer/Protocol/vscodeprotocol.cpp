@@ -609,16 +609,18 @@ void VSCodeProtocol::CommandLoop()
 
         while (!m_exit)
         {
-            std::lock_guard<std::mutex> lock(m_inMutex);
-
-            if (!m_inputQueue->empty())
             {
-                requestText = m_inputQueue->front();
-                m_inputQueue->pop();
-                break;
+                std::lock_guard<std::mutex> lock(m_inMutex);
+
+                if (!m_inputQueue->empty())
+                {
+                    requestText = m_inputQueue->front();
+                    m_inputQueue->pop();
+                    break;
+                }
             }
 
-            Sleep(10);
+            Sleep(100);
         }
 
         if (requestText.empty())
