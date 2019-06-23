@@ -27,6 +27,10 @@ namespace DarkId::Papyrus::DebugServer
         InitScriptEventHandle SubscribeToInitScript(std::function<void(TESInitScriptEvent*)> handler);
         bool UnsubscribeFromInitScript(InitScriptEventHandle handle);
 
+        typedef eventpp::CallbackList<void(Game::BSScript::LogEvent*)>::Handle LogEventHandle;
+        LogEventHandle SubscribeToLog(std::function<void(Game::BSScript::LogEvent*)> handler);
+        bool UnsubscribeFromLog(LogEventHandle handle);
+
         namespace Internal
         {
             void CommitHooks();

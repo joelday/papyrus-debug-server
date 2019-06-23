@@ -77,6 +77,22 @@ namespace DarkId::Papyrus::DebugServer::Game
 
     namespace BSScript
     {
+        class ICachedErrorMessage
+        {
+        public:
+            virtual ~ICachedErrorMessage();
+
+            virtual void Unk1(UInt64* unk1);
+
+            UInt64* unk_08;
+            BSFixedString m_message;
+        };
+
+        struct LogEvent
+        {
+            ICachedErrorMessage* cachedErrorMessage;
+        };
+
         class CompiledScriptLoader
         {
         public:

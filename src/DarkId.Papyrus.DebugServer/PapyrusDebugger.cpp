@@ -55,11 +55,21 @@ namespace DarkId::Papyrus::DebugServer
                 std::bind(&PapyrusDebugger::InstructionExecution, this, std::placeholders::_1, std::placeholders::_2));
 
         m_initScriptEventHandle = RuntimeEvents::SubscribeToInitScript(std::bind(&PapyrusDebugger::InitScriptEvent, this, std::placeholders::_1));
+
+        m_logEventHandle =
+            RuntimeEvents::SubscribeToLog(std::bind(&PapyrusDebugger::EventLogged, this, std::placeholders::_1));
     }
 
     void PapyrusDebugger::InitScriptEvent(TESInitScriptEvent* initEvent)
     {
        
+    }
+
+    void PapyrusDebugger::EventLogged(Game::BSScript::LogEvent* logEvent)
+    {
+        OutputEvent output(OutputCategory::OutputConsole, std::string(logEvent->cachedErrorMessage->m_message.c_str()) + "\r\n");
+
+        m_protocol->EmitOutputEvent(output);
     }
 
     void PapyrusDebugger::StackCreated(Game::VMStackData* stackData)
@@ -972,6 +982,7 @@ namespace DarkId::Papyrus::DebugServer
     {
         m_closed = true;
 
+        RuntimeEvents::UnsubscribeFromLog(m_logEventHandle);
         RuntimeEvents::UnsubscribeFromInitScript(m_initScriptEventHandle);
         RuntimeEvents::UnsubscribeFromInstructionExecution(m_instructionExecutionEventHandle);
         RuntimeEvents::UnsubscribeFromCreateStack(m_createStackEventHandle);

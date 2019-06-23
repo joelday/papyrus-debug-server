@@ -80,10 +80,12 @@ namespace DarkId::Papyrus::DebugServer
         RuntimeEvents::CleanupStackEventHandle m_cleanupStackEventHandle;
         RuntimeEvents::InstructionExecutionEventHandle m_instructionExecutionEventHandle;
         RuntimeEvents::InitScriptEventHandle m_initScriptEventHandle;
+        RuntimeEvents::LogEventHandle m_logEventHandle;
 
         UInt64 CacheValue(VMValue* value);
 
         void InitScriptEvent(TESInitScriptEvent* initEvent);
+        void PapyrusDebugger::EventLogged(Game::BSScript::LogEvent* logEvent);
         void StackCreated(Game::VMStackData* stackData);
         void StackCleanedUp(UInt32 stackId);
         void InstructionExecution(Game::CodeTasklet* tasklet, Pex::OpCode opCode);

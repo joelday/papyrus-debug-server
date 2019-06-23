@@ -86,7 +86,8 @@ public:
 	virtual IObjectBindPolicy *		GetObjectBindPolicy(void);
 	virtual void	Unk_36();
 	virtual void	Unk_37();
-	virtual void	Unk_38();
+    // DebugServer: Changed Unk_38 to AddLogEventSink
+    virtual void	AddLogEventSink(void* sink);
 	virtual void	Unk_39();
 	virtual void	Unk_3A();
 	virtual void	Unk_3B();

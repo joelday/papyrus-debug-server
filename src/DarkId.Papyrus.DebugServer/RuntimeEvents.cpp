@@ -68,10 +68,31 @@ namespace DarkId::Papyrus::DebugServer
             return g_initScriptEvent.remove(handle);
         }
 
+        eventpp::CallbackList<void(Game::BSScript::LogEvent*)> g_logEvent;
+
+        LogEventHandle SubscribeToLog(std::function<void(Game::BSScript::LogEvent*)> handler)
+        {
+            return g_logEvent.append(handler);
+        }
+
+        bool UnsubscribeFromLog(LogEventHandle handle)
+        {
+            return g_logEvent.remove(handle);
+        }
+
         class ScriptInitEventSink : public BSTEventSink<TESInitScriptEvent>
         {
             EventResult ReceiveEvent(TESInitScriptEvent* evn, void* dispatcher) override {
                 g_initScriptEvent(evn);
+
+                return kEvent_Continue;
+            };
+        };
+
+        class LogEventSink : public BSTEventSink<Game::BSScript::LogEvent>
+        {
+            EventResult ReceiveEvent(Game::BSScript::LogEvent* evn, void* dispatcher) override {
+                g_logEvent(evn);
 
                 return kEvent_Continue;
             };
@@ -276,6 +297,7 @@ namespace DarkId::Papyrus::DebugServer
                 } 
                 
                 GetEventDispatcher<TESInitScriptEvent>()->AddEventSink(new ScriptInitEventSink());
+                (*g_gameVM)->m_virtualMachine->AddLogEventSink(new LogEventSink());
 
                 //TSInit
                 //TESInitScriptEvent* eventSink = (*g_gameVM)->m_eventSinks[GameVM::kEventSink_InitScript]
