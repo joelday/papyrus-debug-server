@@ -35,7 +35,7 @@ skip_commits:
     - README.md
 
 deploy:
-  release: papyrus-debug-server-$(APPVEYOR_BUILD_VERSION)
+  release: $(APPVEYOR_BUILD_VERSION)
   description: 'Papyrus Debug Server xSE Plugin'
   provider: GitHub
   auth_token:
