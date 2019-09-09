@@ -1,0 +1,38 @@
+version: 1.{build}.0.0
+
+image: Visual Studio 2019
+
+configuration: Release
+platform: x64
+
+environment:
+  WEBHOOK_URL:
+    secure: Oyrlvti3D7Zf0SDrYnP5AprH1IDT0upe+oy39EGEZP6vYDg5/NjESFLiLRLO1EMamTVCqIfhxkqWWKq3o1RIlqPT7Kib+uvcI+DHD+OqTZHz3FIWAQhIZWcg0li0QOEnlK9YTjT5f2GWzIgtgJnV793iejlUMnDYBRKZxCewmSU=
+
+build:
+  project: DarkId.Papyrus.DebugServer.sln
+  verbosity: minimal
+
+install:
+  - cd C:\Tools\vcpkg
+  - git pull
+  - .\bootstrap-vcpkg.bat
+  - vcpkg install websocketpp:x64-windows
+  - vcpkg integrate install
+  - cd %APPVEYOR_BUILD_FOLDER%
+
+after_build:
+  - 7z a %APPVEYOR_BUILD_FOLDER%\papyrus-debug-server.zip %APPVEYOR_BUILD_FOLDER%\src\DarkId.Papyrus.DebugServer\bin\**\*.dll
+
+cache:
+  - C:\Tools\vcpkg\installed
+
+artifacts:
+  - path: papyrus-debug-server.zip
+
+on_success:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 success $env:WEBHOOK_URL
+on_failure:
+  - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
+  - ps: ./send.ps1 failure $env:WEBHOOK_URL
