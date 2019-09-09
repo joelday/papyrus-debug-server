@@ -12,74 +12,74 @@
 // you place in it when the ToRelease class falls out of scope.  You may use it
 // just like you would a standard pointer to a COM object (including if (foo),
 // if (!foo), if (foo == 0), etc) except for two caveats:
-//     1. This class never calls AddRef and it always calls Release when it
-//        goes out of scope.
-//     2. You should never use & to try to get a pointer to a pointer unless
-//        you call Release first, or you will leak whatever this object contains
-//        prior to updating its internal pointer.
+//	 1. This class never calls AddRef and it always calls Release when it
+//		goes out of scope.
+//	 2. You should never use & to try to get a pointer to a pointer unless
+//		you call Release first, or you will leak whatever this object contains
+//		prior to updating its internal pointer.
 template<class T>
 class ToRelease
 {
 public:
-    ToRelease()
-        : m_ptr(nullptr)
-    {}
+	ToRelease()
+		: m_ptr(nullptr)
+	{}
 
-    ToRelease(T* ptr)
-        : m_ptr(ptr)
-    {}
+	ToRelease(T* ptr)
+		: m_ptr(ptr)
+	{}
 
-    ~ToRelease()
-    {
-        Release();
-    }
+	~ToRelease()
+	{
+		Release();
+	}
 
-    void operator=(T *ptr)
-    {
-        Release();
+	void operator=(T *ptr)
+	{
+		Release();
 
-        m_ptr = ptr;
-    }
+		m_ptr = ptr;
+	}
 
-    T* operator->()
-    {
-        return m_ptr;
-    }
+	T* operator->()
+	{
+		return m_ptr;
+	}
 
-    operator T*()
-    {
-        return m_ptr;
-    }
+	operator T*()
+	{
+		return m_ptr;
+	}
 
-    T** operator&()
-    {
-        return &m_ptr;
-    }
+	T** operator&()
+	{
+		return &m_ptr;
+	}
 
-    T* GetPtr() const
-    {
-        return m_ptr;
-    }
+	T* GetPtr() const
+	{
+		return m_ptr;
+	}
 
-    T* Detach()
-    {
-        T* pT = m_ptr;
-        m_ptr = nullptr;
-        return pT;
-    }
+	T* Detach()
+	{
+		T* pT = m_ptr;
+		m_ptr = nullptr;
+		return pT;
+	}
 
-    void Release()
-    {
-        if (m_ptr != nullptr) {
-            m_ptr->Release();
-            m_ptr = nullptr;
-        }
-    }
+	void Release()
+	{
+		if (m_ptr != nullptr) {
+			m_ptr->Release();
+			m_ptr = nullptr;
+		}
+	}
 
-    ToRelease(ToRelease&& that) noexcept : m_ptr(that.m_ptr) { that.m_ptr = nullptr; }
+	ToRelease(ToRelease&& that) noexcept : m_ptr(that.m_ptr) { that.m_ptr = nullptr; }
 private:
-    ToRelease(const ToRelease& that) = delete;
-    T* m_ptr;
+	ToRelease(const ToRelease& that) = delete;
+	T* m_ptr;
 };
 
 #ifndef IfFailRet
@@ -92,24 +92,24 @@ private:
 
 #ifdef PAL_STDCPP_COMPAT
 #define _iswprint   PAL_iswprint
-#define _wcslen     PAL_wcslen
-#define _wcsncmp    PAL_wcsncmp
-#define _wcsrchr    PAL_wcsrchr
-#define _wcscmp     PAL_wcscmp
-#define _wcschr     PAL_wcschr
-#define _wcscspn    PAL_wcscspn
-#define _wcscat     PAL_wcscat
-#define _wcsstr     PAL_wcsstr
+#define _wcslen	 PAL_wcslen
+#define _wcsncmp	PAL_wcsncmp
+#define _wcsrchr	PAL_wcsrchr
+#define _wcscmp	 PAL_wcscmp
+#define _wcschr	 PAL_wcschr
+#define _wcscspn	PAL_wcscspn
+#define _wcscat	 PAL_wcscat
+#define _wcsstr	 PAL_wcsstr
 #else // PAL_STDCPP_COMPAT
 #define _iswprint   iswprint
-#define _wcslen     wcslen
-#define _wcsncmp    wcsncmp
-#define _wcsrchr    wcsrchr
-#define _wcscmp     wcscmp
-#define _wcschr     wcschr
-#define _wcscspn    wcscspn
-#define _wcscat     wcscat
-#define _wcsstr     wcsstr
+#define _wcslen	 wcslen
+#define _wcsncmp	wcsncmp
+#define _wcsrchr	wcsrchr
+#define _wcscmp	 wcscmp
+#define _wcschr	 wcschr
+#define _wcscspn	wcscspn
+#define _wcscat	 wcscat
+#define _wcsstr	 wcsstr
 #endif // !PAL_STDCPP_COMPAT
 
 typedef uintptr_t TADDR;

@@ -1,75 +1,71 @@
 #include "Pex.h"
 
-#include "f4se\PapyrusVM.h"
+#include <sstream>
+#include <regex>
+
 #include "GameInterfaces.h"
 
-#include <sstream>
+#if SKYRIM
+#include "SKSE/Logger.h"
+#elif FALLOUT
+#include "F4SE/Logger.h"
+#include "f4se/GameStreams.h"
+#endif 
+
+#include "PexStreamReader.hpp"
 
 namespace DarkId::Papyrus::DebugServer
 {
-    RelocPtr <Game::BSScript::CompiledScriptLoader> g_compiledScriptLoader(0x5ABD9B8);
+	bool ReadPexResource(const char* scriptName, std::ostream& stream)
+	{
+		const auto scriptPath = "Scripts/" + std::regex_replace(scriptName, std::regex(":"), "/") + ".pex";
+#if SKYRIM
+		RE::BSResourceNiBinaryStream scriptStream(scriptPath);
 
-    bool ReadPexResource(const char* scriptName, std::ostream* stream)
-    {
-        GameVM* game = *g_gameVM;
-        VirtualMachine* vm = game->m_virtualMachine;
+		if (scriptStream.is_open())
+		{
+			char byte;
+			while (scriptStream.get(byte))
+			{
+				stream.put(byte);
+			}
 
-        // TODO: No idea if this is the correct lock:
-        BSReadLocker scriptLocker(&vm->scriptsLock);
+			return true;
+		}
+#elif FALLOUT
+		BSResourceNiBinaryStream scriptStream(scriptPath.c_str());
 
-        Game::GameScript::Store* store = g_compiledScriptLoader->m_store;
+		if (scriptStream.IsValid())
+		{
+			char byte;
+			while (scriptStream.Read(&byte, 1))
+			{
+				stream.put(byte);
+			}
 
-        if (store->Open(scriptName) && store->m_hasOpenFile)
-        {
-            UInt32 length = store->m_readerStream->m_streamLength;
-            char* data = new char[length];
+			return true;
+		}
+#endif 
 
-            store->Read(length, data);
-            store->Close();
+		return false;
+	}
 
-            stream->write(data, length);
+	bool LoadPexData(const char* scriptName, Pex::Binary& binary)
+	{
+		std::stringstream buffer;
 
-            delete data;
+		if (!ReadPexResource(scriptName, buffer))
+		{
+			_ERROR("Failed to load pex resource.");
+			return false;
+		}
 
-            return true;
-        }
+		buffer.seekp(0);
 
-        return false;
-    }
+		std::istream input(buffer.rdbuf());
+		Pex::PexStreamReader reader(&input);
 
-    bool LoadPexData(const char* scriptName, Pex::Binary& binary)
-    {
-        std::stringstream buffer;
-
-        if (!ReadPexResource(scriptName, &buffer))
-        {
-            _ERROR("Failed to load pex resource.");
-            return false;
-        }
-
-        buffer.seekp(0);
-
-        std::istream input(buffer.rdbuf());
-
-        Pex::PexStreamReader* reader = new Pex::PexStreamReader(&input);
-
-        bool success = false;
-
-        try
-        {
-            reader->read(binary);
-            success = true;
-        }
-        catch (void*)
-        {
-            _ERROR("Failed to parse pex data.");
-        }
-
-        if (reader)
-        {
-            delete reader;
-        }
-
-        return success;
-    }
+		reader.read(binary);
+		return true;
+	}
 }

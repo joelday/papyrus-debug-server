@@ -1,21 +1,28 @@
 #pragma once
 
-#include "Pex.h"
+#include "Champollion/Pex/Binary.hpp"
+#include <map>
+
+#include "protocol/protocol.h"
+#include <mutex>
 
 namespace DarkId::Papyrus::DebugServer
 
 {
-    class PexCache
-    {
-    public:
-        PexCache();
-        ~PexCache();
+	class PexCache
+	{
+	public:
+		PexCache() = default;
 
-        bool HasScript(int scriptReference);
-        int GetScriptReference(const char* scriptName);
+		bool HasScript(int scriptReference);
+		bool HasScript(const char* scriptName);
+		int GetScriptReference(const char* scriptName) const;
 
-        Pex::Binary* GetScript(const char* scriptName);
-    private:
-        std::map<int, Pex::Binary*> m_scripts;
-    };
+		std::shared_ptr<Pex::Binary> GetScript(const char* scriptName);
+		bool GetDecompiledSource(const char* scriptName, std::string& decompiledSource);
+		bool GetSourceData(const char* scriptName, Source& data);
+	private:
+		std::mutex m_scriptsMutex;
+		std::map<int, std::shared_ptr<Pex::Binary>> m_scripts;
+	};
 }

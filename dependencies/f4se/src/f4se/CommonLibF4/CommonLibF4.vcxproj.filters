@@ -1,0 +1,969 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <Filter Include="include">
+      <UniqueIdentifier>{ee361757-fcc4-4d2a-a5a4-55f94b85830e}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\F4SE">
+      <UniqueIdentifier>{f28fe7c7-0eeb-4488-86f1-2e2aa6a2930b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE">
+      <UniqueIdentifier>{d9348bff-3a16-49fc-8cb4-550af0402c99}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\BGSMod\Template">
+      <UniqueIdentifier>{c81c252f-9607-42cb-aafc-a13c6e0b47c0}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\BGSMod">
+      <UniqueIdentifier>{e70f192e-7cab-4ac5-a8c8-01c70f7e065f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\BSScript">
+      <UniqueIdentifier>{832176de-28f3-4d31-8e45-72c7d4f9c294}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\BSScript\Internal">
+      <UniqueIdentifier>{eb4dcd59-840e-4789-89d8-bff641f235d2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\BSScript\NF_util">
+      <UniqueIdentifier>{c598e2d5-3733-4009-aab8-0f6f33b3444b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\GameScript">
+      <UniqueIdentifier>{74cac7b9-d121-48b2-aa3b-f841851f7f29}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\GameScript\Internal">
+      <UniqueIdentifier>{71b4dfb6-1f58-4845-b445-5b488c704c74}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\Scaleform">
+      <UniqueIdentifier>{361e7b10-b4de-45d6-80cb-7f9ecac983b1}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\Scaleform\GFx">
+      <UniqueIdentifier>{dfedf718-1818-4d90-9cde-1c14e3266704}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\RE\Scaleform\Render">
+      <UniqueIdentifier>{31b1cb2a-95ff-45f8-93bd-9a336025e2db}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="include\REL">
+      <UniqueIdentifier>{cfaa896d-b371-4b24-93ab-33ebc0594eb2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\F4SE">
+      <UniqueIdentifier>{08d6138f-060e-4f9b-9e4f-f02f765ef326}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src">
+      <UniqueIdentifier>{909fb678-5a4d-483d-87d2-828925715770}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE">
+      <UniqueIdentifier>{6d5ac225-f3aa-4a90-9cda-20c9b596789b}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\BSScript">
+      <UniqueIdentifier>{3ffd6eeb-3a79-4692-85cb-119b28ea4b2f}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\BSScript\Internal">
+      <UniqueIdentifier>{8592bccb-33eb-4b0d-a7b6-a482c8a512b6}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\BSScript\NF_util">
+      <UniqueIdentifier>{bf0d3076-b816-468f-86e0-a77589344d86}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\GameScript">
+      <UniqueIdentifier>{5b861bf0-6e2f-45a8-a08d-5056fcb0bb46}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\GameScript\Internal">
+      <UniqueIdentifier>{6b5946bc-7225-4f7a-9bb5-50f9151d917c}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\Scaleform">
+      <UniqueIdentifier>{1df540a9-73f2-4268-ba86-52b420f94fe2}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\Scaleform\GFx">
+      <UniqueIdentifier>{b5c3a779-0ccd-4660-81ea-e915d71d5007}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="src\RE\Scaleform\Render">
+      <UniqueIdentifier>{a422fe09-bba2-425e-83b3-6a99b6e561e8}</UniqueIdentifier>
+    </Filter>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="include\Atomic.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\ForceInclude.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\function_ref.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\Util.h">
+      <Filter>include</Filter>
+    </ClInclude>
+    <ClInclude Include="include\F4SE\API.h">
+      <Filter>include\F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\F4SE\Interfaces.h">
+      <Filter>include\F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\F4SE\Logger.h">
+      <Filter>include\F4SE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BaseFormComponent.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSAttachParentArray.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSDestructibleObjectForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSForcedLocRefType.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSKeywordForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSModelMaterialSwap.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSNativeTerminalForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSNavmeshableObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSOpenCloseForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSPreviewTransform.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSPropertySheet.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSSoundTagComponent.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSTerminal.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSTypedKeywordValueArray.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSCoreTypes.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSFixedString.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSGlobalStringTable.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSHandleRefObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSInputEventUser.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSIntrusiveRefCounted.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSLock.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSSpinLock.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTArray.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTEvent.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTFreeList.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTHashMap.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTMessageQueue.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTSmartPointer.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Condition.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\CRC.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Fallout.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\FileHash.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\FormTypes.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameMenuBase.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\IKeywordFormBase.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\IMenu.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Memory.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\NiRefObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Offset.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\SWFToCodeFunctionHandler.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TerminalMenu.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESBoundAnimObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESBoundObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESDataHandler.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESFullName.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESFurniture.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESInitScriptEvent.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESMagicTargetForm.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESModel.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESObject.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\TESObjectACTI.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BGSMod\Template\Items.h">
+      <Filter>include\RE\BGSMod\Template</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Array.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ArrayTypeTraits.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\CommonTypeTraits.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\CompiledScriptLoader.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ErrorLogger.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ICachedErrorMessage.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IClientVM.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IComplexType.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IFindBoundObjectFunctor.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IFunction.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IHandleReaderWriter.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ILoader.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IMemoryPagePolicy.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IObjectHandlePolicy.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IObjectProcessor.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IProfilePolicy.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ISavePatcherInterface.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IStackCallbackFunctor.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IStackCallbackSaveInterface.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IStore.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ITypeLinkedCallback.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IVirtualMachine.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IVMDebugInterface.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IVMObjectBindInterface.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\IVMSaveLoadInterface.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\LinkerProcessor.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\LogEvent.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\NativeFunction.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\NativeLatentFunction.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Object.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ObjectBindPolicy.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ObjectTypeInfo.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\ObjectTypeTraits.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\PackUnpack.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\SimpleAllocMemoryPagePolicy.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Stack.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\StackFrame.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\StatsEvent.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\StructTypeInfo.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Type.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\TypeTraits.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Variable.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\VariableInfo.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\VMArray.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\AutoPropGetFunction.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\AutoPropSetFunction.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\CachedErrorMessageImpl.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\CodeTasklet.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\FunctionMessage.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\IFuncCallQuery.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\NativeFunctionStub.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\RawFuncCallQuery.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\ScriptFunction.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\SuspendedStack.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Internal\VirtualMachine.h">
+      <Filter>include\RE\BSScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\NF_util\NativeFunctionBase.h">
+      <Filter>include\RE\BSScript\NF_util</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\BaseHandleReaderWriter.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\BasicEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\CombatEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\ConcreteDelayFunctorFactory.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\CustomEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\DataFileHandleReaderWriter.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\DelayFunctor.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\DelayFunctorFactory.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\DispatchAndClean.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\DistanceEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\FragmentEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\HandlePolicy.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\InventoryEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\LOSEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\MenuEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\PathingCallbackMgr.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Profiler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\QuestCallbackMgr.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SaveFileHandleReaderWriter.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SavePatcher.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SingleActorArgument.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SingleObjectRefrHandleArgument.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SingleSimpleArgument.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SleepEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\SoundCallbackMgr.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Store.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\TeleportEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\TimerEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\TrackedStatsEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\WaitEventHandler.h">
+      <Filter>include\RE\GameScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Internal\AnimationCallbacks.h">
+      <Filter>include\RE\GameScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Internal\IProfileCallQuery.h">
+      <Filter>include\RE\GameScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Internal\LOSDetectionEventData.h">
+      <Filter>include\RE\GameScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Internal\LOSDirectEventData.h">
+      <Filter>include\RE\GameScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameScript\Internal\LOSEventData.h">
+      <Filter>include\RE\GameScript\Internal</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\AllocInfo.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\AtomicInt.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\AtomicValueBase.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\List.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\ListNode.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Lock.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Memory.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\MemoryHeap.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\NewOverrideBase.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Ptr.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\RefCountBase.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\RefCountBaseStatImpl.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\RefCountImpl.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\RefCountImplCore.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SFTypes.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\StatBag.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Stats.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SysAlloc.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SysAllocBase.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SysAllocBase_SingletonSupport.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SysAllocMalloc.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\SysAllocPaged.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\ThreadID.h">
+      <Filter>include\RE\Scaleform</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\ASMovieRootBase.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\ASSupport.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\CharacterDef.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\FileTypeConstants.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\FocusMovedType.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\FunctionHandler.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\MemoryParams.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\Movie.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\MovieDef.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\MovieImpl.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\PlayerStats.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\PlayState.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\Resource.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\ResourceID.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\ResourceKey.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\State.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\StateBag.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\TagType.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\Value.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\GFx\Viewport.h">
+      <Filter>include\RE\Scaleform\GFx</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Color.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Constants.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Cxform.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix2x4.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix2x4Data.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix3x4.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix3x4Data.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix4x4.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Matrix4x4Data.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Point.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Rect.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\RectData.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\Scaleform\Render\Viewport.h">
+      <Filter>include\RE\Scaleform\Render</Filter>
+    </ClInclude>
+    <ClInclude Include="include\REL\Relocation.h">
+      <Filter>include\REL</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSTSingleton.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameVM.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\BSScript\Struct.h" />
+    <ClInclude Include="include\RE\ScrapHeap.h" />
+    <ClInclude Include="include\RE\IMemoryStore.h" />
+    <ClInclude Include="include\RE\IMemoryStoreBase.h" />
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="src\F4SE\API.cpp">
+      <Filter>src\F4SE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\F4SE\Interfaces.cpp">
+      <Filter>src\F4SE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\F4SE\Logger.cpp">
+      <Filter>src\F4SE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSFixedString.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSGlobalStringTable.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSIntrusiveRefCounted.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSLock.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSSpinLock.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Condition.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\TESDataHandler.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Array.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\CompiledScriptLoader.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\ErrorLogger.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\LinkerProcessor.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Object.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\ObjectBindPolicy.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\ObjectTypeInfo.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\SimpleAllocMemoryPagePolicy.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Stack.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\StackFrame.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\StructTypeInfo.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Type.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Variable.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\VariableInfo.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\AutoPropGetFunction.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\AutoPropSetFunction.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\CodeTasklet.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\NativeFunctionStub.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\RawFuncCallQuery.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\ScriptFunction.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Internal\VirtualMachine.cpp">
+      <Filter>src\RE\BSScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\NF_util\NativeFunctionBase.cpp">
+      <Filter>src\RE\BSScript\NF_util</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\BaseHandleReaderWriter.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\BasicEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\CombatEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\CustomEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\DataFileHandleReaderWriter.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\DelayFunctor.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\DelayFunctorFactory.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\DistanceEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\FragmentEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\HandlePolicy.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\InventoryEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\LOSEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\MenuEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\PathingCallbackMgr.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Profiler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\QuestCallbackMgr.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\SaveFileHandleReaderWriter.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\SavePatcher.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\SleepEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\SoundCallbackMgr.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Store.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\TeleportEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\TimerEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\TrackedStatsEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\WaitEventHandler.cpp">
+      <Filter>src\RE\GameScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Internal\AnimationCallbacks.cpp">
+      <Filter>src\RE\GameScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Internal\LOSDetectionEventData.cpp">
+      <Filter>src\RE\GameScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Internal\LOSDirectEventData.cpp">
+      <Filter>src\RE\GameScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameScript\Internal\LOSEventData.cpp">
+      <Filter>src\RE\GameScript\Internal</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\Lock.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\Memory.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\MemoryHeap.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\RefCountImpl.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\RefCountImplCore.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\SysAllocBase.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\SysAllocMalloc.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\SysAllocPaged.cpp">
+      <Filter>src\RE\Scaleform</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\ASMovieRootBase.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\ASSupport.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\CharacterDef.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\MemoryParams.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\Movie.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\MovieDef.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\Resource.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\ResourceID.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\ResourceKey.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\State.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\StateBag.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\GFx\Value.cpp">
+      <Filter>src\RE\Scaleform\GFx</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\Scaleform\Render\Color.cpp">
+      <Filter>src\RE\Scaleform\Render</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameVM.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSScript\Struct.cpp" />
+    <ClCompile Include="src\RE\BSTArray.cpp" />
+  </ItemGroup>
+</Project>

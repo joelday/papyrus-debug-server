@@ -1,6 +1,7 @@
 #pragma once
 
 #include "f4se/PapyrusArgs.h"
+#include <map>
 
 bool CreateStruct(VMValue * dst, BSFixedString * structName, VirtualMachine * vm, bool bNone);
 

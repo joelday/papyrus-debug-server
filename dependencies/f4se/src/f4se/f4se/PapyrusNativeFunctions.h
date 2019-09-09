@@ -44,7 +44,7 @@ public:
 	virtual UInt32			Invoke(void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3) = 0;
 	virtual BSFixedString *	GetSourceFile() = 0;	// guess
     // DebugServer: Changed this to GetLineNumber
-    virtual bool			GetLineNumber(UInt32 instructionPosition, UInt32* lineNumber) = 0;
+	virtual bool			GetLineNumber(UInt32 a_taskletExecutionOffset, UInt32& a_lineNumber) = 0;											// 11
 	virtual bool			GetParamName(UInt32 idx, BSFixedString * out) = 0;
 	virtual UInt32			GetUnk41() = 0;
 	virtual void			SetUnk41(UInt8 arg) = 0;
@@ -101,7 +101,7 @@ public:
 	virtual UInt32			Invoke(void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3)
 																{ return CALL_MEMBER_FN(this, Impl_Invoke)(arg0, arg1, arg2, arg3); }
 	virtual BSFixedString *	GetSourceFile()						{ return CALL_MEMBER_FN(this, Impl_GetSourceFile)(); }
-	virtual bool			Unk_11(UInt32 arg0, UInt32 * arg1)	{ *arg1 = 0; return false; }
+	virtual bool			GetLineNumber(UInt32 a_taskletExecutionOffset, UInt32& a_lineNumber) { a_lineNumber = 0; return false; }
 	virtual bool			GetParamName(UInt32 idx, BSFixedString * out)
 																{ return CALL_MEMBER_FN(this, Impl_GetParamName)(idx, out); }
 	virtual UInt32			GetUnk41()							{ return m_unk41; }
