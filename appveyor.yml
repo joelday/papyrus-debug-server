@@ -17,7 +17,6 @@ build:
 
 install:
   - cd C:\Tools\vcpkg
-  - git pull
   - .\bootstrap-vcpkg.bat
   - vcpkg install websocketpp:x64-windows
   - vcpkg integrate install
