@@ -5,6 +5,8 @@ image: Visual Studio 2019
 configuration: Release
 platform: x64
 
+skip_tags: true
+
 environment:
   WEBHOOK_URL:
     secure: Oyrlvti3D7Zf0SDrYnP5AprH1IDT0upe+oy39EGEZP6vYDg5/NjESFLiLRLO1EMamTVCqIfhxkqWWKq3o1RIlqPT7Kib+uvcI+DHD+OqTZHz3FIWAQhIZWcg0li0QOEnlK9YTjT5f2GWzIgtgJnV793iejlUMnDYBRKZxCewmSU=
@@ -33,6 +35,23 @@ artifacts:
 on_success:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 success $env:WEBHOOK_URL
+
 on_failure:
   - ps: Invoke-RestMethod https://raw.githubusercontent.com/DiscordHooks/appveyor-discord-webhook/master/send.ps1 -o send.ps1
   - ps: ./send.ps1 failure $env:WEBHOOK_URL
+
+skip_commits:
+  files:
+    - README.md
+
+deploy:
+  release: papyrus-debug-server-$(APPVEYOR_BUILD_VERSION)
+  description: 'Papyrus Debug Server xSE Plugin'
+  provider: GitHub
+  auth_token:
+    secure: 2ys90qVyZDjfN2W2xwpvQZ6HVF7RtPNf0KeeIRUxNMUmoaPDGO6l3TVGw2ips7Sw
+  artifact: papyrus-debug-server.zip
+  draft: false
+  prerelease: false
+  on:
+    branch: master
