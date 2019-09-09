@@ -12,15 +12,20 @@ environment:
     secure: Oyrlvti3D7Zf0SDrYnP5AprH1IDT0upe+oy39EGEZP6vYDg5/NjESFLiLRLO1EMamTVCqIfhxkqWWKq3o1RIlqPT7Kib+uvcI+DHD+OqTZHz3FIWAQhIZWcg0li0QOEnlK9YTjT5f2GWzIgtgJnV793iejlUMnDYBRKZxCewmSU=
 
 build:
+  parallel: true
   project: DarkId.Papyrus.DebugServer.sln
   verbosity: minimal
 
-install:
-  - cd C:\Tools\vcpkg
+init:
+  - cd %VCPKG_DIR%
+  - git pull
+  - echo.set(VCPKG_BUILD_TYPE release)>> %VCPKG_DIR%\triplets\x64-windows.cmake
   - .\bootstrap-vcpkg.bat
-  - vcpkg install websocketpp:x64-windows
-  - vcpkg integrate install
+  - vcpkg version
   - cd %APPVEYOR_BUILD_FOLDER%
+
+install:
+  - vcpkg install websocketpp:x64-windows
 
 after_build:
   - 7z a %APPVEYOR_BUILD_FOLDER%\papyrus-debug-server.zip %APPVEYOR_BUILD_FOLDER%\src\DarkId.Papyrus.DebugServer\bin\**\*.dll
