@@ -3,8 +3,7 @@
         {
             "name": "Skyrim",
             "includePath": [
-                "${vcpkgRoot}/x64-windows/include",
-                "${vcpkgRoot}/x86-windows/include",
+                "${workspaceFolder}/dependencies/x64-windows/include",
                 "${workspaceFolder}/dependencies",
                 "${workspaceFolder}/dependencies/skse64/src",
                 "${workspaceFolder}/dependencies/skse64/src/skse64",
@@ -28,8 +27,7 @@
         {
             "name": "Fallout",
             "includePath": [
-                "${vcpkgRoot}/x64-windows/include",
-                "${vcpkgRoot}/x86-windows/include",
+                "${workspaceFolder}/dependencies/x64-windows/include",
                 "${workspaceFolder}/dependencies",
                 "${workspaceFolder}/dependencies/f4se/src",
                 "${workspaceFolder}/dependencies/f4se/src/f4se",

@@ -63,7 +63,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;SKYRIM;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -86,6 +86,7 @@
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dependencies\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
@@ -111,7 +112,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;SKYRIM;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -136,6 +137,7 @@
       <OptimizeReferences>true</OptimizeReferences>
       <EnableCOMDATFolding>true</EnableCOMDATFolding>
       <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalLibraryDirectories>$(ProjectDir)..\..\dependencies\x64-windows\lib;%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
       <Command>
