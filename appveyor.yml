@@ -19,13 +19,13 @@ build:
 init:
   - cd C:\Tools\vcpkg
   - git pull
-  - echo.set(VCPKG_BUILD_TYPE release)>> C:\Tools\vcpkg\triplets\x64-windows.cmake
   - .\bootstrap-vcpkg.bat
   - vcpkg version
   - cd %APPVEYOR_BUILD_FOLDER%
 
 install:
   - vcpkg install websocketpp:x64-windows
+  - vcpkg integrate install
 
 after_build:
   - 7z a %APPVEYOR_BUILD_FOLDER%\papyrus-debug-server.zip %APPVEYOR_BUILD_FOLDER%\src\DarkId.Papyrus.DebugServer\bin\**\*.dll
