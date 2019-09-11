@@ -17,7 +17,6 @@
 #include "RE/BSTMessageQueue.h"  // BSTCommonLLMessageQueue, BSTCommonStaticMessageQueue
 #include "RE/BSTSmartPointer.h"  // BSTSmartPointer
 
-
 namespace RE
 {
 	namespace BSScript
@@ -135,10 +134,10 @@ namespace RE
 
 				BSTHashMap<BSFixedString, BSTSmartPointer<ObjectTypeInfo>>	linkedClassMap;				// 168
 				BSTHashMap<BSFixedString, BSTSmartPointer<StructTypeInfo>>	linkedStructMap;			// 198
-				//BSTHashMap<FormType32, BSFixedString>				typeToClassNameMap;			// 0188
-				BSTHashMap<BSFixedString, FormType32>				classNameToTypeMap;			// 1C8
+				BSTHashMap<FormType32, BSFixedString>				typeToClassNameMap;			// 1C8
+				BSTHashMap<BSFixedString, FormType32>				classNameToTypeMap;			// 1F8
 
-				UInt64	unk1F8[(0xBD58 - 0x1F8) >> 3];
+				UInt64	unk1F8[(0xBD58 - 0x228) >> 3];
 				
 				mutable BSUniqueLock								stackLock;					// BD58
 				BSTHashMap<StackID, BSTSmartPointer<Stack>>			allStacks;					// BD60
@@ -147,13 +146,12 @@ namespace RE
 
 				// attachedScripts?
 			};
-
+			
 			STATIC_ASSERT(offsetof(VirtualMachine, linkedClassMap) == 0x168);
 			STATIC_ASSERT(offsetof(VirtualMachine, linkedStructMap) == 0x198);
-			STATIC_ASSERT(offsetof(VirtualMachine, classNameToTypeMap) == 0x1C8);
+			STATIC_ASSERT(offsetof(VirtualMachine, typeToClassNameMap) == 0x1C8);
+			STATIC_ASSERT(offsetof(VirtualMachine, classNameToTypeMap) == 0x1F8);
 			STATIC_ASSERT(offsetof(VirtualMachine, stackLock) == 0xBD58);
-			
-			// STATIC_ASSERT(sizeof(VirtualMachine) == 0x9518);
 		}
 	}
 }

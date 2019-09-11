@@ -72,27 +72,25 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		const auto stackId = stack->stackID;
 		
-		XSE::GetTaskInterface()->AddTask([this, &stackId]()
+		XSE::GetTaskInterface()->AddTask([this, stackId]()
 		{
 			if (m_closed)
 			{
 				return;
 			}
 
-			m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
-
-			const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-			
+			const auto stack = m_runtimeState->GetStack(stackId);
+			if (!stack)
 			{
-				RE::BSUniqueLockGuard lock(vm->stackLock);
-				
-				const auto stack = m_runtimeState->GetStack(stackId);
+				return;
+			}
 
-				if (stack && stack->current && stack->current->func)
-				{
-					const auto scriptName = stack->current->func->GetScriptName();
-					CheckSourceLoaded(scriptName.c_str());
-				}
+			m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
+			
+			if (stack->current && stack->current->func)
+			{
+				const auto scriptName = stack->current->func->GetScriptName();
+				CheckSourceLoaded(scriptName.c_str());
 			}
 		});
 	}
@@ -184,7 +182,7 @@ namespace DarkId::Papyrus::DebugServer
 		for (auto& elem : vm->allStacks)
 		{
 			const auto stack = elem.second.get();
-			if (!stack)
+			if (!stack || !stack->current)
 			{
 				continue;
 			}
@@ -200,7 +198,7 @@ namespace DarkId::Papyrus::DebugServer
 				continue;
 			}
 
-			auto node = dynamic_cast<StackStateNode*>(stateNode.get());
+			const auto node = dynamic_cast<StackStateNode*>(stateNode.get());
 
 			Thread thread;
 			if (node->SerializeToProtocol(thread))

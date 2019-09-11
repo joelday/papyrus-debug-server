@@ -45,7 +45,7 @@ namespace DarkId::Papyrus::DebugServer
 		void Close();
 		void HandleInstruction(CodeTasklet* tasklet, CodeTasklet::OpCode opCode);
 		bool Continue();
-		bool Pause() const;
+		bool Pause();
 		bool Step(UInt32 stackId, Debugger::StepType stepType);
 	};
 }

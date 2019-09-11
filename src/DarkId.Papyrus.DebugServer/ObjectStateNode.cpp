@@ -4,10 +4,10 @@
 
 namespace DarkId::Papyrus::DebugServer
 {
-	ObjectStateNode::ObjectStateNode(std::string name, RE::BSScript::Object* value, RE::BSScript::ObjectTypeInfo* asClass, bool forceClass) :
-		m_name(name), m_value(value), m_class(asClass)
+	ObjectStateNode::ObjectStateNode(const std::string name, RE::BSScript::Object* value, RE::BSScript::ObjectTypeInfo* asClass, const bool subView) :
+		m_name(name), m_subView(subView), m_value(value), m_class(asClass)
 	{
-		if (m_value && !forceClass)
+		if (m_value && !m_subView)
 		{
 			m_class = RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo>(m_value->GetClass());
 		}
@@ -19,7 +19,7 @@ namespace DarkId::Papyrus::DebugServer
 		
 		variable.name = m_name;
 		variable.type = m_class->GetName();
-		
+
 		if (m_value)
 		{
 			std::vector<std::string> childNames;
@@ -27,7 +27,17 @@ namespace DarkId::Papyrus::DebugServer
 
 			variable.namedVariables = childNames.size();
 
-			variable.value = variable.type;
+			if (!m_subView)
+			{
+				auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+				const auto handle = vm->GetHandle(m_value);
+
+				variable.value = StringFormat("%s (%08x)", m_class->GetName(), static_cast<UInt32>(handle ^ 0x0000FFFF00000000));
+			}
+			else
+			{
+				variable.value = variable.type;
+			}
 		}
 		else
 		{

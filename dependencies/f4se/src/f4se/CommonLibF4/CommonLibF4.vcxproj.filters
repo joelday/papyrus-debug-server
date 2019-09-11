@@ -2,79 +2,79 @@
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
     <Filter Include="include">
-      <UniqueIdentifier>{ee361757-fcc4-4d2a-a5a4-55f94b85830e}</UniqueIdentifier>
+      <UniqueIdentifier>{17751b26-bc42-419f-be5f-4011b82ab34c}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\F4SE">
-      <UniqueIdentifier>{f28fe7c7-0eeb-4488-86f1-2e2aa6a2930b}</UniqueIdentifier>
+      <UniqueIdentifier>{c3a8840a-33e2-4872-9c83-8d88446781d6}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE">
-      <UniqueIdentifier>{d9348bff-3a16-49fc-8cb4-550af0402c99}</UniqueIdentifier>
+      <UniqueIdentifier>{028522f1-2d1a-4051-936f-c650a31ffbb0}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\BGSMod\Template">
-      <UniqueIdentifier>{c81c252f-9607-42cb-aafc-a13c6e0b47c0}</UniqueIdentifier>
+      <UniqueIdentifier>{cf5a862a-145b-47f3-aa0c-e4f937207d4c}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\BGSMod">
-      <UniqueIdentifier>{e70f192e-7cab-4ac5-a8c8-01c70f7e065f}</UniqueIdentifier>
+      <UniqueIdentifier>{60c94963-47bd-4497-bf9f-b830f95e94fe}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\BSScript">
-      <UniqueIdentifier>{832176de-28f3-4d31-8e45-72c7d4f9c294}</UniqueIdentifier>
+      <UniqueIdentifier>{24c47a20-6525-454e-9f45-5940a72b6d17}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\BSScript\Internal">
-      <UniqueIdentifier>{eb4dcd59-840e-4789-89d8-bff641f235d2}</UniqueIdentifier>
+      <UniqueIdentifier>{5273368e-8fef-4fa4-ab5d-361dadf8ea8b}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\BSScript\NF_util">
-      <UniqueIdentifier>{c598e2d5-3733-4009-aab8-0f6f33b3444b}</UniqueIdentifier>
+      <UniqueIdentifier>{8d73cfb4-8ce8-4791-a781-4275580dac84}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\GameScript">
-      <UniqueIdentifier>{74cac7b9-d121-48b2-aa3b-f841851f7f29}</UniqueIdentifier>
+      <UniqueIdentifier>{759e8fc6-7584-4d42-b3e7-57f354bf85f1}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\GameScript\Internal">
-      <UniqueIdentifier>{71b4dfb6-1f58-4845-b445-5b488c704c74}</UniqueIdentifier>
+      <UniqueIdentifier>{7cd158ca-12f6-40af-befe-9dfd10c2f61f}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\Scaleform">
-      <UniqueIdentifier>{361e7b10-b4de-45d6-80cb-7f9ecac983b1}</UniqueIdentifier>
+      <UniqueIdentifier>{ac935194-bae7-4b7b-8aba-2aa2a49760a8}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\Scaleform\GFx">
-      <UniqueIdentifier>{dfedf718-1818-4d90-9cde-1c14e3266704}</UniqueIdentifier>
+      <UniqueIdentifier>{a3395c29-f39f-4b15-a469-0e098bb90dfc}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\RE\Scaleform\Render">
-      <UniqueIdentifier>{31b1cb2a-95ff-45f8-93bd-9a336025e2db}</UniqueIdentifier>
+      <UniqueIdentifier>{3ff302d0-5a0e-4633-9b0e-19cb3b9893ab}</UniqueIdentifier>
     </Filter>
     <Filter Include="include\REL">
-      <UniqueIdentifier>{cfaa896d-b371-4b24-93ab-33ebc0594eb2}</UniqueIdentifier>
+      <UniqueIdentifier>{b3446c1b-4279-4cb1-94db-2038666aba89}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\F4SE">
-      <UniqueIdentifier>{08d6138f-060e-4f9b-9e4f-f02f765ef326}</UniqueIdentifier>
+      <UniqueIdentifier>{d2002512-4ac4-42c3-a2e1-4d0f4a2f2300}</UniqueIdentifier>
     </Filter>
     <Filter Include="src">
-      <UniqueIdentifier>{909fb678-5a4d-483d-87d2-828925715770}</UniqueIdentifier>
+      <UniqueIdentifier>{a1a4edc0-8284-4f18-9d64-bfc6060a24ae}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE">
-      <UniqueIdentifier>{6d5ac225-f3aa-4a90-9cda-20c9b596789b}</UniqueIdentifier>
+      <UniqueIdentifier>{c66633eb-1fd3-4d91-9694-80dc1389e739}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\BSScript">
-      <UniqueIdentifier>{3ffd6eeb-3a79-4692-85cb-119b28ea4b2f}</UniqueIdentifier>
+      <UniqueIdentifier>{8618af55-453e-4c9c-b51d-1413d2b9bff8}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\BSScript\Internal">
-      <UniqueIdentifier>{8592bccb-33eb-4b0d-a7b6-a482c8a512b6}</UniqueIdentifier>
+      <UniqueIdentifier>{192b1094-8e27-4fbb-8923-4754cfce211d}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\BSScript\NF_util">
-      <UniqueIdentifier>{bf0d3076-b816-468f-86e0-a77589344d86}</UniqueIdentifier>
+      <UniqueIdentifier>{651db20a-8fd0-4cee-9b28-9cf7a10b8068}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\GameScript">
-      <UniqueIdentifier>{5b861bf0-6e2f-45a8-a08d-5056fcb0bb46}</UniqueIdentifier>
+      <UniqueIdentifier>{59975ed5-cc35-429a-88e6-492c2d32158b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\GameScript\Internal">
-      <UniqueIdentifier>{6b5946bc-7225-4f7a-9bb5-50f9151d917c}</UniqueIdentifier>
+      <UniqueIdentifier>{bf2a62c5-acf8-42ad-a9ee-814c35308ba4}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\Scaleform">
-      <UniqueIdentifier>{1df540a9-73f2-4268-ba86-52b420f94fe2}</UniqueIdentifier>
+      <UniqueIdentifier>{1352589c-3920-4e1a-bb76-1e8dc471185b}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\Scaleform\GFx">
-      <UniqueIdentifier>{b5c3a779-0ccd-4660-81ea-e915d71d5007}</UniqueIdentifier>
+      <UniqueIdentifier>{c107cd33-8a54-4db3-a8e6-d9f900d7c397}</UniqueIdentifier>
     </Filter>
     <Filter Include="src\RE\Scaleform\Render">
-      <UniqueIdentifier>{a422fe09-bba2-425e-83b3-6a99b6e561e8}</UniqueIdentifier>
+      <UniqueIdentifier>{9ca09995-8038-492f-8df8-e3d64dce0770}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
@@ -180,6 +180,9 @@
     <ClInclude Include="include\RE\BSTMessageQueue.h">
       <Filter>include\RE</Filter>
     </ClInclude>
+    <ClInclude Include="include\RE\BSTSingleton.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
     <ClInclude Include="include\RE\BSTSmartPointer.h">
       <Filter>include\RE</Filter>
     </ClInclude>
@@ -199,6 +202,9 @@
       <Filter>include\RE</Filter>
     </ClInclude>
     <ClInclude Include="include\RE\GameMenuBase.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\GameVM.h">
       <Filter>include\RE</Filter>
     </ClInclude>
     <ClInclude Include="include\RE\IKeywordFormBase.h">
@@ -702,16 +708,18 @@
     <ClInclude Include="include\REL\Relocation.h">
       <Filter>include\REL</Filter>
     </ClInclude>
-    <ClInclude Include="include\RE\BSTSingleton.h">
+    <ClInclude Include="include\RE\BSScript\Struct.h">
+      <Filter>include\RE\BSScript</Filter>
+    </ClInclude>
+    <ClInclude Include="include\RE\IMemoryStore.h">
       <Filter>include\RE</Filter>
     </ClInclude>
-    <ClInclude Include="include\RE\GameVM.h">
+    <ClInclude Include="include\RE\IMemoryStoreBase.h">
       <Filter>include\RE</Filter>
     </ClInclude>
-    <ClInclude Include="include\RE\BSScript\Struct.h" />
-    <ClInclude Include="include\RE\ScrapHeap.h" />
-    <ClInclude Include="include\RE\IMemoryStore.h" />
-    <ClInclude Include="include\RE\IMemoryStoreBase.h" />
+    <ClInclude Include="include\RE\ScrapHeap.h">
+      <Filter>include\RE</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <ClCompile Include="src\F4SE\API.cpp">
@@ -739,6 +747,9 @@
       <Filter>src\RE</Filter>
     </ClCompile>
     <ClCompile Include="src\RE\Condition.cpp">
+      <Filter>src\RE</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\GameVM.cpp">
       <Filter>src\RE</Filter>
     </ClCompile>
     <ClCompile Include="src\RE\TESDataHandler.cpp">
@@ -960,10 +971,11 @@
     <ClCompile Include="src\RE\Scaleform\Render\Color.cpp">
       <Filter>src\RE\Scaleform\Render</Filter>
     </ClCompile>
-    <ClCompile Include="src\RE\GameVM.cpp">
+    <ClCompile Include="src\RE\BSScript\Struct.cpp">
+      <Filter>src\RE\BSScript</Filter>
+    </ClCompile>
+    <ClCompile Include="src\RE\BSTArray.cpp">
       <Filter>src\RE</Filter>
     </ClCompile>
-    <ClCompile Include="src\RE\BSScript\Struct.cpp" />
-    <ClCompile Include="src\RE\BSTArray.cpp" />
   </ItemGroup>
 </Project>

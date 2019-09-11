@@ -10,11 +10,12 @@ namespace DarkId::Papyrus::DebugServer
 	class ObjectStateNode : public StateNodeBase, public IProtocolVariableSerializable, public IStructuredState
 	{
 		std::string m_name;
-
+		bool m_subView;
+		
 		RE::BSTSmartPointer<RE::BSScript::Object> m_value;
 		RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo> m_class;
 	public:
-		ObjectStateNode(std::string name, RE::BSScript::Object* value, RE::BSScript::ObjectTypeInfo* asClass, bool forceClass = false);
+		ObjectStateNode(std::string name, RE::BSScript::Object* value, RE::BSScript::ObjectTypeInfo* asClass, bool subView = false);
 
 		bool SerializeToProtocol(Variable& variable) override;
 
