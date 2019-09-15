@@ -4,6 +4,7 @@
 #include "protocol/protocol.h"
 
 #include "StateNodeBase.h"
+#include <map>
 
 namespace DarkId::Papyrus::DebugServer
 {

@@ -198,6 +198,7 @@
     <ClCompile Include="IdProvider.cpp" />
     <ClCompile Include="LocalScopeStateNode.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MetaNode.cpp" />
     <ClCompile Include="ObjectStateNode.cpp" />
     <ClCompile Include="PapyrusDebugger.cpp" />
     <ClCompile Include="Pex.cpp" />
@@ -283,6 +284,7 @@
     <ClInclude Include="IdMap.h" />
     <ClInclude Include="IdProvider.h" />
     <ClInclude Include="LocalScopeStateNode.h" />
+    <ClInclude Include="MetaNode.h" />
     <ClInclude Include="ObjectStateNode.h" />
     <ClInclude Include="PapyrusDebugger.h" />
     <ClInclude Include="Pex.h" />

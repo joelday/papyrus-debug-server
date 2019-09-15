@@ -1,6 +1,9 @@
 #include "ObjectStateNode.h"
 #include "Utilities.h"
 #include "RuntimeState.h"
+#include "MetaNode.h"
+
+#include "FormMetadata.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -54,6 +57,14 @@ namespace DarkId::Papyrus::DebugServer
 			return true;
 		}
 
+		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+
+		RE::FormType32 formType;
+		if (vm->GetFormTypeID(m_class->name, formType))
+		{
+			names.push_back("Form Data");
+		}
+		
 		if (m_class->parent)
 		{
 			names.push_back("parent");
@@ -71,6 +82,28 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool ObjectStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
+		if (m_value && CaseInsensitiveEquals(name, "Form Data"))
+		{
+			auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+
+			RE::FormType32 formType;
+			if (vm->GetFormTypeID(m_class->name, formType))
+			{
+				auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
+
+				switch (form->GetFormType())
+				{
+				case RE::FormType::Global:
+					node = std::make_shared<MetaNode<RE::TESGlobal>>("Form Data", *static_cast<RE::TESGlobal*>(form));
+					break;
+				default:
+					node = std::make_shared<MetaNode<RE::TESForm>>("Form Data", *form);
+				}
+
+				return true;
+			}
+		}
+		
 		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
 		{
 			node = std::make_shared<ObjectStateNode>("parent", m_value.get(), m_class->parent.get(), true);

@@ -152,6 +152,7 @@
     <ClCompile Include="FormStateNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="MetaNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -383,6 +384,7 @@
     <ClInclude Include="FormMetadata.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="MetaNode.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exports_fallout.def" />
