@@ -6,8 +6,6 @@ namespace DarkId::Papyrus::DebugServer
 
 	void DebugExecutionManager::HandleInstruction(CodeTasklet* tasklet, CodeTasklet::OpCode opCode)
 	{
-		// TODO: Should this lock be scoped only to everything before the pause spin?
-
 		std::lock_guard<std::mutex> lock(m_instructionMutex);
 
 		if (m_closed)
@@ -63,7 +61,7 @@ namespace DarkId::Papyrus::DebugServer
 						stopReason = StopReason::StopStep;
 						break;
 					case Debugger::StepType::STEP_OUT:
-						// We're considering 
+						// If the stack exists, but the original frame is gone, we know we're in a previous frame now.
 						if (stepFrameIndex == -1)
 						{
 							shouldSendPause = true;

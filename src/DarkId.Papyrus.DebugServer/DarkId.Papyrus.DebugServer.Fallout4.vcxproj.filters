@@ -149,6 +149,9 @@
     <ClCompile Include="ArrayStateNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="FormStateNode.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -372,6 +375,12 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="ArrayStateNode.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="FormStateNode.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="FormMetadata.h">
       <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>

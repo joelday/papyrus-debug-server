@@ -63,7 +63,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -112,7 +112,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -191,6 +191,7 @@
     <ClCompile Include="DebugExecutionManager.cpp" />
     <ClCompile Include="DebugServer.cpp" />
     <ClCompile Include="DebugServerSession.cpp" />
+    <ClCompile Include="FormStateNode.cpp" />
     <ClCompile Include="GameInterfaces.cpp" />
     <ClCompile Include="IdHandleBase.cpp" />
     <ClCompile Include="IdMap.cpp" />
@@ -275,6 +276,8 @@
     <ClInclude Include="DebugExecutionManager.h" />
     <ClInclude Include="DebugServer.h" />
     <ClInclude Include="DebugServerSession.h" />
+    <ClInclude Include="FormMetadata.h" />
+    <ClInclude Include="FormStateNode.h" />
     <ClInclude Include="GameInterfaces.h" />
     <ClInclude Include="IdHandleBase.h" />
     <ClInclude Include="IdMap.h" />

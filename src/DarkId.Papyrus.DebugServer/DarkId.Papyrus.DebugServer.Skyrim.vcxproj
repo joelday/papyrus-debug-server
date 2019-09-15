@@ -63,7 +63,7 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;SKYRIM;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
@@ -112,7 +112,7 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\skse64\src\skse64\CommonLibSSE\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\skse64\src\skse64;$(ProjectDir)..\..\dependencies\skse64\src;$(ProjectDir)..\..\dependencies\x64-windows\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;SKYRIM;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -188,12 +188,14 @@
     <ClCompile Include="DebugExecutionManager.cpp" />
     <ClCompile Include="DebugServer.cpp" />
     <ClCompile Include="DebugServerSession.cpp" />
+    <ClCompile Include="FormStateNode.cpp" />
     <ClCompile Include="GameInterfaces.cpp" />
     <ClCompile Include="IdHandleBase.cpp" />
     <ClCompile Include="IdMap.cpp" />
     <ClCompile Include="IdProvider.cpp" />
     <ClCompile Include="LocalScopeStateNode.cpp" />
     <ClCompile Include="main.cpp" />
+    <ClCompile Include="MetaStateNode.cpp" />
     <ClCompile Include="ObjectStateNode.cpp" />
     <ClCompile Include="PapyrusDebugger.cpp" />
     <ClCompile Include="Pex.cpp" />
@@ -271,11 +273,14 @@
     <ClInclude Include="DebugExecutionManager.h" />
     <ClInclude Include="DebugServer.h" />
     <ClInclude Include="DebugServerSession.h" />
+    <ClInclude Include="FormMetadata.h" />
+    <ClInclude Include="FormStateNode.h" />
     <ClInclude Include="GameInterfaces.h" />
     <ClInclude Include="IdHandleBase.h" />
     <ClInclude Include="IdMap.h" />
     <ClInclude Include="IdProvider.h" />
     <ClInclude Include="LocalScopeStateNode.h" />
+    <ClInclude Include="MetaStateNode.h" />
     <ClInclude Include="ObjectStateNode.h" />
     <ClInclude Include="PapyrusDebugger.h" />
     <ClInclude Include="Pex.h" />
