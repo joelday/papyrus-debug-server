@@ -102,11 +102,22 @@ namespace DarkId::Papyrus::DebugServer
 		}
 
 		bool SerializeToProtocol(Variable& variable) override
-		{ 
-			variable.value = castToString(m_value);
+		{
 			variable.name = m_name;
 			variable.type = typeid(T).name();
 
+			if (std::is_convertible<T, bool>() ||
+				std::is_convertible<T, int>() ||
+				std::is_convertible<T, float>() ||
+				std::is_convertible<T, std::string>())
+			{
+				variable.value = castToString(m_value);
+			}
+			else
+			{
+				variable.value = variable.type;
+			}
+			
 			return true;
 		}
 	};

@@ -91,15 +91,20 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
 
-				switch (form->GetFormType())
-				{
-				case RE::FormType::Global:
-					node = std::make_shared<MetaNode<RE::TESGlobal>>("Form Data", *static_cast<RE::TESGlobal*>(form));
-					break;
-				default:
-					node = std::make_shared<MetaNode<RE::TESForm>>("Form Data", *form);
-				}
+#define DEFINE_FORM_TYPE_CHECK(type)  \
+				{\
+					auto asType = form->As<##type##*>(); \
+					if (asType) \
+					{ \
+						node = std::make_shared<MetaNode<##type##>>("Form Data", *asType); \
+						return true; \
+					} \
+				}\
 
+				FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
+#undef DEFINE_FORM_TYPE_CHECK
+
+				node = std::make_shared<MetaNode<RE::TESForm>>("Form Data", *form);
 				return true;
 			}
 		}
