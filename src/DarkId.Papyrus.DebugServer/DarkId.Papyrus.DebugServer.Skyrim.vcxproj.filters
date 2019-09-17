@@ -146,8 +146,10 @@
     <ClCompile Include="ObjectStateNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="MetaStateNode.cpp" />
     <ClCompile Include="..\..\dependencies\MetaStuff\example\StringCast.cpp" />
+    <ClCompile Include="MetaNode.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -370,11 +372,13 @@
     <ClInclude Include="ObjectStateNode.h">
       <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="MetaStateNode.h" />
     <ClInclude Include="FormMetadata.h">
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="..\..\dependencies\MetaStuff\example\StringCast.h" />
+    <ClInclude Include="MetaNode.h">
+      <Filter>State</Filter>
+    </ClInclude>
   </ItemGroup>
   <ItemGroup>
     <None Include="exports_skyrim.def" />

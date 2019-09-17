@@ -1,12 +1,12 @@
 #pragma once
 
 #include "StateNodeBase.h"
-#include "RE/FormTypes.h"
-#include <map>
+
 #include <functional>
 #include <variant>
 #include "Meta.h"
 
+// TODO: Move/reimplement this:
 #include "MetaStuff/example/StringCast.h"
 
 namespace DarkId::Papyrus::DebugServer

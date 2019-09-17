@@ -191,7 +191,6 @@
     <ClCompile Include="DebugExecutionManager.cpp" />
     <ClCompile Include="DebugServer.cpp" />
     <ClCompile Include="DebugServerSession.cpp" />
-    <ClCompile Include="FormStateNode.cpp" />
     <ClCompile Include="GameInterfaces.cpp" />
     <ClCompile Include="IdHandleBase.cpp" />
     <ClCompile Include="IdMap.cpp" />
@@ -278,7 +277,6 @@
     <ClInclude Include="DebugServer.h" />
     <ClInclude Include="DebugServerSession.h" />
     <ClInclude Include="FormMetadata.h" />
-    <ClInclude Include="FormStateNode.h" />
     <ClInclude Include="GameInterfaces.h" />
     <ClInclude Include="IdHandleBase.h" />
     <ClInclude Include="IdMap.h" />

@@ -26,6 +26,7 @@ namespace meta
 
 namespace DarkId::Papyrus::DebugServer
 {
+#if SKYRIM
 	#define FORM_TYPE_LIST(code) \
 		code(RE::BGSKeyword) \
 		code(RE::BGSLocationRefType) \
@@ -158,5 +159,6 @@ namespace DarkId::Papyrus::DebugServer
 		code(RE::BGSReverbParameters) \
 		code(RE::BGSLensFlare) \
 		code(RE::BGSVolumetricLighting) \
-		
+
+#endif
 }

@@ -56,14 +56,16 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			return true;
 		}
-
+		
+#if SKYRIM
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-
+		
 		RE::FormType32 formType;
 		if (vm->GetFormTypeID(m_class->name, formType))
 		{
 			names.push_back("Form Data");
 		}
+#endif
 		
 		if (m_class->parent)
 		{
@@ -82,6 +84,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool ObjectStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
+#if SKYRIM
 		if (m_value && CaseInsensitiveEquals(name, "Form Data"))
 		{
 			auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
@@ -108,7 +111,7 @@ namespace DarkId::Papyrus::DebugServer
 				return true;
 			}
 		}
-		
+#endif
 		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
 		{
 			node = std::make_shared<ObjectStateNode>("parent", m_value.get(), m_class->parent.get(), true);
