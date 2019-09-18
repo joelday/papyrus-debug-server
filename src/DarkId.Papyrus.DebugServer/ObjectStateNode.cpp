@@ -63,7 +63,24 @@ namespace DarkId::Papyrus::DebugServer
 		RE::FormType32 formType;
 		if (vm->GetFormTypeID(m_class->name, formType))
 		{
-			names.push_back("Form Data");
+			auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
+
+			// TODO: Display strings
+			// TODO: Verify behavior for the handful of polymorphic types that share the same form type
+#define STRING(s) #s
+#define DEFINE_FORM_TYPE_CHECK(type)  \
+			if constexpr (meta::isRegistered<##type##*>()) \
+			{\
+				auto asType = form->As<##type##*>(); \
+				if (asType) \
+				{ \
+					names.push_back(STRING(type)); \
+				} \
+			}\
+
+			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
+#undef DEFINE_FORM_TYPE_CHECK
+#undef STRING
 		}
 #endif
 		
@@ -85,32 +102,53 @@ namespace DarkId::Papyrus::DebugServer
 	bool ObjectStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
 #if SKYRIM
-		if (m_value && CaseInsensitiveEquals(name, "Form Data"))
+		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+
+		RE::FormType32 formType;
+		if (m_value && vm->GetFormTypeID(m_class->name, formType))
 		{
-			auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-
-			RE::FormType32 formType;
-			if (vm->GetFormTypeID(m_class->name, formType))
-			{
-				auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
-
+			
+#define STRING(s) #s
 #define DEFINE_FORM_TYPE_CHECK(type)  \
-				{\
-					auto asType = form->As<##type##*>(); \
-					if (asType) \
-					{ \
-						node = std::make_shared<MetaNode<##type##>>("Form Data", *asType); \
-						return true; \
-					} \
-				}\
+			if (CaseInsensitiveEquals(name, STRING(type))) \
+			{\
+				auto form = static_cast<##type##*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value))); \
+				node = std::make_shared<MetaNode<##type##>>(STRING(type), *form); \
+ 				return true; \
+			}\
 
-				FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
+			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
 #undef DEFINE_FORM_TYPE_CHECK
-
-				node = std::make_shared<MetaNode<RE::TESForm>>("Form Data", *form);
-				return true;
-			}
+#undef STRING
+			
 		}
+
+// 		if (m_value && CaseInsensitiveEquals(name, "Form Data"))
+// 		{
+// 			auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
+
+// 			RE::FormType32 formType;
+// 			if (vm->GetFormTypeID(m_class->name, formType))
+// 			{
+// 				auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
+
+// #define DEFINE_FORM_TYPE_CHECK(type)  \
+// 				if constexpr (meta::isRegistered<##type##*>()) \
+// 				{\
+// 					auto asType = form->As<##type##>(); \
+// 					if (asType) \
+// 					{ \
+// 						node = std::make_shared<MetaNode<##type##*>>("Form Data", asType); \
+// 						return true; \
+// 					} \
+// 				}\
+
+// 				FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
+// #undef DEFINE_FORM_TYPE_CHECK
+
+// 				return false;
+// 			}
+// 		}
 #endif
 		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
 		{

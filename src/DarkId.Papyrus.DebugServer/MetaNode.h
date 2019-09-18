@@ -5,14 +5,12 @@
 #include <functional>
 #include <variant>
 #include "Meta.h"
-
-// TODO: Move/reimplement this:
-#include "MetaStuff/example/StringCast.h"
+#include "Utilities.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
 	template<typename T>
-	class PrimitiveValueNode;
+	class PlainValueNode;
 	
 	template<class Class>
 	class MetaNode :
@@ -34,12 +32,8 @@ namespace DarkId::Papyrus::DebugServer
 
 		bool SerializeToProtocol(Variable& variable) override
 		{
-			// TODO: get member count as constexpr
-			std::vector<std::string> names;
-			GetChildNames(names);
-			
 			variable.variablesReference = GetId();
-			variable.namedVariables = names.size();
+			variable.namedVariables = meta::getMemberCount<Class>();
 			variable.name = m_name;
 			variable.value = typeid(Class).name();
 
@@ -67,16 +61,16 @@ namespace DarkId::Papyrus::DebugServer
 					return;
 				}
 
-				success = true;
-				
 				using MemberT = meta::get_member_type<decltype(member)>;
 				if (meta::isRegistered<MemberT>())
 				{
 					node = std::make_shared<MetaNode<MemberT>>(member.getName(), member.get(this->m_value));
+					success = true;
 				}
-				else
+				else if (!std::is_abstract<MemberT>())
 				{
-					node = std::make_shared<PrimitiveValueNode<MemberT>>(member.getName(), member.getCopy(this->m_value));
+					node = std::make_shared<PlainValueNode<MemberT>>(member.getName(), member.get(this->m_value));
+					success = true;
 				}
 			});
 
@@ -85,19 +79,19 @@ namespace DarkId::Papyrus::DebugServer
 	};
 
 	template<typename T>
-	class PrimitiveValueNode :
+	class PlainValueNode :
 		public StateNodeBase,
 		public IProtocolVariableSerializable
 	{
 		std::string m_name;
-		T m_value;
+		const T& m_value;
 		
 	public:
-		PrimitiveValueNode(std::string name, T value): m_name(name), m_value(value)
+		PlainValueNode(std::string name, const T& value): m_name(name), m_value(value)
 		{
 		}
 		
-		~PrimitiveValueNode() override
+		~PlainValueNode() override
 		{
 		}
 
@@ -106,12 +100,25 @@ namespace DarkId::Papyrus::DebugServer
 			variable.name = m_name;
 			variable.type = typeid(T).name();
 
-			if (std::is_convertible<T, bool>() ||
-				std::is_convertible<T, int>() ||
-				std::is_convertible<T, float>() ||
-				std::is_convertible<T, std::string>())
+			if constexpr (std::is_same<T, bool>())
 			{
-				variable.value = castToString(m_value);
+				variable.value = m_value ? "true" : "false";
+			}
+			else if constexpr (std::is_same<T, RE::BSFixedString>() || std::is_same<T, BSFixedString>())
+			{
+				variable.value = "\"" + std::string(m_value.c_str()) + "\"";
+			}
+			else if constexpr (std::is_integral<T>())
+			{
+				variable.value = StringFormat("%d", static_cast<int>(m_value));
+			}
+			else if constexpr (std::is_floating_point<T>())
+			{
+				variable.value = StringFormat("%f", static_cast<float>(m_value));
+			}
+			else if constexpr (std::is_convertible<T, std::string>())
+			{
+				variable.value = "\"" + std::string(m_value) + "\"";
 			}
 			else
 			{

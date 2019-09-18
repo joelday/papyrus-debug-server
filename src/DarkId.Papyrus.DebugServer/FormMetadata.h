@@ -9,18 +9,198 @@ namespace meta
 	inline auto registerMembers<RE::TESForm>()
 	{
 		return members(
-			member("ID", &RE::TESForm::GetFormID)
+			// member("Has3D", &RE::TESForm::Has3D),
+			member("HasWorldModel", &RE::TESForm::HasWorldModel)
 		);
 	}
 
 	template <>
-	inline auto registerMembers<RE::TESGlobal>()
+	inline auto registerMembers<RE::BGSKeyword>()
 	{
 		return std::tuple_cat(
 			meta::getMembers<RE::TESForm>(),
-			members(member("Value", &RE::TESGlobal::value))
+			members(member("Keyword", &RE::BGSKeyword::keyword))
 		);
 	}
+
+	template <>
+	inline auto registerMembers<RE::BGSLocationRefType>()
+	{
+		return std::tuple_cat(
+			meta::getMembers<RE::BGSKeyword>()
+		);
+	}
+
+	//template <>
+	//inline auto registerMembers<RE::BGSAction>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::BGSKeyword>(),
+	//		members(
+	//			member("Index", &RE::BGSAction::index)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESObject>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESForm>(),
+	//		members(
+	//			member("CanAnimate", &RE::TESObject::CanAnimate),
+	//			// member("GetWaterActivator", &RE::TESObject::GetWaterActivator),
+	//			member("IsAutoCalc", &RE::TESObject::IsAutoCalc),
+	//			member("IsMarker", &RE::TESObject::IsMarker),
+	//			member("IsCullingMarker", &RE::TESObject::IsCullingMarker)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESBoundObject>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESObject>(),
+	//		members(
+	//			member("Index", &RE::BGSAction::index)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::BGSTextureSet>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESBoundObject>(),
+	//		members(
+	//			// TODO: Array issues
+	//			// member("Textures", &RE::BGSTextureSet::textures)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESTexture>()
+	//{
+	//	return members(
+	//		// member("Size", &RE::TESTexture::GetSize),
+	//		// member("SearchDir", &RE::TESTexture::GetSearchDir),
+	//		// member("Texture", &RE::TESTexture::texture)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESIcon>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESTexture>()
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::BGSMenuIcon>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESForm>(),
+	//		meta::getMembers<RE::TESIcon>()
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESGlobal>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESForm>(),
+	//		members(
+	//			member("Value", &RE::TESGlobal::value)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESFullName>()
+	//{
+	//	return members(
+	//		member("Name", &RE::TESFullName::name)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESDescription>()
+	//{
+	//	return members(
+	//		// TODO
+	//	);
+	//}
+
+	//// TODO: Skill enum
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESClass::Data::SkillWeights>()
+	//{
+	//	return members(
+	//		// TODO
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESClass::Data::AttributeWeights>()
+	//{
+	//	return members(
+	//		member("Health", &RE::TESClass::Data::AttributeWeights::health),
+	//		member("Magicka", &RE::TESClass::Data::AttributeWeights::magicka),
+	//		member("Stamina", &RE::TESClass::Data::AttributeWeights::stamina)
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESClass::Data>()
+	//{
+	//	return members(
+	//		member("Teaches", &RE::TESClass::Data::teaches),
+	//		member("MaximumTrainingLevel", &RE::TESClass::Data::maximumTrainingLevel),
+	//		member("SkillWeights", &RE::TESClass::Data::skillWeights),
+	//		member("BleedoutDefault", &RE::TESClass::Data::bleedoutDefault),
+	//		member("VoicePoints", &RE::TESClass::Data::voicePoints),
+	//		member("AttributeWeights", &RE::TESClass::Data::attributeWeights)
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESClass>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESForm>(),
+	//		meta::getMembers<RE::TESFullName>(),
+	//		meta::getMembers<RE::TESDescription>(),
+	//		meta::getMembers<RE::TESTexture>(),
+	//		members(
+	//			member("Data", &RE::TESClass::data)
+	//		)
+	//	);
+	//}
+
+	//template <>
+	//inline auto registerMembers<RE::TESReactionForm>()
+	//{
+	//	return members(
+	//		// TODO
+	//	);
+	//}
+	//
+	//template <>
+	//inline auto registerMembers<RE::TESFaction>()
+	//{
+	//	return std::tuple_cat(
+	//		meta::getMembers<RE::TESForm>(),
+	//		meta::getMembers<RE::TESFullName>(),
+	//		meta::getMembers<RE::TESReactionForm>(),
+	//		members(
+	//			// TODO
+	//		)
+	//	);
+	//}
 #endif
 }
 
@@ -30,7 +210,7 @@ namespace DarkId::Papyrus::DebugServer
 	#define FORM_TYPE_LIST(code) \
 		code(RE::BGSKeyword) \
 		code(RE::BGSLocationRefType) \
-		code(RE::BGSLocationRefType) \
+		code(RE::BGSAction) \
 		code(RE::BGSTextureSet) \
 		code(RE::BGSMenuIcon) \
 		code(RE::TESGlobal) \
