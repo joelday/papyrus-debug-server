@@ -87,22 +87,12 @@ namespace DarkId::Papyrus::DebugServer
 			m_currentStepStackFrame = nullptr;
 			m_protocol->EmitStoppedEvent(StoppedEvent(stopReason, tasklet->stack->stackID));
 		}
-		
-		const auto currentState = m_state;
-		if (currentState == DebuggerState::kPaused)
-		{
-			ShowCursor(true);
-		}
 
 		while (m_state == DebuggerState::kPaused && !m_closed)
 		{
 			Sleep(100);
 		}
 
-		if (currentState == DebuggerState::kPaused)
-		{
-			ShowCursor(false);
-		}
 	}
 
 	void DebugExecutionManager::Close()
