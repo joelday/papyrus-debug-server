@@ -169,7 +169,7 @@ namespace RE
 		GDRY,
 		OVIS,
 		kTotal,
-
+		Max = kTotal,
 		// These are special types for Papyrus
 		Alias,
 		ReferenceAlias,

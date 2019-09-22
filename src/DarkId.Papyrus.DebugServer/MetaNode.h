@@ -10,6 +10,8 @@
 
 namespace DarkId::Papyrus::DebugServer
 {
+	class ObjectStateNode;
+	
 	template<typename T>
 	class NullNode :
 		public StateNodeBase,
@@ -79,7 +81,7 @@ namespace DarkId::Papyrus::DebugServer
 			}
 			else
 			{
-				variable.value = variable.type;
+				variable.value = meta::toDisplayValue<T>(m_value);
 			}
 
 			return true;
@@ -112,7 +114,7 @@ namespace DarkId::Papyrus::DebugServer
 			variable.variablesReference = GetId();
 			variable.namedVariables = meta::getMemberCount<NonPtrClass>();
 			variable.name = m_name;
-			variable.value = typeid(NonPtrClass).name();
+			variable.value = meta::toDisplayValue<Class>(m_value);
 
 			return true;
 		}
@@ -161,9 +163,13 @@ namespace DarkId::Papyrus::DebugServer
 				{
 					node = std::make_shared<NullNode<TValue>>(memberName);
 				}
+				else if constexpr (std::is_same<TValue, RE::BSScript::Object*>::value)
+				{
+					node = std::make_shared<ObjectStateNode>(memberName, memberValue, memberValue->GetClass(), false);
+				}
 				else if constexpr (meta::isRegistered<typename std::remove_pointer<TValue>::type>())
 				{
-					node = std::make_shared<MetaNode<TValue>>(member.getName(), memberValue);
+					node = std::make_shared<MetaNode<TValue>>(memberName, memberValue);
 				}
 				else
 				{

@@ -149,6 +149,9 @@
     <ClCompile Include="MetaNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="FormTypeMacros.cpp">
+      <Filter>State</Filter>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -375,6 +378,9 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="MetaNode.h">
+      <Filter>State</Filter>
+    </ClInclude>
+    <ClInclude Include="FormTypeMacros.h">
       <Filter>State</Filter>
     </ClInclude>
   </ItemGroup>

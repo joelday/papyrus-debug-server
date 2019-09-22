@@ -57,31 +57,54 @@ namespace DarkId::Papyrus::DebugServer
 			return true;
 		}
 		
-#if SKYRIM
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		
 		RE::FormType32 formType;
-		if (vm->GetFormTypeID(m_class->name, formType))
+		if (vm->GetFormTypeID(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{
 			auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
+			
+#if SKYRIM
 
-			// TODO: Display strings
-			// TODO: Verify behavior for the handful of polymorphic types that share the same form type
 #define DEFINE_FORM_TYPE_CHECK(type)  \
-			if constexpr (meta::isRegistered<##type##>()) \
+			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
 			{\
 				auto asType = form->As<##type##*>(); \
 				if (asType) \
 				{ \
 					names.push_back(STRING(type)); \
 				} \
-			}\
+			} \
 
 			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
 #undef DEFINE_FORM_TYPE_CHECK
-		}
+
+#else
+			
+#define DEFINE_FORM_TYPE_CHECK(type)  \
+			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
+			{ \
+				if (static_cast<RE::FormType>(##type##::kTypeID) == form->GetFormType()) \
+				{ \
+					auto asType = static_cast<##type##*>(form); \
+					if (asType) \
+					{ \
+						names.push_back(STRING(type)); \
+					} \
+				} \
+			} \
+
+			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
+#undef DEFINE_FORM_TYPE_CHECK
+
 #endif
-		
+			if (names.empty())
+			{
+				// TESForm is only used as a fallback.
+				names.push_back("RE::TESForm");
+			}
+		}
+
 		if (m_class->parent)
 		{
 			names.push_back("parent");
@@ -99,26 +122,24 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool ObjectStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
-#if SKYRIM
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 
 		RE::FormType32 formType;
-		if (m_value && vm->GetFormTypeID(m_class->name, formType))
+		if (m_value && vm->GetFormTypeID(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{
 			
-#define DEFINE_FORM_TYPE_CHECK(type)  \
+#define DEFINE_FORM_NODE_RETURN(type)  \
 			if (CaseInsensitiveEquals(name, STRING(type))) \
 			{\
 				auto form = static_cast<##type##*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value))); \
 				node = std::make_shared<MetaNode<##type##*>>(STRING(type), form); \
  				return true; \
-			}\
+			} \
 
-			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
-#undef DEFINE_FORM_TYPE_CHECK
+			FORM_TYPE_LIST(DEFINE_FORM_NODE_RETURN)
+#undef DEFINE_FORM_NODE_RETURN
 			
 		}
-#endif
 		
 		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
 		{

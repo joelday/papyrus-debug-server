@@ -13,6 +13,4 @@ namespace RE
 
 #elif FALLOUT
 #include "RE/Fallout.h"
-#include "f4se/GameForms.h"
-
 #endif

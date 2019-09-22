@@ -1,5 +1,4 @@
 #pragma once
-
 #include "RE/BaseFormComponent.h"
 #include "RE/BGSAttachParentArray.h"
 #include "RE/BGSDestructibleObjectForm.h"
@@ -89,6 +88,7 @@
 #include "RE/BSTSmartPointer.h"
 #include "RE/Condition.h"
 #include "RE/CRC.h"
+#include "RE/Fallout.h"
 #include "RE/FileHash.h"
 #include "RE/FormTypes.h"
 #include "RE/GameMenuBase.h"
@@ -191,6 +191,7 @@
 #include "RE/Scaleform/SysAllocMalloc.h"
 #include "RE/Scaleform/SysAllocPaged.h"
 #include "RE/Scaleform/ThreadID.h"
+#include "RE/ScrapHeap.h"
 #include "RE/SWFToCodeFunctionHandler.h"
 #include "RE/TerminalMenu.h"
 #include "RE/TESBoundAnimObject.h"
