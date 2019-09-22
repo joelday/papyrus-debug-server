@@ -143,7 +143,7 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			auto found = false;
 
-			meta::doForAllMembers<NonPtrClass>([this, &found, &name, &node](auto& member) //meta::Member<RE::BGSLocationRefType, RE::BGSKeyword*>
+			meta::doForAllMembers<NonPtrClass>([this, &found, &name, &node](auto& member)
 			{
 				auto memberName = std::string(member.getName());
 				
@@ -157,7 +157,7 @@ namespace DarkId::Papyrus::DebugServer
 				using TValue = meta::get_member_type<decltype(member)>;
 				TValue memberValue = member.getCopy(GetValue());
 
-				if (std::is_pointer<TValue>::value && memberValue == 0)
+				if (std::is_pointer<TValue>::value && unrestricted_cast<void*>(memberValue) == nullptr)
 				{
 					node = std::make_shared<NullNode<TValue>>(memberName);
 				}

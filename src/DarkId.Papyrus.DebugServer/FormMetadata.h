@@ -2,14 +2,31 @@
 #include "Meta.h"
 #include "GameInterfaces.h"
 
+#ifndef STRING
+#define STRING(s) #s
+#endif
+
 namespace meta
 {
 #if SKYRIM
+	
+#define VIRT_FUNC_MEMBER_IMPL(type, returnType, funcName, name) \
+	member<##type##, ##returnType##>(STRING(name), [](##type##* value) { return value->##funcName##(); }) \
+
+#define VIRT_FUNC_MEMBER(type, returnType, name) \
+	VIRT_FUNC_MEMBER_IMPL(type, returnType, name, name) \
+	
+#define VIRT_FUNC_GET_MEMBER(type, returnType, name) \
+	VIRT_FUNC_MEMBER_IMPL(type, returnType, Get##name##, name) \
+	
+#define BASE_TYPE_MEMBER(type, baseType) \
+	member<##type##, ##baseType##*>(typeid(##baseType##).name(), [](##type##* value) { return value; }) \
+	
 	template <>
 	inline auto registerMembers<RE::TESForm>()
 	{
 		return members(
-			member<RE::TESForm, bool>("Has3D", [](RE::TESForm* form) { return form->Has3D(); }),
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, Has3D),
 			member("HasWorldModel", &RE::TESForm::HasWorldModel)
 		);
 	}
@@ -18,7 +35,7 @@ namespace meta
 	inline auto registerMembers<RE::BGSKeyword>()
 	{
 		return members(
-			member<RE::BGSKeyword, RE::TESForm*>("TESForm", [](RE::BGSKeyword* form) { return form; }),
+			BASE_TYPE_MEMBER(RE::BGSKeyword, RE::TESForm),
 			member("Keyword", &RE::BGSKeyword::keyword)
 		);
 	}
@@ -27,180 +44,210 @@ namespace meta
 	inline auto registerMembers<RE::BGSLocationRefType>()
 	{
 		return members(
-			member<RE::BGSLocationRefType, RE::BGSKeyword*>("BGSKeyword", [](RE::BGSLocationRefType* form) { return form; })
+			BASE_TYPE_MEMBER(RE::BGSLocationRefType, RE::BGSKeyword)
 		);
 	}
 
-	//template <>
-	//inline auto registerMembers<RE::BGSAction>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::BGSKeyword>(),
-	//		members(
-	//			member("Index", &RE::BGSAction::index)
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::BGSAction>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::BGSAction, RE::BGSKeyword),
+			member("Index", &RE::BGSAction::index)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESObject>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESForm>(),
-	//		members(
-	//			member("CanAnimate", &RE::TESObject::CanAnimate),
-	//			// member("GetWaterActivator", &RE::TESObject::GetWaterActivator),
-	//			member("IsAutoCalc", &RE::TESObject::IsAutoCalc),
-	//			member("IsMarker", &RE::TESObject::IsMarker),
-	//			member("IsCullingMarker", &RE::TESObject::IsCullingMarker)
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESObject>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESObject, RE::TESForm),
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, CanAnimate),
+			VIRT_FUNC_GET_MEMBER(RE::TESObject, RE::TESWaterForm*, WaterActivator),
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsAutoCalc),
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsMarker),
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsCullingMarker)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESBoundObject>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESObject>(),
-	//		members(
-	//			member("Index", &RE::BGSAction::index)
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESBoundObject::ObjectBounds>()
+	{
+		return members(
+			member("x1", &RE::TESBoundObject::ObjectBounds::x1),
+			member("y1", &RE::TESBoundObject::ObjectBounds::y1),
+			member("z1", &RE::TESBoundObject::ObjectBounds::z1),
+			member("x2", &RE::TESBoundObject::ObjectBounds::x2),
+			member("y2", &RE::TESBoundObject::ObjectBounds::y2),
+			member("z2", &RE::TESBoundObject::ObjectBounds::z2)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESBoundObject>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESBoundObject, RE::TESObject),
+			member("ObjectBounds", &RE::TESBoundObject::objectBounds)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::BGSTextureSet>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESBoundObject>(),
-	//		members(
-	//			// TODO: Array issues
-	//			// member("Textures", &RE::BGSTextureSet::textures)
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::NiRefObject>()
+	{
+		return members();
+	}
+	
+	template <>
+	inline auto registerMembers<RE::NiObject>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::NiObject, RE::NiRefObject)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::BSTextureSet>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::BSTextureSet, RE::NiObject)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESTexture>()
-	//{
-	//	return members(
-	//		// member("Size", &RE::TESTexture::GetSize),
-	//		// member("SearchDir", &RE::TESTexture::GetSearchDir),
-	//		// member("Texture", &RE::TESTexture::texture)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESTexture>()
+	{
+		return members(
+			VIRT_FUNC_GET_MEMBER(RE::TESTexture, UInt32, Size),
+			VIRT_FUNC_GET_MEMBER(RE::TESTexture, std::string, SearchDir),
+			member("Texture", &RE::TESTexture::texture)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::BGSTextureSet>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::BGSTextureSet, RE::TESBoundObject),
+			BASE_TYPE_MEMBER(RE::BGSTextureSet, RE::BSTextureSet),
+			member<RE::BGSTextureSet, std::vector<RE::TESTexture*>>("Textures", [](RE::BGSTextureSet* form)
+			{
+				std::vector<RE::TESTexture*> elements;
+				for (auto i = 0; i < sizeof(form->textures) / sizeof(RE::TESTexture); i++)
+				{
+					elements.push_back(&form->textures[i]);
+				}
+		
+				return elements;
+				// return std::vector<RE::TESTexture*>(form->textures, std::end(form->textures));
+			})
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESIcon>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESTexture>()
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::BGSMenuIcon>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESForm>(),
-	//		meta::getMembers<RE::TESIcon>()
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESGlobal>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESForm>(),
-	//		members(
-	//			member("Value", &RE::TESGlobal::value)
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESIcon>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESIcon, RE::TESTexture)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::BGSMenuIcon>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::BGSMenuIcon, RE::TESForm),
+			BASE_TYPE_MEMBER(RE::BGSMenuIcon, RE::TESIcon)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESGlobal>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESGlobal, RE::TESForm),
+			member("Value", &RE::TESGlobal::value)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESFullName>()
-	//{
-	//	return members(
-	//		member("Name", &RE::TESFullName::name)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESFullName>()
+	{
+		return members(
+			member("Name", &RE::TESFullName::name)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESDescription>()
-	//{
-	//	return members(
-	//		// TODO
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESDescription>()
+	{
+		return members(
+			// TODO
+		);
+	}
 
-	//// TODO: Skill enum
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESClass::Data::SkillWeights>()
-	//{
-	//	return members(
-	//		// TODO
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESClass::Data::AttributeWeights>()
-	//{
-	//	return members(
-	//		member("Health", &RE::TESClass::Data::AttributeWeights::health),
-	//		member("Magicka", &RE::TESClass::Data::AttributeWeights::magicka),
-	//		member("Stamina", &RE::TESClass::Data::AttributeWeights::stamina)
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESClass::Data>()
-	//{
-	//	return members(
-	//		member("Teaches", &RE::TESClass::Data::teaches),
-	//		member("MaximumTrainingLevel", &RE::TESClass::Data::maximumTrainingLevel),
-	//		member("SkillWeights", &RE::TESClass::Data::skillWeights),
-	//		member("BleedoutDefault", &RE::TESClass::Data::bleedoutDefault),
-	//		member("VoicePoints", &RE::TESClass::Data::voicePoints),
-	//		member("AttributeWeights", &RE::TESClass::Data::attributeWeights)
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESClass>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESForm>(),
-	//		meta::getMembers<RE::TESFullName>(),
-	//		meta::getMembers<RE::TESDescription>(),
-	//		meta::getMembers<RE::TESTexture>(),
-	//		members(
-	//			member("Data", &RE::TESClass::data)
-	//		)
-	//	);
-	//}
+	// TODO: Skill enum
+	
+	template <>
+	inline auto registerMembers<RE::TESClass::Data::SkillWeights>()
+	{
+		return members(
+			// TODO
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESClass::Data::AttributeWeights>()
+	{
+		return members(
+			member("Health", &RE::TESClass::Data::AttributeWeights::health),
+			member("Magicka", &RE::TESClass::Data::AttributeWeights::magicka),
+			member("Stamina", &RE::TESClass::Data::AttributeWeights::stamina)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESClass::Data>()
+	{
+		return members(
+			member("Teaches", &RE::TESClass::Data::teaches),
+			member("MaximumTrainingLevel", &RE::TESClass::Data::maximumTrainingLevel),
+			member("SkillWeights", &RE::TESClass::Data::skillWeights),
+			member("BleedoutDefault", &RE::TESClass::Data::bleedoutDefault),
+			member("VoicePoints", &RE::TESClass::Data::voicePoints),
+			member("AttributeWeights", &RE::TESClass::Data::attributeWeights)
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESClass>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESClass, RE::TESForm),
+			BASE_TYPE_MEMBER(RE::TESClass, RE::TESFullName),
+			BASE_TYPE_MEMBER(RE::TESClass, RE::TESDescription),
+			BASE_TYPE_MEMBER(RE::TESClass, RE::TESTexture),
+			member("Data", &RE::TESClass::data)
+		);
+	}
 
-	//template <>
-	//inline auto registerMembers<RE::TESReactionForm>()
-	//{
-	//	return members(
-	//		// TODO
-	//	);
-	//}
-	//
-	//template <>
-	//inline auto registerMembers<RE::TESFaction>()
-	//{
-	//	return std::tuple_cat(
-	//		meta::getMembers<RE::TESForm>(),
-	//		meta::getMembers<RE::TESFullName>(),
-	//		meta::getMembers<RE::TESReactionForm>(),
-	//		members(
-	//			// TODO
-	//		)
-	//	);
-	//}
+	template <>
+	inline auto registerMembers<RE::TESReactionForm>()
+	{
+		return members(
+			// TODO
+		);
+	}
+	
+	template <>
+	inline auto registerMembers<RE::TESFaction>()
+	{
+		return members(
+			BASE_TYPE_MEMBER(RE::TESFaction, RE::TESForm),
+			BASE_TYPE_MEMBER(RE::TESFaction, RE::TESFullName),
+			BASE_TYPE_MEMBER(RE::TESFaction, RE::TESReactionForm)
+		);
+	}
 #endif
 }
 

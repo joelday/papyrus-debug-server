@@ -67,7 +67,6 @@ namespace DarkId::Papyrus::DebugServer
 
 			// TODO: Display strings
 			// TODO: Verify behavior for the handful of polymorphic types that share the same form type
-#define STRING(s) #s
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if constexpr (meta::isRegistered<##type##>()) \
 			{\
@@ -80,7 +79,6 @@ namespace DarkId::Papyrus::DebugServer
 
 			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
 #undef DEFINE_FORM_TYPE_CHECK
-#undef STRING
 		}
 #endif
 		
@@ -108,7 +106,6 @@ namespace DarkId::Papyrus::DebugServer
 		if (m_value && vm->GetFormTypeID(m_class->name, formType))
 		{
 			
-#define STRING(s) #s
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if (CaseInsensitiveEquals(name, STRING(type))) \
 			{\
@@ -119,7 +116,6 @@ namespace DarkId::Papyrus::DebugServer
 
 			FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
 #undef DEFINE_FORM_TYPE_CHECK
-#undef STRING
 			
 		}
 #endif
