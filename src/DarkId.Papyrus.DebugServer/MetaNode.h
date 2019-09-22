@@ -4,101 +4,58 @@
 
 #include <functional>
 #include <variant>
+#include "FormMetadata.h"
 #include "Meta.h"
 #include "Utilities.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
 	template<typename T>
-	class PlainValueNode;
-	
-	template<class Class>
-	class MetaNode :
-		public StateNodeBase,
-		public IProtocolVariableSerializable,
-		public IStructuredState
-	{
-		std::string m_name;
-		const Class& m_value;
-		
-	public:
-		MetaNode(std::string name, const Class& value) : m_name(name), m_value(value)
-		{
-		}
-		
-		~MetaNode() override
-		{
-		}
-
-		bool SerializeToProtocol(Variable& variable) override
-		{
-			variable.variablesReference = GetId();
-			variable.namedVariables = meta::getMemberCount<Class>();
-			variable.name = m_name;
-			variable.value = typeid(Class).name();
-
-			return true;
-		}
-
-		bool GetChildNames(std::vector<std::string>& names) override
-		{
-			meta::doForAllMembers<Class>([&names](auto& member)
-			{
-				names.push_back(member.getName());
-			});
-			
-			return true;
-		}
-
-		bool GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node) override
-		{
-			auto success = false;
-			
-			meta::doForAllMembers<Class>([this, &success, &name, &node](auto& member)
-			{
-				if (!CaseInsensitiveEquals(name, member.getName()))
-				{
-					return;
-				}
-
-				using MemberT = meta::get_member_type<decltype(member)>;
-				if (meta::isRegistered<MemberT>())
-				{
-					node = std::make_shared<MetaNode<MemberT>>(member.getName(), member.get(this->m_value));
-					success = true;
-				}
-				else if (!std::is_abstract<MemberT>())
-				{
-					node = std::make_shared<PlainValueNode<MemberT>>(member.getName(), member.get(this->m_value));
-					success = true;
-				}
-			});
-
-			return success;
-		}
-	};
-
-	template<typename T>
-	class PlainValueNode :
+	class NullNode :
 		public StateNodeBase,
 		public IProtocolVariableSerializable
 	{
 		std::string m_name;
-		const T& m_value;
-		
 	public:
-		PlainValueNode(std::string name, const T& value): m_name(name), m_value(value)
+		NullNode(std::string name) : m_name(name)
 		{
 		}
-		
-		~PlainValueNode() override
+
+		~NullNode() override
 		{
 		}
 
 		bool SerializeToProtocol(Variable& variable) override
 		{
 			variable.name = m_name;
-			variable.type = typeid(T).name();
+			variable.type = std::string(typeid(T).name());
+			variable.value = "null";
+
+			return true;
+		}
+	};
+	
+	template<typename T>
+	class ValueNode :
+		public StateNodeBase,
+		public IProtocolVariableSerializable
+	{
+		std::string m_name;
+		const T m_value;
+
+	public:
+		ValueNode(std::string name, T value) : m_name(name), m_value(value)
+		{
+		}
+
+		~ValueNode() override
+		{
+		}
+
+		bool SerializeToProtocol(Variable& variable) override
+		{
+			variable.name = m_name;
+			variable.type = std::string(typeid(T).name());
 
 			if constexpr (std::is_same<T, bool>())
 			{
@@ -124,8 +81,97 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				variable.value = variable.type;
 			}
+
+			return true;
+		}
+	};
+	
+	template<class Class>
+	class MetaNode :
+		public StateNodeBase,
+		public IProtocolVariableSerializable,
+		public IStructuredState
+	{
+		using NonPtrClass = typename std::remove_pointer<Class>::type;
+		static const bool isPointer = std::is_pointer<Class>();
+		
+		std::string m_name;
+		Class m_value;
+		
+	public:
+		MetaNode(std::string name, Class value) : m_name(name), m_value(value)
+		{
+		}
+		
+		~MetaNode() override
+		{
+		}
+
+		bool SerializeToProtocol(Variable& variable) override
+		{
+			variable.variablesReference = GetId();
+			variable.namedVariables = meta::getMemberCount<NonPtrClass>();
+			variable.name = m_name;
+			variable.value = typeid(NonPtrClass).name();
+
+			return true;
+		}
+
+		bool GetChildNames(std::vector<std::string>& names) override
+		{
+			meta::doForAllMembers<NonPtrClass>([&names](auto& member)
+			{
+				names.push_back(member.getName());
+			});
 			
 			return true;
+		}
+
+		NonPtrClass& GetValue()
+		{
+			if constexpr (isPointer)
+			{
+				return *m_value;
+			}
+			else
+			{
+				return m_value;
+			}
+		}
+
+		bool GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node) override
+		{
+			auto found = false;
+
+			meta::doForAllMembers<NonPtrClass>([this, &found, &name, &node](auto& member) //meta::Member<RE::BGSLocationRefType, RE::BGSKeyword*>
+			{
+				auto memberName = std::string(member.getName());
+				
+				if (!CaseInsensitiveEquals(name, memberName))
+				{
+					return;
+				}
+
+				found = true;
+
+				using TValue = meta::get_member_type<decltype(member)>;
+				TValue memberValue = member.getCopy(GetValue());
+
+				if (std::is_pointer<TValue>::value && memberValue == 0)
+				{
+					node = std::make_shared<NullNode<TValue>>(memberName);
+				}
+				else if constexpr (meta::isRegistered<typename std::remove_pointer<TValue>::type>())
+				{
+					node = std::make_shared<MetaNode<TValue>>(member.getName(), memberValue);
+				}
+				else
+				{
+					node = std::make_shared<ValueNode<TValue>>(memberName, memberValue);
+				}
+			});
+
+			return found;
 		}
 	};
 }

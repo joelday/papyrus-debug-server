@@ -9,7 +9,7 @@ namespace meta
 	inline auto registerMembers<RE::TESForm>()
 	{
 		return members(
-			// member("Has3D", &RE::TESForm::Has3D),
+			member<RE::TESForm, bool>("Has3D", [](RE::TESForm* form) { return form->Has3D(); }),
 			member("HasWorldModel", &RE::TESForm::HasWorldModel)
 		);
 	}
@@ -17,17 +17,17 @@ namespace meta
 	template <>
 	inline auto registerMembers<RE::BGSKeyword>()
 	{
-		return std::tuple_cat(
-			meta::getMembers<RE::TESForm>(),
-			members(member("Keyword", &RE::BGSKeyword::keyword))
+		return members(
+			member<RE::BGSKeyword, RE::TESForm*>("TESForm", [](RE::BGSKeyword* form) { return form; }),
+			member("Keyword", &RE::BGSKeyword::keyword)
 		);
 	}
 
 	template <>
 	inline auto registerMembers<RE::BGSLocationRefType>()
 	{
-		return std::tuple_cat(
-			meta::getMembers<RE::BGSKeyword>()
+		return members(
+			member<RE::BGSLocationRefType, RE::BGSKeyword*>("BGSKeyword", [](RE::BGSLocationRefType* form) { return form; })
 		);
 	}
 

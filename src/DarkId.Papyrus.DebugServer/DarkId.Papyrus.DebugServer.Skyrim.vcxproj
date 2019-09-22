@@ -183,7 +183,6 @@
     <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlagged.cpp" />
     <ClCompile Include="..\..\dependencies\Champollion\Pex\Value.cpp" />
     <ClCompile Include="..\..\dependencies\Champollion\Pex\Variable.cpp" />
-    <ClCompile Include="..\..\dependencies\MetaStuff\example\StringCast.cpp" />
     <ClCompile Include="ArrayStateNode.cpp" />
     <ClCompile Include="BreakpointManager.cpp" />
     <ClCompile Include="DebugExecutionManager.cpp" />
@@ -268,7 +267,6 @@
     <ClInclude Include="..\..\dependencies\Champollion\Pex\UserFlagged.hpp" />
     <ClInclude Include="..\..\dependencies\Champollion\Pex\Value.hpp" />
     <ClInclude Include="..\..\dependencies\Champollion\Pex\Variable.hpp" />
-    <ClInclude Include="..\..\dependencies\MetaStuff\example\StringCast.h" />
     <ClInclude Include="ArrayStateNode.h" />
     <ClInclude Include="BreakpointManager.h" />
     <ClInclude Include="DebugExecutionManager.h" />

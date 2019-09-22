@@ -1,9 +1,9 @@
 #include "ObjectStateNode.h"
 #include "Utilities.h"
 #include "RuntimeState.h"
-#include "MetaNode.h"
 
 #include "FormMetadata.h"
+#include "MetaNode.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -69,7 +69,7 @@ namespace DarkId::Papyrus::DebugServer
 			// TODO: Verify behavior for the handful of polymorphic types that share the same form type
 #define STRING(s) #s
 #define DEFINE_FORM_TYPE_CHECK(type)  \
-			if constexpr (meta::isRegistered<##type##*>()) \
+			if constexpr (meta::isRegistered<##type##>()) \
 			{\
 				auto asType = form->As<##type##*>(); \
 				if (asType) \
@@ -113,7 +113,7 @@ namespace DarkId::Papyrus::DebugServer
 			if (CaseInsensitiveEquals(name, STRING(type))) \
 			{\
 				auto form = static_cast<##type##*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value))); \
-				node = std::make_shared<MetaNode<##type##>>(STRING(type), *form); \
+				node = std::make_shared<MetaNode<##type##*>>(STRING(type), form); \
  				return true; \
 			}\
 
@@ -122,34 +122,8 @@ namespace DarkId::Papyrus::DebugServer
 #undef STRING
 			
 		}
-
-// 		if (m_value && CaseInsensitiveEquals(name, "Form Data"))
-// 		{
-// 			auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-
-// 			RE::FormType32 formType;
-// 			if (vm->GetFormTypeID(m_class->name, formType))
-// 			{
-// 				auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
-
-// #define DEFINE_FORM_TYPE_CHECK(type)  \
-// 				if constexpr (meta::isRegistered<##type##*>()) \
-// 				{\
-// 					auto asType = form->As<##type##>(); \
-// 					if (asType) \
-// 					{ \
-// 						node = std::make_shared<MetaNode<##type##*>>("Form Data", asType); \
-// 						return true; \
-// 					} \
-// 				}\
-
-// 				FORM_TYPE_LIST(DEFINE_FORM_TYPE_CHECK)
-// #undef DEFINE_FORM_TYPE_CHECK
-
-// 				return false;
-// 			}
-// 		}
 #endif
+		
 		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
 		{
 			node = std::make_shared<ObjectStateNode>("parent", m_value.get(), m_class->parent.get(), true);

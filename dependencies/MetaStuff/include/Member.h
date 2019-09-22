@@ -20,6 +20,9 @@ namespace meta
 template <typename Class, typename T>
 using member_ptr_t = T Class::*;
 
+template <typename Class, typename T>
+using func_t = std::function<T(Class*)>;
+
 // reference getter/setter func pointer type
 template <typename Class, typename T>
 using ref_getter_func_ptr_t = const T& (Class::*)() const;
@@ -49,6 +52,7 @@ public:
     using member_type = T;
 
     Member(const char* name, member_ptr_t<Class, T> ptr);
+	Member(const char* name, func_t<Class, T> func);
     Member(const char* name, ref_getter_func_ptr_t<Class, T> getterPtr, ref_setter_func_ptr_t<Class, T> setterPtr);
     Member(const char* name, val_getter_func_ptr_t<Class, T> getterPtr, val_setter_func_ptr_t<Class, T> setterPtr);
 
@@ -57,8 +61,8 @@ public:
     // get sets methods can be used to add support
     // for getters/setters for members instead of
     // direct access to them
-    const T& get(const Class& obj) const;
-    T getCopy(const Class& obj) const;
+	const T& get(const Class& obj) const;
+    T getCopy(Class& obj) const;
     T& getRef(Class& obj) const;
     member_ptr_t<Class, T> getPtr() const;
 
@@ -78,6 +82,8 @@ private:
     bool hasMemberPtr; // first member of class can be nullptr
                        // so we need this var to know if member ptr is present
 
+	func_t<Class, T> copyFunc;
+
     ref_getter_func_ptr_t<Class, T> refGetterPtr;
     ref_setter_func_ptr_t<Class, T> refSetterPtr;
 
@@ -93,6 +99,9 @@ private:
 
 template <typename Class, typename T>
 Member<Class, T> member(const char* name, T Class::* ptr);
+
+template <typename Class, typename T>
+Member<Class, T> member(const char* name, func_t<Class, T> func);
 
 template <typename Class, typename T>
 Member<Class, T> member(const char* name, ref_getter_func_ptr_t<Class, T> getterPtr, ref_setter_func_ptr_t<Class, T> setterPtr);

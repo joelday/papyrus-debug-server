@@ -14,7 +14,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		int GetId() const;
 
-		void SetId(const UInt32 id);
+		void SetId(UInt32 id);
 	};
 	
 	class RuntimeState;
