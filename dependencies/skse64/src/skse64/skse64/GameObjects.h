@@ -336,7 +336,7 @@ public:
 	static BSShaderTextureSet * Create();
 
 	MEMBER_FN_PREFIX(BSShaderTextureSet);
-	DEFINE_MEMBER_FN(ctor, BSShaderTextureSet *, 0x012C8E70);
+	DEFINE_MEMBER_FN(ctor, BSShaderTextureSet *, 0x012C9320);
 };
 
 STATIC_ASSERT(sizeof(BSShaderTextureSet) == 0x58);
@@ -810,7 +810,7 @@ public:
 	DEFINE_MEMBER_FN(UpdateNeck, void, 0x003606D0, BSFaceGenNiNode * faceNode);
 
 	// Computes RGB SkinTone from RGBA TintMask
-	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x00360480, NiColorA * result, TintMask * tintMask, UInt32 compute, UInt32 unk1);
+	DEFINE_MEMBER_FN(SetSkinFromTint, void, 0x00360480, NiColorA * result, TintMask * tintMask, bool fromTint);
 
 	void SetFaceTexture(BGSTextureSet * textureSet);
 	void SetHairColor(BGSColorForm * hairColor);

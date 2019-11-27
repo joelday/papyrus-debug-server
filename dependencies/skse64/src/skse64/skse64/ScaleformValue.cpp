@@ -8,14 +8,14 @@ GFxValue::~GFxValue()
 void GFxValue::AddManaged(void)
 {
 	if (IsManaged())
-		CALL_MEMBER_FN(objectInterface, AddManaged_Internal)(this, data.obj);
+		objectInterface->AddManaged_Internal(this, data.obj);
 }
 
 void GFxValue::CleanManaged(void)
 {
 	if (IsManaged())
 	{
-		CALL_MEMBER_FN(objectInterface, ReleaseManaged_Internal)(this, data.obj);
+		objectInterface->ReleaseManaged_Internal(this, data.obj);
 
 		objectInterface = NULL;
 		type = kType_Undefined;
@@ -112,55 +112,55 @@ double GFxValue::GetNumber(void) const
 
 bool GFxValue::HasMember(const char * name)
 {
-	return CALL_MEMBER_FN(objectInterface, HasMember)(data.obj, name, IsDisplayObject());
+	return objectInterface->HasMember(data.obj, name, IsDisplayObject());
 }
 
 bool GFxValue::SetMember(const char * name, GFxValue * value)
 {
-	return CALL_MEMBER_FN(objectInterface, SetMember)(data.obj, name, value, IsDisplayObject());
+	return objectInterface->SetMember(data.obj, name, value, IsDisplayObject());
 }
 
 bool GFxValue::GetMember(const char * name, GFxValue * value)
 {
-	return CALL_MEMBER_FN(objectInterface, GetMember)(data.obj, name, value, IsDisplayObject());
+	return objectInterface->GetMember(data.obj, name, value, IsDisplayObject());
 }
 
 bool GFxValue::DeleteMember(const char * name)
 {
-	return CALL_MEMBER_FN(objectInterface, DeleteMember)(data.obj, name, IsDisplayObject());
+	return objectInterface->DeleteMember(data.obj, name, IsDisplayObject());
 }
 
 bool GFxValue::Invoke(const char * name, GFxValue * result, GFxValue * args, UInt32 numArgs)
 {
-	return CALL_MEMBER_FN(objectInterface, Invoke)(data.obj, result, name, args, numArgs, IsDisplayObject());
+	return objectInterface->Invoke(data.obj, result, name, args, numArgs, IsDisplayObject());
 }
 
 bool GFxValue::PushBack(GFxValue * value)
 {
-	return CALL_MEMBER_FN(objectInterface, PushBack)(data.obj, value);
+	return objectInterface->PushBack(data.obj, value);
 }
 
 UInt32 GFxValue::GetArraySize()
 {
-	return CALL_MEMBER_FN(objectInterface, GetArraySize)(data.obj);
+	return objectInterface->GetArraySize(data.obj);
 }
 
 bool GFxValue::GetElement(UInt32 index, GFxValue * value)
 {
-	return CALL_MEMBER_FN(objectInterface, GetElement)(data.obj, index, value);
+	return objectInterface->GetElement(data.obj, index, value);
 }
 
 bool GFxValue::GetDisplayInfo(DisplayInfo * displayInfo)
 {
-	return CALL_MEMBER_FN(objectInterface, GetDisplayInfo)(data.obj, displayInfo);
+	return objectInterface->GetDisplayInfo(data.obj, displayInfo);
 }
 
 bool GFxValue::SetDisplayInfo(DisplayInfo * displayInfo)
 {
-	return CALL_MEMBER_FN(objectInterface, SetDisplayInfo)(data.obj, displayInfo);
+	return objectInterface->SetDisplayInfo(data.obj, displayInfo);
 }
 
 bool GFxValue::SetText(const char * text, bool html)
 {
-	return CALL_MEMBER_FN(objectInterface, SetText)(data.obj, text, html);
+	return objectInterface->SetText(data.obj, text, html);
 }

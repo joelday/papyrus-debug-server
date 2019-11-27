@@ -1,3 +1,9 @@
+2.0.17
+- support for runtime 1.5.97
+- fix Game.GetNthLightModDependency
+- HeadPart.GetPartName
+- dispatch SKSECrosshairRefEvent when defocusing an object
+
 2.0.16
 - support for runtime 1.5.80
 - fix potential crash in ReferenceAlias.ForceRefToWornItem

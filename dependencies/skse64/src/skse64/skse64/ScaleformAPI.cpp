@@ -31,5 +31,5 @@ void ScaleformHeap_Free(void * ptr)
 	(*(g_scaleformHeap))->Free(ptr);
 }
 
-RelocAddr<_InvokeFunction> InvokeFunction(0x00ED6610);
-RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x00F47F10);
+RelocAddr<_InvokeFunction> InvokeFunction(0x00ED6AC0);
+RelocAddr<_GFxAllocateHeap> GFxAllocateHeap(0x00F483C0);

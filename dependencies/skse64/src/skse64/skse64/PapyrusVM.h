@@ -78,9 +78,10 @@ public:
 	void	Release(void);
 
 	MEMBER_FN_PREFIX(VMClassInfo);
-	DEFINE_MEMBER_FN(Destroy, void, 0x01236D90);
-	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x01238100, BSFixedString * name);
-	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x0123C2B0, const char * fnName);
+	DEFINE_MEMBER_FN(Destroy, void, 0x01237240);
+	DEFINE_MEMBER_FN(GetVariable, SInt32, 0x012385B0, BSFixedString * name);
+	// 1673D04F90861710999A3DC0514282C538D25FCA+187
+	DEFINE_MEMBER_FN(GetFunction, IFunction*, 0x0123C760, const char * fnName);
 };
 
 // This type is not fully decoded or correctly sized, just enough to use the functor

@@ -26,6 +26,7 @@ class BGSHazard;
 class TESNPC;
 class TESWorldSpace;
 class BSExtraData;
+struct ModInfo;
 
 typedef TESForm* (*_LookupFormByID)(UInt32 id);
 extern RelocAddr <_LookupFormByID> LookupFormByID;
@@ -374,7 +375,7 @@ public:
 	virtual void			Unk_11(UInt32 arg);
 	virtual void			Unk_12(UInt32 arg);
 	virtual void			InitItem(void);		// called once all dependent forms are loaded
-	virtual void			Unk_14(void);
+	virtual ModInfo*		GetFinalSourceFile();
 	virtual UInt32			GetFormType(void);
 	virtual void			GetFormDesc(char * buf, UInt32 bufLen);
 	virtual bool			GetFlag00000040(void);

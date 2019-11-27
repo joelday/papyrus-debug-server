@@ -555,7 +555,7 @@ namespace papyrusObjectReference {
 	}
 
 	struct CompareMaterial {
-		bool operator()(const std::pair<BGSMaterialSwap::MaterialSwap*,float> lhs, const std::pair<BGSMaterialSwap::MaterialSwap*,float> rhs) const {
+		bool operator()(const std::pair<BGSMaterialSwap::MaterialSwap*,float> lhs, const std::pair<BGSMaterialSwap::MaterialSwap*,float> rhs) {
 			return lhs.first->source < rhs.first->source;
 		}
 	};

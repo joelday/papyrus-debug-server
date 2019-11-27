@@ -208,7 +208,7 @@ namespace papyrusGameData
 		{
 			dataHandler->books.GetNthItem(i, book);
 
-			if (modInfo->IsFormInMod(book->formID))
+			if (!modInfo->IsFormInMod(book->formID))
 				continue;
 
 			if (!VerifyKeywords(book, &keywords))
@@ -248,7 +248,7 @@ namespace papyrusGameData
 		{
 			dataHandler->potions.GetNthItem(i, potion);
 
-			if (modInfo->IsFormInMod(potion->formID))
+			if (!modInfo->IsFormInMod(potion->formID))
 				continue;
 
 			if (!VerifyKeywords(potion, &keywords))
@@ -288,7 +288,7 @@ namespace papyrusGameData
 		{
 			dataHandler->ingredients.GetNthItem(i, ingredient);
 
-			if (modInfo->IsFormInMod(ingredient->formID))
+			if (!modInfo->IsFormInMod(ingredient->formID))
 				continue;
 
 			if (!VerifyKeywords(ingredient, &keywords))
@@ -314,7 +314,7 @@ namespace papyrusGameData
 		{
 			dataHandler->scrolls.GetNthItem(i, scroll);
 
-			if (modInfo->IsFormInMod(scroll->formID))
+			if (!modInfo->IsFormInMod(scroll->formID))
 				continue;
 
 			if (!VerifyKeywords(scroll, &keywords))
@@ -341,7 +341,7 @@ namespace papyrusGameData
 			{
 				dataHandler->keys.GetNthItem(i, key);
 
-				if (modInfo->IsFormInMod(key->formID))
+				if (!modInfo->IsFormInMod(key->formID))
 					continue;
 
 				if (!VerifyKeywords(key, &keywords))
@@ -367,7 +367,7 @@ namespace papyrusGameData
 		{
 			dataHandler->miscObjects.GetNthItem(i, misc);
 
-			if (modInfo->IsFormInMod(misc->formID))
+			if (!modInfo->IsFormInMod(misc->formID))
 				continue;
 
 			if (!VerifyKeywords(misc, &keywords))

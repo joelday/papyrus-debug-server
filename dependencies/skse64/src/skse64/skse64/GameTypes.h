@@ -127,12 +127,14 @@ public:
 		const char	* data;
 
 		MEMBER_FN_PREFIX(Ref);
-		DEFINE_MEMBER_FN(ctor, Ref *, 0x00C28740, const char * buf);
-		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00C287D0, const Ref & rhs);
-		DEFINE_MEMBER_FN(Set, Ref *, 0x00C288B0, const char * buf);
-		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00C28970, const Ref & rhs);
+		DEFINE_MEMBER_FN(ctor, Ref *, 0x00C28BF0, const char * buf);
+		// E728381B6B25FD30DF9845889144E86E5CC35A25+38
+		DEFINE_MEMBER_FN(ctor_ref, Ref *, 0x00C28C80, const Ref & rhs);
+		DEFINE_MEMBER_FN(Set, Ref *, 0x00C28D60, const char * buf);
+		// F3F05A02DE2034133B5965D694745B6369FC557D+F3
+		DEFINE_MEMBER_FN(Set_ref, Ref *, 0x00C28E20, const Ref & rhs);
 		// 77D2390F6DC57138CF0E5266EB5BBB0ACABDFBE3+A0
-		DEFINE_MEMBER_FN(Release, void, 0x00C28890);
+		DEFINE_MEMBER_FN(Release, void, 0x00C28D40);
 
 		Ref();
 		Ref(const char * buf);
@@ -1277,7 +1279,7 @@ template <typename T>
 class SafeDataHolder
 {
 protected:
-	SimpleLock	m_lock;
+	mutable SimpleLock	m_lock;
 public:
 	T			m_data;
 

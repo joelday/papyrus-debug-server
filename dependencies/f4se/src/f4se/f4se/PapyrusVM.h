@@ -63,8 +63,7 @@ public:
 	virtual bool	GetObjectIdentifier(UInt64 handle, const char * typeName, UInt64 unk1, VMIdentifier ** identifier, UInt8 unk2);
 	virtual void	Unk_20();
 	virtual void	Unk_21();
-    // DebugServer: Changed unk1 from UInt64 to UInt64*
-	virtual void	CastAs(VMIdentifier** idInOut, VMObjectTypeInfo ** typeAs, UInt64* unk1); // checks (typeAs->unk40 & 3) == 3 first
+	virtual void	CastAs(VMIdentifier** idInOut, VMObjectTypeInfo ** typeAs, UInt64 unk1); // checks (typeAs->unk40 & 3) == 3 first
 	virtual bool	SetPropertyValue(VMIdentifier** identifier, const char* propertyName, VMValue * newValue, UInt64* unk4);
 	virtual bool	GetPropertyValue(VMIdentifier** identifier, const char* propertyName, VMValue * result);
 	virtual bool	GetPropertyValueByIndex(VMIdentifier** identifier, SInt32 idx, VMValue* outValue);
@@ -86,8 +85,7 @@ public:
 	virtual IObjectBindPolicy *		GetObjectBindPolicy(void);
 	virtual void	Unk_36();
 	virtual void	Unk_37();
-    // DebugServer: Changed Unk_38 to AddLogEventSink
-    virtual void	AddLogEventSink(void* sink);
+	virtual void	Unk_38();
 	virtual void	Unk_39();
 	virtual void	Unk_3A();
 	virtual void	Unk_3B();
@@ -298,7 +296,7 @@ public:
 	// ...
 
 	MEMBER_FN_PREFIX(GameVM);
-	DEFINE_MEMBER_FN(SendPapyrusEvent, void, 0x01374E90, UInt64 handle, const BSFixedString & eventName, std::function<bool(void*)> functor); // Signature not correct yet
+	DEFINE_MEMBER_FN(SendPapyrusEvent, void, 0x01374FB0, UInt64 handle, const BSFixedString & eventName, std::function<bool(void*)> functor); // Signature not correct yet
 };
 
 extern RelocPtr <GameVM *> g_gameVM;

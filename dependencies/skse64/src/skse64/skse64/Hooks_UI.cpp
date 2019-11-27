@@ -79,7 +79,7 @@ void TaskInterface::AddUITask(UIDelegate_v1* task)
 	}
 }
 
-RelocAddr <uintptr_t> ProcessEventQueue_HookTarget_Enter(0x00EBE180 + 0xA14);
+RelocAddr <uintptr_t> ProcessEventQueue_HookTarget_Enter(0x00EBE630 + 0xA14);
 
 void Hooks_UI_Commit(void)
 {

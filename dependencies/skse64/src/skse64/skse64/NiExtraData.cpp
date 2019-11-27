@@ -2,11 +2,13 @@
 #include "skse64/NiGeometry.h"
 
 // ??_7BSFaceGenBaseMorphExtraData@@6B@
-RelocAddr<uintptr_t> s_BSFaceGenBaseMorphExtraDataVtbl(0x01601518);
+RelocAddr<uintptr_t> s_BSFaceGenBaseMorphExtraDataVtbl(0x01601508);
 // ??_7NiStringsExtraData@@6B@
-RelocAddr<uintptr_t> s_NiStringsExtraDataVtbl(0x01766BE0);
+RelocAddr<uintptr_t> s_NiStringsExtraDataVtbl(0x01766B50);
 // ??_7NiBinaryExtraData@@6B@
-RelocAddr<uintptr_t> s_NiBinaryExtraDataVtbl(0x0176B140);
+RelocAddr<uintptr_t> s_NiBinaryExtraDataVtbl(0x0176B0B0);
+// ??_7NiBooleanExtraData@@6B@
+RelocAddr<uintptr_t> s_NiBooleanExtraDataVtbl(0x0176B240);
 
 NiExtraData* NiExtraData::Create(UInt32 size, uintptr_t vtbl)
 {
@@ -78,6 +80,14 @@ NiBinaryExtraData * NiBinaryExtraData::Create(BSFixedString name, char * binary,
 		data->m_size = 0;
 	}
 	
+	return data;
+}
+
+NiBooleanExtraData * NiBooleanExtraData::Create(BSFixedString name, bool value)
+{
+	NiBooleanExtraData* data = (NiBooleanExtraData*)NiExtraData::Create(sizeof(NiBooleanExtraData), s_NiBooleanExtraDataVtbl.GetUIntPtr());
+	data->m_pcName = const_cast<char*>(name.data);
+	data->m_data = value;
 	return data;
 }
 

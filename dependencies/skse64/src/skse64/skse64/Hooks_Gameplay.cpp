@@ -26,7 +26,7 @@ RelocAddr<uintptr_t> kHook_BGSKeyword_Base(0x00333B30);
 uintptr_t kHook_BGSKeyword_Create_Return = kHook_BGSKeyword_Base + 6;
 
 // 4C1457C3040DCD34A7E7B2326F1EA2023930C56B+71
-RelocAddr <char *> g_gameVersion(0x01544EB0);
+RelocAddr <char *> g_gameVersion(0x01544EA0);
 RelocAddr <uintptr_t> kHook_ShowVersion_Offset(0x008EEE10 + 0x78);
 static char		kHook_ShowVersion_FormatString[] =
 "%s.%d (SKSE64 " __PREPRO_TOKEN_STR__(SKSE_VERSION_INTEGER) "."
@@ -42,17 +42,10 @@ bool __cdecl Hook_Crosshair_LookupREFRByHandle(UInt32 & refHandle, NiPointer<TES
 {
 	bool result = LookupREFRByHandle(refHandle, refrOut);
 
-	if (refrOut)
-	{
-		g_curCrosshairRef = refrOut;
+	g_curCrosshairRef = refrOut;
 
-		SKSECrosshairRefEvent evn(refrOut);
-		g_crosshairRefEventDispatcher.SendEvent(&evn);
-	}
-	else
-	{
-		g_curCrosshairRef = NULL;
-	}
+	SKSECrosshairRefEvent evn(refrOut);
+	g_crosshairRefEventDispatcher.SendEvent(&evn);
 
 	return result;
 }

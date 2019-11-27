@@ -62,6 +62,8 @@ public:
 	~NiBooleanExtraData();
 
 	bool	m_data;	// 18
+
+	static NiBooleanExtraData * Create(BSFixedString name, bool value);
 };
 
 // 20

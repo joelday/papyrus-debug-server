@@ -39,7 +39,8 @@ public:
 class NiTriBasedGeom : public NiGeometry
 {
 public:
-	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00C90F90, NiTriShapeData * geometry);
+	// 2280019D608FD35C9B8EB465875A37FBCC37C462+E4
+	DEFINE_MEMBER_FN_1(ctor, NiTriBasedGeom *, 0x00C91440, NiTriShapeData * geometry);
 };
 
 class NiTriShape : public NiTriBasedGeom
@@ -81,6 +82,13 @@ class BSGeometry : public NiAVObject
 public:
 	virtual ~BSGeometry();
 
+	enum ShapeType
+	{
+		kShapeType_TriShape = 3,
+		kShapeType_Dynamic = 4,
+		kShapeType_Particle = 11
+	};
+
 	UInt64				unk110;				// 110
 	UInt64				unk118;				// 118
 	NiPropertyPtr		m_spPropertyState;	// 120
@@ -89,7 +97,7 @@ public:
 	BSGeometryData		* geometryData;		// 138
 	UInt64				unk140;				// 140
 	UInt64				vertexDesc;			// 148
-	UInt8				unk150;				// 150 - type? 3, 4
+	UInt8				shapeType;			// 150 - type? 3, 4, 11
 	UInt8				unk151;				// 151
 	UInt16				unk152;				// 152
 	UInt32				unk154;				// 154
@@ -114,14 +122,20 @@ extern RelocAddr<_CreateBSTriShape> CreateBSTriShape;
 class BSDynamicTriShape : public BSTriShape
 {
 public:
-	float	* diffBlock;
-	UInt64	unk168;
-	UInt64	unk170;
-	float	unk178;
-	float	unk17C;
+	void		* pDynamicData;	// 160
+	SimpleLock	lock;			// 168
+	UInt32		dataSize;		// 170
+	UInt32		frameCount;		// 174
+	UInt32		unk178;			// 178
+	UInt32		unk17C;			// 17C
 
-	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00C71E50);
+	// C33CC4D0EB586CB83500C260EE681221A345C5AE+FF
+	DEFINE_MEMBER_FN_0(ctor, BSDynamicTriShape *, 0x00C72300);
 };
+STATIC_ASSERT(sizeof(BSDynamicTriShape) == 0x180);
+
+typedef BSDynamicTriShape * (*_CreateBSDynamicTriShape)();
+extern RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape;
 
 // 48+
 class NiGeometryData : public NiObject
@@ -413,8 +427,8 @@ public:
 	NiSkinInstance * Clone();
 
 	MEMBER_FN_PREFIX(NiSkinInstance);
-	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00C522A0);
-	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00C7E6B0);
+	DEFINE_MEMBER_FN(Copy, NiSkinInstance*, 0x00C52750);
+	DEFINE_MEMBER_FN(ctor, NiSkinInstance *, 0x00C7EB60);
 };
 STATIC_ASSERT(offsetof(NiSkinInstance, lock) == 0x60);
 STATIC_ASSERT(sizeof(NiSkinInstance) == 0x88);
@@ -432,6 +446,6 @@ public:
 	static BSDismemberSkinInstance * Create();
 
 	MEMBER_FN_PREFIX(BSDismemberSkinInstance);
-	DEFINE_MEMBER_FN(ctor, BSDismemberSkinInstance *, 0x00C6B7C0);
+	DEFINE_MEMBER_FN(ctor, BSDismemberSkinInstance *, 0x00C6BC70);
 };
 STATIC_ASSERT(sizeof(BSDismemberSkinInstance) == 0xA0);
