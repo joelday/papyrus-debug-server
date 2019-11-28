@@ -20,7 +20,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (m_type->IsObjectArray())
 		{
-			elementTypeName = m_type->GetScriptClass()->GetName();
+			elementTypeName = m_type->GetClass()->GetName();
 		}
 #if FALLOUT
 		else if (m_type->IsStructArray())

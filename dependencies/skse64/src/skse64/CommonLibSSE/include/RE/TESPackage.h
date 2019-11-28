@@ -10,7 +10,7 @@
 namespace RE
 {
 	class BGSIdleCollection;
-	class TESCustomPackageData;
+	class TESPackageData;
 
 
 	class TESPackage : public TESForm
@@ -83,7 +83,7 @@ namespace RE
 				kTrespass = 23,
 				kSpectator = 24,
 				kReactToDead = 25,
-				kGetUpFromChair = 26,
+				kGetUpFromChairBed = 26,
 				kDoNothing = 27,
 				kInGameDialogue = 28,
 				kSurface = 29,
@@ -141,6 +141,23 @@ namespace RE
 			UInt32				unk0C;				// 0C
 		};
 		STATIC_ASSERT(sizeof(PackData) == 0x10);
+
+
+		struct UnkData
+		{
+			union UnkVal
+			{
+				TESForm*	form;
+				RefHandle	handle;
+			};
+			STATIC_ASSERT(sizeof(UnkVal) == 0x8);
+
+
+			UInt64	unk00;	// 00
+			UnkVal	unk08;	// 08
+			UInt64	unk10;	// 10
+		};
+		STATIC_ASSERT(sizeof(UnkData) == 0x18);
 
 
 		struct Schedule	// PSDT
@@ -206,7 +223,7 @@ namespace RE
 
 			TESIdleForm*	idle;	// 00 - INAM
 			Index			index;	// 08
-			UInt32			pad0C;	// 0C
+			UInt32			unk0C;	// 0C
 			TopicData		topic;	// 10 - PDTO
 		};
 		STATIC_ASSERT(sizeof(OnEvent) == 0x20);
@@ -223,7 +240,7 @@ namespace RE
 		virtual void		Unk_12(void) override;							// 12
 		virtual void		InitItem() override;							// 13
 		virtual void		Unk_2D(void) override;							// 2D - { return unkDC; }
-		virtual const char*	GetTypeString() const override;					// 39 - { return g_packageTypeStrings[unk24]; }
+		virtual const char*	GetTypeString() const override;					// 39 - { return g_packageTypeStrings[packData.type]; }
 
 		// add
 		virtual void		Unk_3B(void);									// 3B
@@ -234,18 +251,18 @@ namespace RE
 
 
 		// members
-		PackData				packData;					// 20 - PKDT
-		TESCustomPackageData*	package;					// 30
-		UInt64					unk38;						// 38
-		UInt64					unk40;						// 40
-		BGSIdleCollection*		idleAnimations;				// 48
-		Schedule				schedule;					// 50 - PSDT
-		Condition				conditions;					// 60
-		TESCombatStyle*			combatStyle;				// 68 - CNAM
-		TESQuest*				ownerQuest;					// 70 - QNAM
-		OnEvent					onEvents[OnEvent::kTotal];	// 78
-		UInt32					unkD8;						// D8
-		UInt32					unkDC;						// DC
+		PackData			packData;					// 20 - PKDT
+		TESPackageData*		data;						// 30 - only ever TESCustomPackageData
+		void*				unk38;						// 38
+		UnkData*			unk40;						// 40
+		BGSIdleCollection*	idleAnimations;				// 48
+		Schedule			schedule;					// 50 - PSDT
+		Condition			conditions;					// 60
+		TESCombatStyle*		combatStyle;				// 68 - CNAM
+		TESQuest*			ownerQuest;					// 70 - QNAM
+		OnEvent				onEvents[OnEvent::kTotal];	// 78
+		UInt32				unkD8;						// D8
+		UInt32				unkDC;						// DC - some kind of ref count
 	};
 	STATIC_ASSERT(sizeof(TESPackage) == 0xE0);
 }

@@ -525,6 +525,33 @@ namespace RE
 		}
 
 
+		iterator erase(iterator a_pos)
+		{
+			iterator result = a_pos;
+			bool doBegin;
+			if (a_pos == begin()) {
+				doBegin = true;
+			} else {
+				doBegin = false;
+				--result;
+			}
+
+			for (auto prev = a_pos++; a_pos != end(); prev = a_pos++) {
+				*prev = std::move(*a_pos);
+			}
+			pop_back();
+
+			return doBegin ? begin() : result + 1;
+		}
+
+
+		iterator erase(const_iterator a_pos)
+		{
+			auto pos = *reinterpret_cast<iterator*>(&a_pos);
+			return erase(std::move(pos));
+		}
+
+
 		void push_back(const T& a_value)
 		{
 			if (size() == capacity()) {
@@ -655,7 +682,7 @@ namespace RE
 		void grow_capacity()
 		{
 			auto cap = capacity();
-			cap = cap ? static_cast<size_type>(std::floor(cap * GROWTH_FACTOR)) : DF_CAP;
+			cap = cap ? static_cast<size_type>(std::ceil(cap * GROWTH_FACTOR)) : DF_CAP;
 			change_capacity(cap);
 		}
 
@@ -663,7 +690,7 @@ namespace RE
 		void grow_capacity(size_type a_hint)
 		{
 			auto cap = a_hint;
-			cap = cap ? static_cast<size_type>(std::floor(cap * GROWTH_FACTOR)) : DF_CAP;
+			cap = cap ? static_cast<size_type>(std::ceil(cap * GROWTH_FACTOR)) : DF_CAP;
 			change_capacity(cap);
 		}
 

@@ -11,6 +11,7 @@
 #include "RE/SkyrimScript/SavePatcher.h"  // SkyrimScript::SavePatcher
 #include "RE/SkyrimScript/ObjectBindPolicy.h"  // SkyrimScript::ObjectBindPolicy
 #include "RE/SkyrimScript/Store.h"  // SkyrimScript::Store
+#include "RE/BSLock.h"
 #include "RE/BSTEvent.h"  // BSTEvent
 #include "RE/BSTFreeList.h"  // BSTStaticFreeList
 #include "RE/BSTHashMap.h"  // BSTHashMap
@@ -144,7 +145,7 @@ namespace RE
 
 
 		// members
-		BSScript::IVirtualMachine*												virtualMachine;					// 0200
+		BSTSmartPointer<BSScript::IVirtualMachine>								virtualMachine;					// 0200
 		BSScript::IVMSaveLoadInterface*											saveLoadInterface;				// 0208
 		BSScript::IVMDebugInterface*											debugInterface;					// 0210
 		BSScript::SimpleAllocMemoryPagePolicy									simpleAllocMemoryPagePolicy;	// 0218
@@ -152,7 +153,7 @@ namespace RE
 		SkyrimScript::Logger													logger;							// 0278
 		SkyrimScript::HandlePolicy												handlePolicy;					// 0328
 		SkyrimScript::ObjectBindPolicy											objectBindPolicy;				// 0398
-		SkyrimScript::Store*													store;							// 0470
+		BSTSmartPointer<SkyrimScript::Store>									store;							// 0470
 		BSTHashMap<UnkKey, UnkValue>											unk0478;						// 0478
 		UInt64																	unk04A8;						// 04A8
 		BSTHashMap<UnkKey, UnkValue>											unk04B0;						// 04B0
@@ -196,10 +197,10 @@ namespace RE
 		UInt64																	unk88C8;						// 88C8
 		BSTCommonLLMessageQueue<BSTSmartPointer<SkyrimScript::DelayFunctor>>*	unk88D0;						// 88D0
 		BSTCommonLLMessageQueue<BSTSmartPointer<SkyrimScript::DelayFunctor>>*	unk88D8;						// 88D8
-		UInt64																	unk88E0;						// 88E0
+		mutable BSUniqueLock													unk88E0;						// 88E0
 		BSTCommonLLMessageQueue<BSTSmartPointer<SkyrimScript::DelayFunctor>>*	unk88E8;						// 88E8
 		BSTCommonLLMessageQueue<BSTSmartPointer<SkyrimScript::DelayFunctor>>*	unk88F0;						// 88F0
-		UInt64																	unk88F8;						// 88F8
+		mutable BSUniqueLock													unk88F8;						// 88F8
 		BSTHashMap<UnkKey, UnkValue>											unk8900;						// 8900
 		UInt64																	unk8930;						// 8930
 		UInt64																	unk8938;						// 8938

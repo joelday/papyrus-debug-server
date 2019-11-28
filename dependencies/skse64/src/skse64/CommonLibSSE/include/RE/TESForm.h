@@ -29,7 +29,9 @@ namespace RE
 			{
 				kIsPlayable = 1 << 2,
 				kInitialized = 1 << 3,
-				kPlayerKnows = 1 << 10
+				kDeleted = 1 << 5,
+				kPlayerKnows = 1 << 6,
+				kIgnored = 1 << 12
 			};
 		};
 
@@ -70,8 +72,8 @@ namespace RE
 		virtual TESFile*		GetFinalSourceFile();																												// 14 - returns the file that last modified this form
 		virtual FormType		GetFormType();																														// 15 - { return formType; }
 		virtual void			GetFormDesc(char* a_buf, UInt32 a_bufLen);																							// 16 - { return std::sprintf_s(a_buf, a_bufLen, "%s Form '%s' (%08X)", g_formStrings[3 * formID], "", formID); }
-		virtual bool			PlayerKnows() const;																												// 17 - { return (flags >> 10 ) & 1; }
-		virtual bool			GetFlag00010000();																													// 18 - { return (flags >> 16) & 1; }
+		virtual bool			PlayerKnows() const;																												// 17 - { return (flags >> 6 ) & 1; }
+		virtual bool			GetFlag00010000();																													// 18 - { return (flags >> 16) & 1; } - PlayerLearned?
 		virtual bool			IsPlayable();																														// 19 - { return (flags >> 2) & 1; }
 		virtual bool			NeverFades();																														// 1A - { return false; }
 		virtual bool			GetFlag00020000();																													// 1B - { return (flags >> 17) & 1; } - "bool CausesDamage() const"?
@@ -120,20 +122,23 @@ namespace RE
 		template <class T> constexpr T		As();
 		template <class T> constexpr auto	As() const;
 
-		bool	IsKey() const;
-		bool	IsWeapon() const;
-		bool	IsAmmo() const;
-		bool	IsArmor() const;
-		bool	IsSoulGem() const;
-		bool	IsLockpick() const;
-		bool	IsGold() const;
-		bool	IsPlayer() const;
-		bool	IsPlayerRef() const;
-		bool	IsDynamicForm() const;
-		bool	HasWorldModel() const;
-		FormID	GetFormID() const;
-		float	GetWeight() const;
-		SInt32	GetGoldValue() const;
+		FormID		GetFormID() const;
+		SInt32		GetGoldValue() const;
+		const char*	GetName() const;
+		float		GetWeight() const;
+		bool		HasWorldModel() const;
+		bool		IsAmmo() const;
+		bool		IsArmor() const;
+		bool		IsDeleted() const;
+		bool		IsDynamicForm() const;
+		bool		IsGold() const;
+		bool		IsIgnored() const;
+		bool		IsKey() const;
+		bool		IsLockpick() const;
+		bool		IsPlayer() const;
+		bool		IsPlayerRef() const;
+		bool		IsSoulGem() const;
+		bool		IsWeapon() const;
 
 
 		// members

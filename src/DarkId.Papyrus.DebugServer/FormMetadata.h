@@ -274,11 +274,7 @@ namespace meta
 	inline auto registerMembers<RE::TESFullName>()
 	{
 		return members(
-#if SKYRIM
-			member("Name", &RE::TESFullName::name)
-#else
 			member("FullName", &RE::TESFullName::fullName)
-#endif
 		);
 	}
 	

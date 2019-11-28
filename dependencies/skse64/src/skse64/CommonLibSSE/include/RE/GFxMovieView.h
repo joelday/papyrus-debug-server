@@ -3,6 +3,7 @@
 #include "RE/GFxMovie.h"  // GFxMovie
 #include "RE/GFxMovieDef.h"  // GFxMovieDef
 #include "RE/GFxStateBag.h"  // GFxStateBag
+#include "RE/GPoint.h"  // GPointF
 #include "RE/GRect.h"  // GRectF
 #include "RE/GViewport.h"  // GViewport
 
@@ -15,7 +16,6 @@ namespace RE
 	class GMatrix3D;
 	class GMemoryHeap;
 	class GPoint3F;
-	class GPointF;
 	class GViewport;
 	struct GStatBag;
 
@@ -51,7 +51,7 @@ namespace RE
 		};
 
 
-		enum class HE_ReturnValueType : UInt32
+		enum class HEResult : UInt32
 		{
 			kNotHandled = 0,
 			kHandled = 1,
@@ -92,7 +92,7 @@ namespace RE
 		virtual void						SetBackgroundColor(const GColor a_bgColor);																			// 2A - pure
 		virtual void						SetBackgroundAlpha(float a_alpha);																					// 2B - pure
 		virtual float						GetBackgroundAlpha() const;																							// 2C - pure
-		virtual UInt32						HandleEvent(const GFxEvent& a_event);																				// 2D - pure
+		virtual HEResult					HandleEvent(const GFxEvent& a_event);																				// 2D - pure
 		virtual void						GetMouseState(UInt32 a_mouseIndex, float* a_x, float* a_y, UInt32* a_buttons);										// 2E - pure
 		virtual void						NotifyMouseState(float a_x, float a_y, UInt32 a_buttons, UInt32 a_mouseIndex = 0);									// 2F - pure
 		virtual bool						HitTest(float a_x, float a_y, HitTestType a_testCond = HitTestType::kShapes, UInt32 a_controllerIdx = 0);			// 30 - pure
@@ -118,7 +118,8 @@ namespace RE
 		virtual GFxMovieDef::MemoryContext*	GetMemoryContext() const;																							// 44 - pure
 		virtual void						Release();																											// 45 - pure
 
-		void								SetViewport(SInt32 a_bufW, SInt32 a_bufH, SInt32 a_left, SInt32 a_top, SInt32 a_width, SInt32 a_height, GViewport::Flag a_flags = GViewport::Flag::kNone);
+		void	SetViewport(SInt32 a_bufW, SInt32 a_bufH, SInt32 a_left, SInt32 a_top, SInt32 a_width, SInt32 a_height, GViewport::Flag a_flags = GViewport::Flag::kNone);
+		void	InvokeNoReturn(const char* a_methodName, const GFxValue* a_args, UInt32 a_numArgs);
 	};
 	STATIC_ASSERT(sizeof(GFxMovieView) == 0x18);
 }

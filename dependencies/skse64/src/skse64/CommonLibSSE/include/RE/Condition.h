@@ -1,6 +1,7 @@
 #pragma once
 
 #include "RE/FormTypes.h"
+#include "RE/TESMemoryManager.h"  // TES_HEAP_REDEFINE_NEW
 
 
 namespace RE
@@ -468,18 +469,27 @@ namespace RE
 
 		struct ComparisonFlags
 		{
-			bool	isOR : 1;			// false == AND, true == OR
-			bool	usesAliases : 1;
-			bool	global : 1;
-			bool	usePackData : 1;
-			bool	swapTarget : 1;
-			OpCode	opCode : 3;
+			ComparisonFlags();
+			~ComparisonFlags() = default;
+
+
+			bool	isOR : 1;			// 0 - false == AND, true == OR
+			bool	usesAliases : 1;	// 1
+			bool	global : 1;			// 2
+			bool	usePackData : 1;	// 3
+			bool	swapTarget : 1;		// 4
+			OpCode	opCode : 3;			// 5
 		};
 		STATIC_ASSERT(sizeof(ComparisonFlags) == 0x1);
 
 
 		struct Node	// CTDA
 		{
+			Node();
+			~Node() = default;
+
+			TES_HEAP_REDEFINE_NEW();
+
 			bool Run(Solution& a_solution);
 
 
@@ -502,6 +512,11 @@ namespace RE
 		};
 		STATIC_ASSERT(sizeof(Node) == 0x38);
 
+
+		Condition();
+		~Condition();
+
+		TES_HEAP_REDEFINE_NEW();
 
 		explicit operator bool() const;
 		bool Run(TESObjectREFR* a_perkOwner, TESObjectREFR* a_target);	// Perk fragments will short circuit

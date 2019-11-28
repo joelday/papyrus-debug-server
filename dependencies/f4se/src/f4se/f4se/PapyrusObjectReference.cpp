@@ -558,6 +558,10 @@ namespace papyrusObjectReference {
 		bool operator()(const std::pair<BGSMaterialSwap::MaterialSwap*,float> lhs, const std::pair<BGSMaterialSwap::MaterialSwap*,float> rhs) {
 			return lhs.first->source < rhs.first->source;
 		}
+
+		bool operator()(const std::pair<BGSMaterialSwap::MaterialSwap*, float> lhs, const std::pair<BGSMaterialSwap::MaterialSwap*, float> rhs) const {
+			return lhs.first->source < rhs.first->source;
+		}
 	};
 
 	VMArray<RemapData> ApplyMaterialSwapLatent(UInt32 stackId, VMRefOrInventoryObj * thisObj, BGSMaterialSwap * materialSwap, bool renameMaterial)

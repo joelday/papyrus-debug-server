@@ -7,6 +7,7 @@
 #include "f4se/PapyrusStruct.h"
 
 #include <vector>
+#include <map>
 
 class VMState;
 class VMValue;

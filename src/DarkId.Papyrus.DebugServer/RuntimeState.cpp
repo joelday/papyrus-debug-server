@@ -159,7 +159,7 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		if (variable->IsObject())
 		{
-			return std::make_shared<ObjectStateNode>(name, variable->GetObject(), variable->GetScriptClass());
+			return std::make_shared<ObjectStateNode>(name, variable->GetObject(), variable->GetClass());
 		}
 
 #if FALLOUT
