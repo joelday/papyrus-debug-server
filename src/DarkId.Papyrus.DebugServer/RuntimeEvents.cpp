@@ -235,7 +235,7 @@ namespace DarkId::Papyrus::DebugServer
 		}
 #elif FALLOUT
 
-		RelocAddr<uintptr_t> InstructionExecute(0x0276e9bd);
+		RelocAddr<uintptr_t> InstructionExecute(0x0276eadd);
 
 		void InstructionExecute_Hook(RE::BSScript::Internal::CodeTasklet* tasklet, RE::BSScript::Internal::CodeTasklet::OpCode opCode)
 		{
@@ -246,7 +246,7 @@ namespace DarkId::Papyrus::DebugServer
 		}
 
 		typedef bool (*_CreateStack)(RE::BSScript::Internal::VirtualMachine* vm, UInt64 unk1, UInt64 unk2, UInt64 unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack);
-		RelocAddr<_CreateStack> CreateStack(0x02741f50);
+		RelocAddr<_CreateStack> CreateStack(0x02742070);
 		_CreateStack CreateStack_Original = nullptr;
 
 		bool CreateStack_Hook(RE::BSScript::Internal::VirtualMachine* vm, UInt64 unk1, UInt64 unk2, UInt64 unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack)
@@ -262,7 +262,7 @@ namespace DarkId::Papyrus::DebugServer
 		}
 
 		typedef void (*_CleanupStack)(RE::BSScript::Internal::VirtualMachine* vm, RE::BSScript::Stack* stack);
-		RelocAddr<_CleanupStack> CleanupStack(0x027424f0);
+		RelocAddr<_CleanupStack> CleanupStack(0x02742610);
 		_CleanupStack CleanupStack_Original = nullptr;
 
 		void CleanupStack_Hook(RE::BSScript::Internal::VirtualMachine* vm, RE::BSScript::Stack* stack)

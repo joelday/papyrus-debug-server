@@ -96,16 +96,16 @@ extern "C"
 	{
 		_MESSAGE("Papyrus Debug Server loaded");
 
-//#if _DEBUG
-//		_MESSAGE("Waiting for debugger to attach");
-// 
-//		while (!IsDebuggerPresent())
-//		{
-//			Sleep(10);
-//		}
-// 
-//		Sleep(1000 * 2);
-//#endif
+#if _DEBUG
+		_MESSAGE("Waiting for debugger to attach");
+ 
+		while (!IsDebuggerPresent())
+		{
+			Sleep(10);
+		}
+ 
+		Sleep(1000 * 2);
+#endif
 
 		if (!g_branchTrampoline.Create(1024 * 64))
 		{
