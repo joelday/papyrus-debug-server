@@ -32,7 +32,7 @@ public:
 	CRITICAL_SECTION			lock;				// 2790
 
 	// 1412F0390 - CreateRenderTargets
-	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00D6D710, UInt32 width, UInt32 height);
+	DEFINE_MEMBER_FN_2(CreateRenderTexture, NiTexture::RendererData *, 0x00D6DBC0, UInt32 width, UInt32 height);
 };
 
 extern RelocPtr <BSRenderManager> g_renderManager;

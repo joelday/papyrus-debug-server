@@ -170,9 +170,9 @@ public:
 
 	MEMBER_FN_PREFIX(NiRenderedTexture);
 	DEFINE_MEMBER_FN(ctor, void, 0x00000000);
-	DEFINE_MEMBER_FN(UpdateVirtualImage, void, 0x00ECDAA0, NiRenderedTexture * newTexture);
-	DEFINE_MEMBER_FN(AddVirtualImage, UInt8, 0x00ECDB60, BSFixedString linkageName);
-	DEFINE_MEMBER_FN(ReleaseVirtualImage, void, 0x00ECDA30);
+	DEFINE_MEMBER_FN(UpdateVirtualImage, void, 0x00ECDF50, NiRenderedTexture * newTexture);
+	DEFINE_MEMBER_FN(AddVirtualImage, UInt8, 0x00ECE010, BSFixedString linkageName);
+	DEFINE_MEMBER_FN(ReleaseVirtualImage, void, 0x00ECDEE0);
 };
 
 // 58
@@ -199,3 +199,6 @@ public:
 
 typedef NiTexture * (*_CreateSourceTexture)(const BSFixedString & name);
 extern RelocAddr<_CreateSourceTexture> CreateSourceTexture;
+
+typedef void (*_LoadTexture)(const char * path, UInt8 unk1, NiPointer<NiTexture> & texture, bool unk2);
+extern RelocAddr<_LoadTexture> LoadTexture;

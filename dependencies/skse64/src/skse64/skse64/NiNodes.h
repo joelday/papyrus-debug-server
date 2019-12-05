@@ -25,7 +25,7 @@ public:
 
 	static NiNode * Create(UInt32 arrBufLen = 0);
 
-	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C575B0, UInt16 arrBufLen);
+	DEFINE_MEMBER_FN_1(ctor, NiNode*, 0x00C57A60, UInt16 arrBufLen);
 };
 STATIC_ASSERT(sizeof(NiNode) == 0x128);
 
@@ -37,7 +37,7 @@ public:
 
 	static BSFadeNode * Create();
 
-	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x0128F450);
+	DEFINE_MEMBER_FN_0(ctor, BSFadeNode *, 0x0128F900);
 };
 STATIC_ASSERT(sizeof(BSFadeNode) == 0x158);
 

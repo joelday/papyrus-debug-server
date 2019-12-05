@@ -31,7 +31,7 @@ namespace RE
 			kDoNotDeleteOnClose = 1 << 1,
 			kShowCursor = 1 << 2,
 			kUnk0008 = 1 << 3,
-			kModal = 1 << 4,
+			kModal = 1 << 4,	// prevents lower movies with this flag from advancing
 			kStopDrawingWorld = 1 << 5,
 			kOpen = 1 << 6,
 			kPreventGameLoad = 1 << 7,
@@ -70,23 +70,23 @@ namespace RE
 		virtual void	Unk_07(void);										// 07 - { return; }
 		virtual void	InitMovie();										// 08
 
-		bool	PausesGame() const;
 		bool	DeletesOnClose() const;
-		bool	ShowsCursor() const;
 		bool	HasFlag0008() const;
-		bool	IsModal() const;
-		bool	StopsDrawingWorld() const;
-		bool	IsOpen() const;
-		bool	PreventsGameLoad() const;
 		bool	HasFlag0100() const;
-		bool	HidesOtherMenus() const;
-		bool	TriesToShowCursor() const;
-		bool	PreventsGameSave() const;
 		bool	HasFlag1000() const;
-		bool	IsItemMenu() const;
-		bool	StopsCrosshairUpdates() const;
 		bool	HasFlag8000() const;
 		bool	HasFlag10000() const;
+		bool	HidesOtherMenus() const;
+		bool	IsItemMenu() const;
+		bool	IsModal() const;
+		bool	IsOpen() const;
+		bool	PausesGame() const;
+		bool	PreventsGameLoad() const;
+		bool	PreventsGameSave() const;
+		bool	ShowsCursor() const;
+		bool	StopsCrosshairUpdates() const;
+		bool	StopsDrawingWorld() const;
+		bool	TriesToShowCursor() const;
 
 
 		// members

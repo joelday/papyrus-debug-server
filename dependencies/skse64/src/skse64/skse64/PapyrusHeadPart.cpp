@@ -81,6 +81,11 @@ namespace papyrusHeadPart
 			thisPart->validRaces = raceList;
 		}
 	}
+
+	BSFixedString GetPartName(BGSHeadPart* thisPart)
+	{
+		return thisPart ? thisPart->partName : "";
+	}
 }
 
 #include "PapyrusVM.h"
@@ -116,4 +121,7 @@ void papyrusHeadPart::RegisterFuncs(VMClassRegistry* registry)
 
 	registry->RegisterFunction(
 		new NativeFunction1<BGSHeadPart, void, BGSListForm*>("SetValidRaces", "HeadPart", papyrusHeadPart::SetValidRaces, registry));
+
+	registry->RegisterFunction(
+		new NativeFunction0<BGSHeadPart, BSFixedString>("GetPartName", "HeadPart", papyrusHeadPart::GetPartName, registry));
 }

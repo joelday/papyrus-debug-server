@@ -59,6 +59,9 @@ RelocAddr<_UpdateHarvestModel> UpdateHarvestModel(0x0019CE40);
 
 RelocAddr<_GetRelationshipIndex> GetRelationshipIndex(0x00345ED0);
 
+// aNosetype
+RelocPtr<FacePresetList> g_facePresetList(0x01DD6210);
+
 // C5B21010DCF340FCDDDC7866C50C3D78AEF34CB5+6B
 //RelocPtr <bool> g_isGameDataReady(0x058FEAB4);
 
@@ -235,4 +238,9 @@ SInt32 RelationshipRanks::GetRelationshipRank(TESForm * form1, TESForm * form2)
 	}
 
 	return ranks->value[kRelationshipAcquaintance];
+}
+
+FacePresetList * FacePresetList::GetSingleton(void)
+{
+	return g_facePresetList;
 }

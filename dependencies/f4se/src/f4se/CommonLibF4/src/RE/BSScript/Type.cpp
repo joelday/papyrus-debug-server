@@ -117,7 +117,7 @@ namespace RE
 			return vm->GetStructTypeInfo(typeInfo->GetName(), structTypeInfo);
 		}
 
-		ObjectTypeInfo* Type::GetScriptClass() const
+		ObjectTypeInfo* Type::GetClass() const
 		{
 			return IsObjectOrObjectArray() ? reinterpret_cast<ObjectTypeInfo*>(GetComplexType()) : 0;
 		}

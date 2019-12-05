@@ -27,7 +27,8 @@ namespace RE
 
 		static TESMemoryManager* GetSingleton();
 
-		void*	Malloc(std::size_t a_size, std::size_t a_alignment, bool a_aligned);
+		void*	Malloc(std::size_t a_size, SInt32 a_alignment, bool a_aligned);
+		void*	Realloc(void* a_ptr, std::size_t a_newSize, SInt32 a_alignment, bool a_aligned);
 		void	Free(void* a_ptr, bool a_aligned);
 
 
@@ -191,7 +192,9 @@ namespace RE
 	inline void* malloc(std::size_t a_size)
 	{
 		auto heap = TESMemoryManager::GetSingleton();
-		return heap->Malloc(a_size, 0, false);
+		auto mem = heap->Malloc(a_size, 0, false);
+		assert(mem != 0);
+		return mem;
 	}
 
 
@@ -212,14 +215,16 @@ namespace RE
 	inline void* aligned_alloc(std::size_t a_alignment, std::size_t a_size)
 	{
 		auto heap = TESMemoryManager::GetSingleton();
-		return heap->Malloc(a_size, a_alignment, true);
+		auto mem = heap->Malloc(a_size, static_cast<SInt32>(a_alignment), true);
+		assert(mem != 0);
+		return mem;
 	}
 
 
 	template <class T>
 	inline T* aligned_alloc(std::size_t a_alignment, std::size_t a_size)
 	{
-		return static_cast<T*>(aligned_alloc(a_alignment, a_size));
+		return static_cast<T*>(aligned_alloc(static_cast<SInt32>(a_alignment), a_size));
 	}
 
 
@@ -250,8 +255,47 @@ namespace RE
 	}
 
 
+	inline void* realloc(void* a_ptr, std::size_t a_newSize)
+	{
+		auto heap = TESMemoryManager::GetSingleton();
+		auto mem = heap->Realloc(a_ptr, a_newSize, 0, false);
+		assert(mem != 0);
+		return mem;
+	}
+
+
+	template <class T>
+	inline T* realloc(void* a_ptr, std::size_t a_newSize)
+	{
+		auto heap = TESMemoryManager::GetSingleton();
+		auto mem = heap->Realloc(a_ptr, a_newSize, 0, false);
+		assert(mem != 0);
+		return static_cast<T*>(mem);
+	}
+
+
+	inline void* aligned_realloc(void* a_ptr, std::size_t a_newSize, std::size_t a_alignment)
+	{
+		auto heap = TESMemoryManager::GetSingleton();
+		auto mem = heap->Realloc(a_ptr, a_newSize, a_alignment, true);
+		assert(mem != 0);
+		return mem;
+	}
+
+
+	template <class T>
+	inline T* aligned_realloc(void* a_ptr, std::size_t a_newSize, std::size_t a_alignment)
+	{
+		auto heap = TESMemoryManager::GetSingleton();
+		auto mem = heap->Realloc(a_ptr, a_newSize, a_alignment, true);
+		assert(mem != 0);
+		return static_cast<T*>(mem);
+	}
+
+
 	inline void free(void* a_ptr)
 	{
+		assert(a_ptr != 0);
 		auto heap = TESMemoryManager::GetSingleton();
 		heap->Free(a_ptr, false);
 	}
@@ -259,6 +303,7 @@ namespace RE
 
 	inline void aligned_free(void* a_ptr)
 	{
+		assert(a_ptr != 0);
 		auto heap = TESMemoryManager::GetSingleton();
 		heap->Free(a_ptr, true);
 	}

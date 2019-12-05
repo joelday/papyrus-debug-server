@@ -20,7 +20,7 @@ namespace RE
 			VMTypeID		GetUnmangledType() const;
 			
 			IComplexType*	GetComplexType() const;
-			ObjectTypeInfo*	GetScriptClass() const;
+			ObjectTypeInfo*	GetClass() const;
 			StructTypeInfo* GetStructType() const;
 			
 			bool			IsComplexType() const;

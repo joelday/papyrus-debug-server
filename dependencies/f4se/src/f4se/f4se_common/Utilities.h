@@ -1,6 +1,5 @@
 #pragma once
 
-#include <string>
 #include "f4se_common/Relocation.h"
 
 // this has been tested to work for non-varargs functions

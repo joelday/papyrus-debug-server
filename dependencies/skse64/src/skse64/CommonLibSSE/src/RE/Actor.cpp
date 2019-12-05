@@ -2,8 +2,12 @@
 
 #include "skse64/GameReferences.h"  // Actor
 
+#include "RE/ActorProcessManager.h"  // ActorProcessManager
 #include "RE/BGSAttackData.h"  // BGSAttackData
 #include "RE/ExtraFactionChanges.h"  // ExtraFactionChanges
+#include "RE/InventoryChanges.h"  // InventoryChanges
+#include "RE/InventoryEntryData.h"  // InventoryEntryData
+#include "RE/MiddleProcess.h"  // MiddleProcess
 #include "RE/Offsets.h"
 #include "RE/TESActorBaseData.h"  // TESActorBaseData
 #include "RE/TESFaction.h"  // TESFaction
@@ -14,6 +18,14 @@
 
 namespace RE
 {
+	bool Actor::AddSpell(SpellItem* a_spell)
+	{
+		using func_t = function_type_t<decltype(&Actor::AddSpell)>;
+		REL::Offset<func_t*> func(Offset::Actor::AddSpell);
+		return func(this, a_spell);
+	}
+
+
 	SInt32 Actor::CalcEntryValue(InventoryEntryData* a_entryData, UInt32 a_numItems, bool a_multiplyValueByRemainingItems) const
 	{
 		using func_t = function_type_t<decltype(&Actor::CalcEntryValue)>;
@@ -102,6 +114,34 @@ namespace RE
 		} else {
 			return 0;
 		}
+	}
+
+
+	SInt32 Actor::GetGoldAmount()
+	{
+		SInt32 gold = 0;
+
+		auto invChanges = GetInventoryChanges();
+		if (invChanges && invChanges->entryList) {
+			for (auto& entry : *invChanges->entryList) {
+				if (entry->type && entry->type->IsGold()) {
+					gold += entry->countDelta;
+				}
+			}
+		}
+
+		auto cont = GetContainer();
+		if (cont) {
+			cont->ForEach([&](RE::TESContainer::Entry* a_entry) -> bool
+			{
+				if (a_entry->form && a_entry->form->IsGold()) {
+					gold += a_entry->count;
+				}
+				return true;
+			});
+		}
+
+		return gold;
 	}
 
 

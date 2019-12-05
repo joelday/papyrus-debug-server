@@ -5,7 +5,6 @@
 #include <minwinbase.h>  // CRITICAL_SECTION
 
 #include "RE/ActiveEffect.h"  // ActiveEffect
-#include "RE/ActorProcessManager.h"  // ActorProcessManager
 #include "RE/ActorState.h"  // ActorState
 #include "RE/ActorValueOwner.h"  // ActorValueOwner
 #include "RE/ActorValues.h"  // ActorValue, ActorValue8
@@ -24,6 +23,7 @@
 namespace RE
 {
 	class ActorMover;
+	class ActorProcessManager;
 	class BaseExtraList;
 	class bhkCharacterMoveFinishEvent;
 	class BSTransformDeltaEvent;
@@ -126,52 +126,6 @@ namespace RE
 			float modifiers[Modifiers::kTotal];	// 0
 		};
 		STATIC_ASSERT(sizeof(ActorValueModifiers) == 0xC);
-
-
-		struct WeaponStrikeData
-		{
-			enum class Flag : UInt32
-			{
-				kNone = 0,
-				kCriticalStrike = 1 << 3,
-				kSneakAttack = 1 << 11,
-				kPowerAttack = 1 << 16,
-				kLeftHand = 1 << 17
-			};
-
-
-			// members
-			float					unk00;		// 00
-			float					unk04;		// 04
-			float					unk08;		// 08
-			float					unk0C;		// 0C
-			float					unk10;		// 10
-			float					unk14;		// 14
-			RefHandle				unk18;		// 18
-			UInt32					unk1C;		// 1C
-			RefHandle				unk20;		// 20
-			UInt32					unk24;		// 24
-			NiPointer<NiRefObject>	unk28;		// 28
-			TESObjectWEAP*			unk30;		// 30
-			UInt64					unk38;		// 38
-			UInt64					unk40;		// 40
-			UInt64					unk48;		// 48
-			UInt32					unk50;		// 50
-			UInt32					unk54;		// 54
-			UInt64					unk58;		// 58
-			UInt64					unk60;		// 60
-			float					unk68;		// 68
-			float					unk6C;		// 6C
-			float					damageMult;	// 70
-			UInt32					unk74;		// 74
-			float					unk78;		// 78
-			UInt32					unk7C;		// 7C
-			Flag					flags;		// 80
-			UInt32					unk84;		// 84
-			SInt32					unk88;		// 88
-			SInt32					unk8C;		// 8C
-		};
-		STATIC_ASSERT(sizeof(WeaponStrikeData) == 0x90);
 
 
 		struct ActorValueMap
@@ -314,13 +268,13 @@ namespace RE
 		virtual void							OnItemEquipped(bool a_playAnim);																																									// 0B2
 		virtual void							Unk_B3(void);																																														// 0B3 - { return 1; }
 		virtual void							Unk_B4(void);																																														// 0B4
-		virtual void							SetBounty(TESFaction* a_faction, bool a_bViolent, SInt32 a_gold);																																	// 0B5
-		virtual void							ModBounty(TESFaction* a_faction, bool a_bViolent, SInt32 a_gold);																																	// 0B6
-		virtual void							AddCrimeGold(UInt32 a_gold, bool a_bViolent, TESFaction* a_faction);																																// 0B7
-		virtual UInt32							GetBounty(TESFaction* a_faction);																																									// 0B8
-		virtual void							Unk_B9(void);																																														// 0B9 - { return; }
-		virtual void							ServeJailTime();																																													// 0BA - { return; }
-		virtual void							PayBounty(TESFaction* a_faction, bool a_removeStolenItems, bool a_goToJail);																														// 0BB - { return; }
+		virtual void							SetCrimeGold(TESFaction* a_faction, bool a_violent, SInt32 a_gold);																																	// 0B5
+		virtual void							ModCrimeGold(TESFaction* a_faction, bool a_violent, SInt32 a_amount);																																// 0B6
+		virtual void							AddCrimeGold(SInt32 a_amount, bool a_violent, TESFaction* a_faction);																																// 0B7
+		virtual SInt32							GetCrimeGold(const TESFaction* a_faction) const;																																					// 0B8
+		virtual void							SendToJail(TESFaction* a_faction, bool a_removeInventory, bool a_realJail);																															// 0B9 - { return; }
+		virtual void							Unk_BA(void);																																														// 0BA - { return; }
+		virtual void							PayCrimeGold(TESFaction* a_faction, bool a_goToJail, bool a_removeStolenItems);																														// 0BB - { return; }
 		virtual UInt32							IsCannibalizing();																																													// 0BC - { return 0; }
 		virtual void							Unk_BD(void);																																														// 0BD - { return; }
 		virtual UInt32							IsVampireFeeding();																																													// 0BE - { return 0; }
@@ -430,6 +384,7 @@ namespace RE
 		virtual void							Unk_126(void);																																														// 126
 		virtual float							IncerceptActorValueChange(UInt32 a_avIndex, float a_avChangeBy);																																	// 127
 
+		bool						AddSpell(SpellItem* a_spell);
 		SInt32						CalcEntryValue(InventoryEntryData* a_entryData, UInt32 a_numItems, bool a_multiplyValueByRemainingItems) const;
 		void						DispelWornItemEnchantments();
 		TESNPC*						GetActorBase() const;
@@ -439,6 +394,7 @@ namespace RE
 		InventoryEntryData*			GetEquippedEntryData(bool a_leftHand);
 		const InventoryEntryData*	GetEquippedEntryData(bool a_leftHand) const;
 		TESForm*					GetEquippedObject(bool a_leftHand) const;
+		SInt32						GetGoldAmount();
 		float						GetHeight();
 		UInt16						GetLevel() const;
 		TESRace*					GetRace() const;
@@ -478,7 +434,7 @@ namespace RE
 		RefHandle					combatTarget;								// 0FC
 		RefHandle					killer;										// 100
 		UInt32						unk104;										// 104
-		float						unk108;										// 108 - init'd to -1
+		float						unk108;										// 108
 		UInt32						unk10C;										// 10C
 		UInt32						unk110;										// 110
 		UInt32						unk114;										// 114
@@ -486,9 +442,9 @@ namespace RE
 		UInt32						unk11C;										// 11C
 		NiPoint3					startingPos;								// 120
 		float						startingRotZ;								// 12C
-		void*						unk130;										// 130
+		TESObjectCELL*				startingCell;								// 130
 		BGSLocation*				startingLocation;							// 138
-		ActorMover*					unk140;										// 140
+		ActorMover*					mover;										// 140
 		MovementControllerNPC*		unk148;										// 148
 		void*						unk150;										// 150
 		void*						unk158;										// 158
@@ -496,18 +452,18 @@ namespace RE
 		float						unk168;										// 168
 		UInt32						unk16C;										// 16C
 		UInt32						unk170;										// 170
-		UInt32						unk174;										// 174 - init'd to 50
+		UInt32						unk174;										// 174
 		UInt32						unk178;										// 178
-		UInt32						unk17C;										// 17C - init'd to 7FFFFFFF
+		UInt32						unk17C;										// 17C
 		UInt64						unk180;										// 180
 		BSTSmallArray<SpellItem*>	addedSpells;								// 188
 		MagicCaster*				magicCaster[SlotTypes::kNumSlots];			// 1A0
-		MagicCaster*				equippingMagicItems[SlotTypes::kNumSlots];	// 1C0
+		SpellItem*					equippingMagicItems[SlotTypes::kNumSlots];	// 1C0
 		TESForm*					equippedShout;								// 1E0
 		UInt32						unk1E8;										// 1E8
 		UInt32						pad1EC;										// 1EC
 		TESRace*					race;										// 1F0
-		float						unk1F8;										// 1F8 - init'd to -1
+		float						unk1F8;										// 1F8
 		Flag2						flags2;										// 1FC
 		ActorValueMap				avMap;										// 200
 		UInt64						unk220;										// 220
@@ -515,7 +471,7 @@ namespace RE
 		ActorValueModifiers			avMagicka;									// 234
 		ActorValueModifiers			avStamina;									// 240
 		ActorValueModifiers			avVoicePoints;								// 24C
-		float						unk258;										// 258 - init'd to -1
+		float						unk258;										// 258
 		UInt32						unk25C;										// 25C
 		Biped*						smallBiped;									// 260
 		float						unk268;										// 268 - related to armor rating

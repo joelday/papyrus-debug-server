@@ -33,6 +33,7 @@ class BSFile;
 class BSFaceGenModelMap;
 class BSFaceGenModel;
 class NiTexture;
+class Setting;
 
 class NiAVObject;
 class NiColorA;
@@ -142,7 +143,7 @@ struct ModInfo		// referred to by game as TESFile
 	{
 		if (!IsLight() && (formID >> 24) == modIndex)
 			return true;
-		if (IsLight() && ((formID & 0x00FFF000) >> 12) == lightIndex)
+		if (IsLight() && (formID >> 24) == 0xFE && ((formID & 0x00FFF000) >> 12) == lightIndex)
 			return true;
 		return false;
 	}
@@ -902,15 +903,6 @@ public:
 };
 STATIC_ASSERT(sizeof(DefaultObjectList::DefaultObject) == 0x18);
 
-class FacePresetData
-{
-public:
-	virtual ~FacePresetData();
-
-	UInt32 unk08;	// Always 10?
-	const char * gameSettingName;
-};
-
 class FacePresetList
 {
 public:
@@ -927,10 +919,12 @@ public:
 	struct Preset
 	{
 		const char * presetName;
-		FacePresetData * data;
+		Setting * gameSetting;
 	};
 
 	Preset presets[kNumPresets];
+
+	static FacePresetList *	GetSingleton(void);
 };
 
 class FaceMorphList

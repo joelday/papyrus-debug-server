@@ -1,13 +1,14 @@
 #include "skse64/NiGeometry.h"
 #include "skse64/GameAPI.h"
 
-RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00C66FE0);
+RelocAddr<_CreateBSTriShape> CreateBSTriShape(0x00C67490);
+RelocAddr<_CreateBSDynamicTriShape> CreateBSDynamicTriShape(0x00C72180);
 
 // ??_7NiTriShape@@6B@
-static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0176D0F0);
+static const RelocPtr<uintptr_t> s_NiTriShapeVtbl(0x0176D060);
 
 // ??_7NiTriStrips@@6B@
-static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x0176D630);
+static const RelocPtr<uintptr_t> s_NiTriStripsVtbl(0x0176D5A0);
 
 void NiGeometryData::AllocateVerts(UInt32 numVerts)
 {

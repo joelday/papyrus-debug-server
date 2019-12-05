@@ -276,7 +276,7 @@ namespace papyrusGame
 
 		ModInfo* modInfo = NULL;
 		pDataHandler->modList.loadedCCMods.GetNthItem(index, modInfo);
-		return (modInfo && dep_index < modInfo->numRefMods) ? modInfo->refModInfo[dep_index]->lightIndex : 0;
+		return (modInfo && dep_index < modInfo->numRefMods) ? modInfo->refModInfo[dep_index]->modIndex : 0;
 	}
 
 	bool IsPluginInstalled(StaticFunctionTag*, BSFixedString name)
@@ -488,7 +488,7 @@ namespace papyrusGame
 		// Compute skintone
 		if(tintMask->tintType == TintMask::kMaskType_SkinTone) {
 			NiColorA colorResult;
-			CALL_MEMBER_FN(actorBase, SetSkinFromTint)(&colorResult, tintMask, 1, 0);
+			CALL_MEMBER_FN(actorBase, SetSkinFromTint)(&colorResult, tintMask, true);
 		}
 	}
 

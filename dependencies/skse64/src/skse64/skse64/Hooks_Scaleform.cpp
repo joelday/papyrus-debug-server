@@ -1513,7 +1513,7 @@ namespace alchemyMenuDataHook
 
 			// Call hooked func
 			GFxValue::ObjectInterface* p = reinterpret_cast<GFxValue::ObjectInterface*>(this);
-			return CALL_MEMBER_FN(p,Invoke)(obj, result, name, args, numArgs, isDisplayObj);
+			return p->Invoke(obj, result, name, args, numArgs, isDisplayObj);
 		}	
 	};
 
@@ -1626,7 +1626,7 @@ void InstallHooks(GFxMovieView * view)
 	globals.SetMember("skse", &skse);
 }
 
-RelocAddr <uintptr_t> kInstallHooks_Enter(0x00ECE2E0 + 0x1D9);
+RelocAddr <uintptr_t> kInstallHooks_Enter(0x00ECE790 + 0x1D9);
 
 void InstallHooks_Entry(GFxMovieView *pthis, UInt32 unk)
 {

@@ -32,7 +32,7 @@ struct RenderTargetInfo
 };
 
 typedef void ( * _CreateRenderTarget)(void * renderTargetManager, UInt64 type, RenderTargetInfo * info);
-RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00D746B0);
+RelocAddr<_CreateRenderTarget> CreateRenderTarget(0x00D74B60);
 _CreateRenderTarget CreateRenderTarget_Original = nullptr;
 
 void CreateRenderTarget_Hook(BSRenderManager ** targetManager, UInt64 type, RenderTargetInfo * info)

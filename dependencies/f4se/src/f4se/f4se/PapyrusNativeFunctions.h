@@ -43,8 +43,7 @@ public:
 	virtual void			Unk_0E() = 0;
 	virtual UInt32			Invoke(void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3) = 0;
 	virtual BSFixedString *	GetSourceFile() = 0;	// guess
-    // DebugServer: Changed this to GetLineNumber
-	virtual bool			GetLineNumber(UInt32 a_taskletExecutionOffset, UInt32& a_lineNumber) = 0;											// 11
+	virtual bool			Unk_11(UInt32 arg0, UInt32 * arg1) = 0;
 	virtual bool			GetParamName(UInt32 idx, BSFixedString * out) = 0;
 	virtual UInt32			GetUnk41() = 0;
 	virtual void			SetUnk41(UInt8 arg) = 0;
@@ -80,7 +79,7 @@ public:
 		UInt32		pad0C;
 
 		MEMBER_FN_PREFIX(ParameterInfo);
-		DEFINE_MEMBER_FN(GetParam, UInt64, 0x0270DCE0, UInt32 idx, BSFixedString * outName, UInt64 * outType);
+		DEFINE_MEMBER_FN(GetParam, UInt64, 0x0270DE00, UInt32 idx, BSFixedString * outName, UInt64 * outType);
 	};
 
 	virtual BSFixedString *	GetName()							{ return &m_fnName; }
@@ -101,7 +100,7 @@ public:
 	virtual UInt32			Invoke(void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3)
 																{ return CALL_MEMBER_FN(this, Impl_Invoke)(arg0, arg1, arg2, arg3); }
 	virtual BSFixedString *	GetSourceFile()						{ return CALL_MEMBER_FN(this, Impl_GetSourceFile)(); }
-	virtual bool			GetLineNumber(UInt32 a_taskletExecutionOffset, UInt32& a_lineNumber) { a_lineNumber = 0; return false; }
+	virtual bool			Unk_11(UInt32 arg0, UInt32 * arg1)	{ *arg1 = 0; return false; }
 	virtual bool			GetParamName(UInt32 idx, BSFixedString * out)
 																{ return CALL_MEMBER_FN(this, Impl_GetParamName)(idx, out); }
 	virtual UInt32			GetUnk41()							{ return m_unk41; }
@@ -110,9 +109,9 @@ public:
 	virtual bool			Run(VMValue * baseValue, VirtualMachine * vm, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunctionBase);
-	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x0270D430, void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3);
-	DEFINE_MEMBER_FN(Impl_GetSourceFile, BSFixedString *, 0x0270D300);
-	DEFINE_MEMBER_FN(Impl_GetParamName, bool, 0x0270D320, UInt32 idx, BSFixedString * out);
+	DEFINE_MEMBER_FN(Impl_Invoke, UInt32, 0x0270D550, void * arg0, void * arg1, VirtualMachine * arg2, VMState * arg3);
+	DEFINE_MEMBER_FN(Impl_GetSourceFile, BSFixedString *, 0x0270D420);
+	DEFINE_MEMBER_FN(Impl_GetParamName, bool, 0x0270D440, UInt32 idx, BSFixedString * out);
 
 	DEFINE_STATIC_HEAP(Heap_Allocate, Heap_Free);
 
@@ -144,8 +143,8 @@ public:
 	virtual bool	Run(VMValue * baseValue, VirtualMachine * vm, UInt32 arg2, VMValue * resultValue, VMState * state) = 0;
 
 	MEMBER_FN_PREFIX(NativeFunction);
-	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x0270D930, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
-	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0270DB50);
+	DEFINE_MEMBER_FN(Impl_ctor, NativeFunction *, 0x0270DA50, const char * fnName, const char * className, UInt32 unk0, UInt32 numParams);
+	DEFINE_MEMBER_FN(Impl_dtor, void, 0x0270DC70);
 
 protected:
 	void	* m_callback;	// 50

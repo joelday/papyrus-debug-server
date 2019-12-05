@@ -1,6 +1,7 @@
 #pragma once
 
 #include "skse64/GameRTTI.h"  // RTTI_NiTimeController
+#include "skse64/NiRTTI.h"  // NiRTTI_NiTimeController
 
 #include "RE/NiObject.h"  // NiObject
 #include "RE/NiSmartPointer.h"  // NiSmartPointer
@@ -18,6 +19,7 @@ namespace RE
 	{
 	public:
 		inline static const void* RTTI = RTTI_NiTimeController;
+		inline static const void* Ni_RTTI = NiRTTI_NiTimeController;
 
 
 		enum class Flag : UInt16
@@ -39,28 +41,28 @@ namespace RE
 		};
 
 
-		virtual ~NiTimeController();										// 00
+		virtual ~NiTimeController();												// 00
 
 		// override (NiObject)
-		virtual NiRTTI*	GetRTTI() override;									// 02
-		virtual void	LoadBinary(NiStream* a_stream) override;			// 18
-		virtual void	LinkObject(NiStream* a_stream) override;			// 19
-		virtual bool	RegisterStreamables(NiStream* a_stream) override;	// 1A
-		virtual void	SaveBinary(NiStream* a_stream) override;			// 1B
-		virtual bool	IsEqual(NiObject* a_object) override;				// 1C
-		virtual void	ProcessClone(NiCloningProcess& a_cloning) override;	// 1D
+		virtual const NiRTTI*	GetRTTI() const override;							// 02
+		virtual void			LoadBinary(NiStream& a_stream) override;			// 18
+		virtual void			LinkObject(NiStream& a_stream) override;			// 19
+		virtual bool			RegisterStreamables(NiStream& a_stream) override;	// 1A
+		virtual void			SaveBinary(NiStream& a_stream) override;			// 1B
+		virtual bool			IsEqual(NiObject* a_object) override;				// 1C
+		virtual void			ProcessClone(NiCloningProcess& a_cloning) override;	// 1D
 
 		// add
-		virtual void	Start(float a_time);								// 25
-		virtual void	Stop();												// 26
-		virtual void	Update(float a_time) = 0;							// 27
-		virtual void	SetTarget(NiObjectNET* a_node);						// 28
-		virtual void	Unk_29(void);										// 29 - { return 0; }
-		virtual void	Unk_2A(void);										// 2A - { return 0; }
-		virtual void	Unk_2B(void);										// 2B
-		virtual void	Unk_2C(void);										// 2C - { return 0; }
-		virtual void	Unk_2D(void);										// 2D - { return 1; }
-		virtual void	Unk_2E(void) = 0;									// 2E
+		virtual void			Start(float a_time);								// 25
+		virtual void			Stop();												// 26
+		virtual void			Update(float a_time) = 0;							// 27
+		virtual void			SetTarget(NiObjectNET* a_node);						// 28
+		virtual void			Unk_29(void);										// 29 - { return 0; }
+		virtual void			Unk_2A(void);										// 2A - { return 0; }
+		virtual void			Unk_2B(void);										// 2B
+		virtual void			Unk_2C(void);										// 2C - { return 0; }
+		virtual void			Unk_2D(void);										// 2D - { return 1; }
+		virtual void			Unk_2E(void) = 0;									// 2E
 
 
 		// members

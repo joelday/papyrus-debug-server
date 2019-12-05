@@ -20,8 +20,8 @@ namespace RE
 		inline static const void* RTTI = RTTI_MenuEventHandler;
 
 
-		MenuEventHandler();
-		virtual ~MenuEventHandler() {}									// 00
+		MenuEventHandler() = default;
+		virtual ~MenuEventHandler() = default;							// 00
 
 		virtual bool	CanProcess(InputEvent* a_event) = 0;			// 01
 		virtual bool	ProcessKinect(KinectEvent* a_event);			// 02 - { return false; }
@@ -31,7 +31,9 @@ namespace RE
 
 
 		// members
-		UInt32 unk0C;	// 0C
+		bool	registered;	// 0C
+		UInt8	unk0D;		// 0D
+		UInt16	pad0E;		// 0E
 	};
 	STATIC_ASSERT(sizeof(MenuEventHandler) == 0x10);
 }
