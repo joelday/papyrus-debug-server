@@ -98,8 +98,8 @@ namespace DarkId::Papyrus::DebugServer
 			void CommitHooks()
 			{
 				{
-					// E8 ? ? ? ? 48 83 C3 08 48 3B DF 75 EF 48 83 7C 24 30 00
-					constexpr std::uintptr_t FUNC_ADDR = 0x01277C60;	// 1_5_80
+					// OLD: E8 ? ? ? ? 48 83 C3 08 48 3B DF 75 EF 48 83 7C 24 30 00
+					constexpr std::uintptr_t FUNC_ADDR = 0x01278110;	// 1_5_97
 					constexpr std::size_t CAVE_START = 0x170;
 					constexpr std::size_t CAVE_END = 0x176;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
@@ -163,8 +163,8 @@ namespace DarkId::Papyrus::DebugServer
 				}
 
 				{
-					// E8 ? ? ? ? 48 8B 5C 24 38 48 85 DB 74 19
-					constexpr std::uintptr_t FUNC_ADDR = 0x01263D40;	// 1_5_80
+					// OLD: E8 ? ? ? ? 48 8B 5C 24 38 48 85 DB 74 19
+					constexpr std::uintptr_t FUNC_ADDR = 0x012641F0;	// 1_5_97
 					constexpr std::size_t HOOK_TARGET = 0x1D4;
 
 					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
@@ -192,8 +192,8 @@ namespace DarkId::Papyrus::DebugServer
 
 
 				{
-					// E8 ? ? ? ? 90 48 85 DB 74 24 41 8B C7
-					constexpr std::uintptr_t FUNC_ADDR = 0x01264240;	// 1_5_80
+					// OLD: E8 ? ? ? ? 90 48 85 DB 74 24 41 8B C7
+					constexpr std::uintptr_t FUNC_ADDR = 0x012646F0;	// 1_5_97
 					constexpr std::size_t CAVE_START = 0x0;
 					constexpr std::size_t CAVE_END = 0x9;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
