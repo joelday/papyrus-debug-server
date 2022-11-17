@@ -1,0 +1,23 @@
+{
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "name": "papyrus-debug-server",
+  "version-semver": "3.5.3",
+  "port-version": 0,
+  "description": "Websocket based debug adapter protocol xSE plugin for live Papyrus debugging support.",
+  "homepage": "https://github.com/joelday/papyrus-debug-server",
+  "license": "MIT",
+  "supports": "windows & x64",
+  "dependencies": [
+    "nlohmann-json",
+    "eventpp",
+    "websocketpp",
+    "openssl"
+  ],
+  "overrides": [
+    {"name":"nlohmann-json","version": "3.7.0"},
+    {"name":"eventpp","version": "0.1.2"},
+    {"name":"websocketpp","version": "0.8.2"},
+    {"name":"openssl","version-string": "1.0.2o-3"}
+  ],
+  "builtin-baseline": "6ca56aeb457f033d344a7106cb3f9f1abf8f4e98"
+}
