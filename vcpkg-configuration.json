@@ -29,5 +29,5 @@
       ]
     }
   ],
-  "overlay-ports" : [ "../vcpkg-colorglass/ports" ]
+  "overlay-ports" : [ "./dependencies/ports" ]
 }

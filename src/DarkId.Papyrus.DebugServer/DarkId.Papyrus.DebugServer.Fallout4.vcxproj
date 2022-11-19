@@ -315,8 +315,15 @@
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
   </PropertyGroup>
-  <PropertyGroup Label="Vcpkg">
-    <VcpkgInstalledDir>$(SolutionDir)fartslmao</VcpkgInstalledDir>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
+    <VcpkgConfiguration>Debug</VcpkgConfiguration>
   </PropertyGroup>
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Debug' AND $(F4SEPluginPath) != ''">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(F4SEPluginPath)" />
