@@ -60,6 +60,19 @@
     <OutDir>$(ProjectDir)bin\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <FalloutInstallPath>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Bethesda Softworks\Fallout4@installed path)</FalloutInstallPath>
+    <F4SEPluginPath Condition="$(FalloutInstallPath) != ''">$(FalloutInstallPath)Data\F4SE\Plugins</F4SEPluginPath>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -308,23 +321,6 @@
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
-  <PropertyGroup>
-    <FalloutInstallPath>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Bethesda Softworks\Fallout4@installed path)</FalloutInstallPath>
-    <F4SEPluginPath Condition="$(FalloutInstallPath) != ''">$(FalloutInstallPath)Data\F4SE\Plugins</F4SEPluginPath>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg">
-    <VcpkgEnableManifest>true</VcpkgEnableManifest>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgConfiguration>Debug</VcpkgConfiguration>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
-    <VcpkgConfiguration>Debug</VcpkgConfiguration>
-  </PropertyGroup>
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Debug' AND $(F4SEPluginPath) != ''">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(F4SEPluginPath)" />
     <Copy SourceFiles="$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(F4SEPluginPath)" />

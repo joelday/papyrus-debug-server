@@ -60,6 +60,19 @@
     <OutDir>$(ProjectDir)bin\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
     <IntDir>$(ProjectDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
+  <PropertyGroup>
+    <SkyrimInstallPath>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Bethesda Softworks\Skyrim Special Edition@installed path)</SkyrimInstallPath>
+    <SKSEPluginPath Condition="$(SkyrimInstallPath) != ''">$(SkyrimInstallPath)Data\SKSE\Plugins</SKSEPluginPath>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
+    <VcpkgUseStatic>true</VcpkgUseStatic>
+  </PropertyGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
@@ -306,23 +319,7 @@
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
-  <PropertyGroup>
-    <SkyrimInstallPath>$(registry:HKEY_LOCAL_MACHINE\SOFTWARE\WOW6432Node\Bethesda Softworks\Skyrim Special Edition@installed path)</SkyrimInstallPath>
-    <SKSEPluginPath Condition="$(SkyrimInstallPath) != ''">$(SkyrimInstallPath)Data\SKSE\Plugins</SKSEPluginPath>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg">
-    <VcpkgEnableManifest>true</VcpkgEnableManifest>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
-    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgConfiguration>Debug</VcpkgConfiguration>
-  </PropertyGroup>
-  <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
-    <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgInstalledDir>$(SolutionDir)some_test_dir</VcpkgInstalledDir>
-    <VcpkgConfiguration>Debug</VcpkgConfiguration>
-  </PropertyGroup>
+
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Debug' AND $(SKSEPluginPath) != ''">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(SKSEPluginPath)" />
     <Copy SourceFiles="$(TargetDir)\$(TargetName).pdb" DestinationFolder="$(SKSEPluginPath)" />
