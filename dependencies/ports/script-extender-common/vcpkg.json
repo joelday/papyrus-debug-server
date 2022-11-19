@@ -1,0 +1,13 @@
+{
+    "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+    "name": "script-extender-common",
+    "version-string": "2.1.5",
+    "description": "Papyrus script sources for the Skyrim Script Extender (SKSE).",
+    "homepage": "https://skse.silverlock.org/",
+    "dependencies": [
+        {
+            "name": "vcpkg-cmake-config",
+            "host": true
+        }
+    ]
+}

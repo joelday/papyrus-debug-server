@@ -1,0 +1,12 @@
+diff --git a/CMakeLists.txt b/CMakeLists.txt
+index 96c14ba..3c75ee3 100644
+--- a/CMakeLists.txt
++++ b/CMakeLists.txt
+@@ -3,7 +3,6 @@ cmake_minimum_required(VERSION 3.18)
+ # ---- Project ----
+ 
+ set(CMAKE_CXX_FLAGS_DEBUG "/D_DEBUG /Z7 /Ob0 /Od /RTC1" CACHE STRING "")
+-set(CMAKE_DEBUG_POSTFIX "d" CACHE STRING "")
+ set(CMAKE_MSVC_RUNTIME_LIBRARY "MultiThreaded$<$<CONFIG:Debug>:Debug>" CACHE STRING "")
+ 
+ project(
