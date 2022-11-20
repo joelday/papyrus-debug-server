@@ -11,12 +11,24 @@
     "nlohmann-json",
     "eventpp",
     "websocketpp",
-    "openssl",
-    "commonlibsse-ng",
-    "commonlibf4",
-    "f4se",
-    "skse"
+    "openssl"
   ],
+  "features": {
+    "skyrim": {
+      "description": "Add deps for Skyrim",
+      "dependencies": [
+        "commonlibsse-ng",
+        "skse"
+      ]
+    },
+    "fallout4": {
+      "description": "Add deps for Fallout 4",
+      "dependencies": [
+        "commonlibf4",
+        "f4se"
+      ]
+    }
+  },
   "overrides": [
     {
       "name": "nlohmann-json",
@@ -32,7 +44,7 @@
     },
     {
       "name": "openssl",
-      "version-string": "1.0.2o-3"
+      "version-string": "1.1.1n"
     },
     {
       "name": "commonlibsse-ng",
