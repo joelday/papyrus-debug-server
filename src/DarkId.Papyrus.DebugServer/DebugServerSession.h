@@ -1,7 +1,7 @@
 #pragma once
 
 #include "PapyrusDebugger.h"
-#include "protocol/vscodeprotocol.h"
+#include "Protocol/vscodeprotocol.h"
 
 namespace DarkId::Papyrus::DebugServer
 {

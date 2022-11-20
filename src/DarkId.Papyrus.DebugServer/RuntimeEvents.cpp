@@ -5,18 +5,21 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
-#include "skse64_common/SafeWrite.h"
-#include "skse64_common/BranchTrampoline.h"
-#include "REL/Relocation.h"
-
+#include <skse64_common/SafeWrite.h>
+#include <skse64_common/BranchTrampoline.h>
+#include <common/ITypes.h>
+#include <SKSE/Events.h>
+#include <RE/B/BSTEvent.h>
+#include <REL/Relocation.h>
 #elif FALLOUT
-#include "f4se_common/SafeWrite.h"
-#include "f4se_common/BranchTrampoline.h"
+#include <f4se_common/SafeWrite.h>
+#include <f4se_common/BranchTrampoline.h>
 #endif
 
 #include <cassert>
 #include <mutex>
-
+// TODO: !!!!Change Offset to RELOCATION_ID
+// See REL/Relocation.h
 namespace DarkId::Papyrus::DebugServer
 {
 	namespace RuntimeEvents
@@ -54,11 +57,12 @@ namespace DarkId::Papyrus::DebugServer
 
 		class LogEventSink : public RE::BSTEventSink<RE::BSScript::LogEvent>
 		{
-			RE::EventResult ReceiveEvent(RE::BSScript::LogEvent* evn, RE::BSTEventSource<RE::BSScript::LogEvent>* a_eventSource) override
+			// TODO: I have no idea why this Intellisense is bitching about this, this seems to have the correct argument types
+			RE::BSEventNotifyControl ProcessEvent(RE::BSScript::LogEvent* evn, RE::BSTEventSource<RE::BSScript::LogEvent>* a_eventSource) override
 			{
 				g_LogEvent(evn);
 
-				return RE::EventResult::kContinue;
+				return RE::BSEventNotifyControl::kContinue;
 			};
 		};
 
@@ -66,7 +70,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		void InstructionExecute_Hook(RE::BSScript::Internal::CodeTasklet* a_tasklet, RE::BSScript::Internal::CodeTasklet::OpCode a_opCode)
 		{
-			if (a_tasklet->stackFrame)
+			if (a_tasklet->topFrame)
 			{
 				g_InstructionExecutionEvent(a_tasklet, a_opCode);
 			}
@@ -74,7 +78,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		void CreateStack_Hook(RE::BSTSmartPointer<RE::BSScript::Stack>& a_stack)
 		{
-			if (a_stack)
+			if (&a_stack && a_stack._ptr)
 			{
 				g_CreateStackEvent(a_stack);
 			}
@@ -103,7 +107,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::size_t CAVE_START = 0x170;
 					constexpr std::size_t CAVE_END = 0x176;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
-
+// TODO: RELOCATION_ID
 					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
@@ -154,7 +158,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.GetAddress() + CAVE_END);
+					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.GetAddress() + CAVE_END);
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE == 6);
@@ -166,7 +170,7 @@ namespace DarkId::Papyrus::DebugServer
 					// OLD: E8 ? ? ? ? 48 8B 5C 24 38 48 85 DB 74 19
 					constexpr std::uintptr_t FUNC_ADDR = 0x012641F0;	// 1_5_97
 					constexpr std::size_t HOOK_TARGET = 0x1D4;
-
+// TODO: RELOCATION_ID
 					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
@@ -184,7 +188,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
+					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					g_branchTrampoline.Write5Branch(funcBase.GetAddress() + HOOK_TARGET, reinterpret_cast<std::uintptr_t>(patch.getCode()));
@@ -198,7 +202,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::size_t CAVE_END = 0x9;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					constexpr UInt8 NOP = 0x90;
-
+// TODO: RELOCATION_ID
 					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
@@ -215,7 +219,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
+					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE >= 6);

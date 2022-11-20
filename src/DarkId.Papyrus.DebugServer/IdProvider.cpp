@@ -1,4 +1,5 @@
 ﻿#include "IdProvider.h"
+#include <common/ITypes.h>
 namespace DarkId::Papyrus::DebugServer
 {
 	UInt32 IdProvider::GetNext()

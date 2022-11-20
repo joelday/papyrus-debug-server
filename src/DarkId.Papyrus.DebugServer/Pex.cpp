@@ -6,10 +6,10 @@
 #include "GameInterfaces.h"
 
 #if SKYRIM
-#include "SKSE/Logger.h"
+#include <SKSE/Logger.h>
 #elif FALLOUT
-#include "F4SE/Logger.h"
-#include "f4se/GameStreams.h"
+#include <F4SE/Logger.h>
+#include <f4se/GameStreams.h>
 #endif 
 
 #include "PexStreamReader.hpp"

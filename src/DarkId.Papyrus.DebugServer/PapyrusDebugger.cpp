@@ -9,11 +9,11 @@
 #include "StackFrameStateNode.h"
 
 #if SKYRIM
-	#include "SKSE/API.h"
+	#include <CommonLibSE/SKSE/API.h>
 namespace XSE = SKSE;
 #elif FALLOUT
-	#include "F4SE/API.h"
-	#include "f4se/GameReferences.h"
+	#include <F4SE/API.h>
+	#include <f4se/GameReferences.h>
 namespace XSE = F4SE;
 #endif
 

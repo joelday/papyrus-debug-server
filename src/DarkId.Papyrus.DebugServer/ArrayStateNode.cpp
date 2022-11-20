@@ -1,10 +1,11 @@
 #include "ArrayStateNode.h"
 #include "Utilities.h"
 #include "RuntimeState.h"
+#include <RE/B/BSCoreTypes.h>
 
 namespace DarkId::Papyrus::DebugServer
 {
-	ArrayStateNode::ArrayStateNode(std::string name, RE::BSScript::Array* value, RE::BSScript::Type* type) :
+	ArrayStateNode::ArrayStateNode(std::string name, RE::BSScript::Array* value, RE::BSScript::TypeInfo* type) :
 		m_name(name), m_value(value), m_type(type)
 	{
 	}
@@ -20,7 +21,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (m_type->IsObjectArray())
 		{
-			elementTypeName = m_type->GetClass()->GetName();
+			elementTypeName = m_type->GetTypeInfo()->GetName();
 		}
 #if FALLOUT
 		else if (m_type->IsStructArray())
@@ -30,18 +31,18 @@ namespace DarkId::Papyrus::DebugServer
 #endif
 		else
 		{
-			switch (m_type->GetUnmangledType())
+			switch (m_type->GetUnmangledRawType())
 			{
-			case RE::VMTypeID::kStringArray:
+			case RE::BSScript::TypeInfo::RawType::kStringArray:
 				elementTypeName = "string";
 				break;
-			case RE::VMTypeID::kIntArray:
+			case RE::BSScript::TypeInfo::RawType::kIntArray:
 				elementTypeName = "int";
 				break;
-			case RE::VMTypeID::kFloatArray:
+			case RE::BSScript::TypeInfo::RawType::kFloatArray:
 				elementTypeName = "float";
 				break;
-			case RE::VMTypeID::kBoolArray:
+			case RE::BSScript::TypeInfo::RawType::kBoolArray:
 				elementTypeName = "bool";
 				break;
 			default:
@@ -96,7 +97,7 @@ namespace DarkId::Papyrus::DebugServer
 			return false;
 		}
 
-		node = RuntimeState::CreateNodeForVariable(std::to_string(elementIndex), &m_value->at(elementIndex));
+		node = RuntimeState::CreateNodeForVariable(std::to_string(elementIndex), &(*m_value)[elementIndex]);
 		
 		return true;
 	}

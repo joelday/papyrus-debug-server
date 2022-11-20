@@ -1,4 +1,5 @@
 #pragma once
+#include <RE/B/BSTSmartPointer.h>
 
 #include <functional>
 

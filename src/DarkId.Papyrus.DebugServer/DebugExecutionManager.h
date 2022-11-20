@@ -1,6 +1,6 @@
 #pragma once
 
-#include "protocol/debugger.h"
+#include "Protocol/debugger.h"
 
 #include "GameInterfaces.h"
 

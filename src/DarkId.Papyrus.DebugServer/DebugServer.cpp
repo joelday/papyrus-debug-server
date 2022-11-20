@@ -1,5 +1,5 @@
 #include "DebugServer.h"
-
+#include <common/IDebugLog.h>
 namespace DarkId::Papyrus::DebugServer
 {
 	DebugServer::DebugServer() :

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "GameInterfaces.h"
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 
 #include "StateNodeBase.h"
 

@@ -1,16 +1,16 @@
 ﻿#if SKYRIM
-#include "skse64_common/skse_version.h"  // RUNTIME_VERSION
-#include "skse64_common/BranchTrampoline.h"
-#include "SKSE/API.h"
-#include "SKSE/Logger.h"
+#include <skse64_common/skse_version.h>  // RUNTIME_VERSION
+#include <skse64_common/BranchTrampoline.h>
+#include <SKSE/API.h>
+#include <SKSE/Logger.h>
 
 namespace XSE = SKSE;
 
 #elif FALLOUT
-#include "f4se_common/f4se_version.h"  // RUNTIME_VERSION
-#include "f4se_common/BranchTrampoline.h"
-#include "F4SE/Logger.h"
-#include "F4SE/API.h"
+#include <f4se_common/f4se_version.h>  // RUNTIME_VERSION
+#include <f4se_common/BranchTrampoline.h>
+#include <F4SE/Logger.h>
+#include <F4SE/API.h>
 
 namespace XSE = F4SE;
 
@@ -22,7 +22,7 @@ namespace XSE = F4SE;
 #include "RuntimeEvents.h"
 
 using namespace DarkId::Papyrus::DebugServer;
-
+//TODO: Logger completely changed in SKSE/logger.h, Logger class no longer exists, fix it
 DebugServer* g_debugServer;
 
 void MessageHandler(XSE::MessagingInterface::Message* msg)

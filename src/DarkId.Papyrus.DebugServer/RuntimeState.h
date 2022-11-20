@@ -3,10 +3,11 @@
 #include "IdMap.h"
 
 #include "GameInterfaces.h"
-
+#include <memory>
 #include <vector>
 #include "StateNodeBase.h"
-
+#include <RE/B/BSTSmartPointer.h>
+#include <common/ITypes.h>
 namespace DarkId::Papyrus::DebugServer
 {
 	class RuntimeState

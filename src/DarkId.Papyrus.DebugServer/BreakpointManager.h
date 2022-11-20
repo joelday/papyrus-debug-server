@@ -1,7 +1,7 @@
 #pragma once
 #include <map>
 #include <set>
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 
 #include "GameInterfaces.h"
 

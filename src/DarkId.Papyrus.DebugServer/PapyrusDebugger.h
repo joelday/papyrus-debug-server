@@ -1,6 +1,6 @@
 #pragma once
 
-#include "protocol/debugger.h"
+#include "Protocol/debugger.h"
 
 #include "RuntimeEvents.h"
 #include "PexCache.h"

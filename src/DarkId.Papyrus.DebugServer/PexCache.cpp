@@ -1,11 +1,13 @@
 #include "PexCache.h"
 #include "Pex.h"
 
+#include <SKSE/Impl/PCH.h>
 #include <functional>
 #include <algorithm>
 #include <string>
 #include "Decompiler/PscCoder.hpp"
 #include "Decompiler/StreamWriter.hpp"
+#include <common/ITypes.h>
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -28,7 +30,7 @@ namespace DarkId::Papyrus::DebugServer
 		std::string name = scriptName;
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 
-		return std::abs(unrestricted_cast<int>(hasher(name))) + 1;
+		return std::abs(SKSE::stl::unrestricted_cast<int>(hasher(name))) + 1;
 	}
 
 	std::shared_ptr<Pex::Binary> PexCache::GetScript(const char* scriptName)

@@ -2,7 +2,7 @@
 
 #include "GameInterfaces.h"
 
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 #include "StateNodeBase.h"
 
 namespace DarkId::Papyrus::DebugServer

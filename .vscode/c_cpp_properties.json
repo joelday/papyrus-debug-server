@@ -3,52 +3,49 @@
         {
             "name": "Skyrim",
             "includePath": [
-                "${workspaceFolder}/dependencies/x64-windows/include",
-                "${workspaceFolder}/dependencies",
                 "${workspaceFolder}/dependencies/MetaStuff/include",
-                "${workspaceFolder}/dependencies/skse64/src",
-                "${workspaceFolder}/dependencies/skse64/src/skse64",
-                "${workspaceFolder}/dependencies/skse64/src/skse64/CommonLibSSE/include",
-                "${workspaceFolder}/src/DarkId.Papyrus.DebugServer"
+                "${workspaceFolder}/dependencies",
+                "${workspaceFolder}/dependencies/Champollion/Champollion",
+                "${workspaceFolder}/dependencies/Champollion/Pex",
+                "${workspaceFolder}/dependencies/Champollion/Decompiler",
+                "${workspaceFolder}/dependencies/Champollion",
+                "${workspaceFolder}/src/DarkId.Papyrus.DebugServer",
+                "${workspaceFolder}/vcpkg_installed/skyrim/x64-windows-static-md/include"
             ],
             "defines": [
                 "WIN32", "SKYRIM", "_DEBUG", "_WINDOWS", "_USRDLL", "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
             ],
             "forcedInclude": [
-                "${workspaceFolder}/dependencies/skse64/src/common/IPrefix.h",
-                "${workspaceFolder}/dependencies/skse64/src/skse64/CommonLibSSE/include/ForceInclude.h",
-                "${workspaceFolder}/dependencies/skse64/src/skse64/CommonLibSSE/include/SKSE/Logger.h"
+                "common/IPrefix.h",
+                "SKSE/Logger.h"
             ],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe",
             "cStandard": "c11",
-            "cppStandard": "c++17",
+            "cppStandard": "c++20",
             "intelliSenseMode": "msvc-x64"
         },
         {
             "name": "Fallout",
             "includePath": [
-                "${workspaceFolder}/dependencies/x64-windows/include",
-                "${workspaceFolder}/dependencies",
                 "${workspaceFolder}/dependencies/MetaStuff/include",
-                "${workspaceFolder}/dependencies/f4se/src",
-                "${workspaceFolder}/dependencies/f4se/src/f4se",
-                "${workspaceFolder}/dependencies/f4se/src/f4se/CommonLibF4/include",
+                "${workspaceFolder}/dependencies/Champollion/Champollion",
+                "${workspaceFolder}/dependencies/Champollion/Pex",
+                "${workspaceFolder}/dependencies/Champollion/Decompiler",
                 "${workspaceFolder}/src/DarkId.Papyrus.DebugServer"
             ],
             "defines": [
                 "WIN32", "FALLOUT", "_DEBUG", "_WINDOWS", "_USRDLL", "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
             ],
             "forcedInclude": [
-                "${workspaceFolder}/dependencies/skse64/src/common/IPrefix.h",
-                "${workspaceFolder}/dependencies/skse64/src/f4se/CommonLibF4/include/ForceInclude.h",
-                "${workspaceFolder}/dependencies/skse64/src/f4se/CommonLibF4/include/F4SE/Logger.h"
+                "common/IPrefix.h",
+                "F4SE/Logger.h"
             ],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe",
             "cStandard": "c11",
             "cppStandard": "c++17",
-            "intelliSenseMode": "msvc-x64"
+            "intelliSenseMode": "windows-msvc-x64"
         }
     ],
     "version": 4

@@ -26,15 +26,15 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool LocalScopeStateNode::GetChildNames(std::vector<std::string>& names)
 	{
-		if (!m_stackFrame->func->IsStatic())
+		if (!m_stackFrame->owningFunction->GetIsStatic())
 		{
 			names.push_back("self");
 		}
 
-		for (auto i = 0; i < m_stackFrame->func->GetNumVars(); i++)
+		for (auto i = 0; i < m_stackFrame->owningFunction->GetStackFrameSize(); i++)
 		{
 			RE::BSFixedString varName;
-			m_stackFrame->func->GetVarName(i, varName);
+			m_stackFrame->owningFunction->GetVarNameForStackIndex(i, varName);
 
 			if (varName.empty() || varName.front() == ':')
 			{
@@ -49,17 +49,17 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool LocalScopeStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
-		if (!m_stackFrame->func->IsStatic() && CaseInsensitiveEquals(name, "self"))
+		if (!m_stackFrame->owningFunction->GetIsStatic() && CaseInsensitiveEquals(name, "self"))
 		{
-			node = RuntimeState::CreateNodeForVariable("self", &m_stackFrame->baseValue);
+			node = RuntimeState::CreateNodeForVariable("self", &m_stackFrame->self);
 			
 			return true;
 		}
 
-		for (auto i = 0; i < m_stackFrame->func->GetNumVars(); i++)
+		for (auto i = 0; i < m_stackFrame->owningFunction->GetStackFrameSize(); i++)
 		{
 			RE::BSFixedString varName;
-			m_stackFrame->func->GetVarName(i, varName);
+			m_stackFrame->owningFunction->GetVarNameForStackIndex(i, varName);
 
 			if (varName.empty() || varName.front() == ':')
 			{
@@ -68,11 +68,11 @@ namespace DarkId::Papyrus::DebugServer
 
 			if (CaseInsensitiveEquals(name, varName.c_str()))
 			{
-				const auto chunkIndex = m_stackFrame->stack->GetChunkIdx(m_stackFrame);
-				const auto variable = m_stackFrame->Get(i, chunkIndex);
-				if (variable)
+				const uint32_t pageHint = m_stackFrame->parent->GetPageForFrame(m_stackFrame);
+				RE::BSScript::Variable variable = m_stackFrame->GetStackFrameVariable(i, pageHint);
+				if (&variable)
 				{
-					node = RuntimeState::CreateNodeForVariable(varName.c_str(), variable);
+					node = RuntimeState::CreateNodeForVariable(varName.c_str(), &variable);
 
 					return true;
 				}

@@ -12,7 +12,7 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		if (m_value && !m_subView)
 		{
-			m_class = RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo>(m_value->GetClass());
+			m_class = RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo>(m_value->GetTypeInfo());
 		}
 	}
 
@@ -33,7 +33,7 @@ namespace DarkId::Papyrus::DebugServer
 			if (!m_subView)
 			{
 				auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-				const auto handle = vm->GetHandle(m_value);
+				const auto handle = vm->GetBoundHandle(m_value);
 
 				variable.value = StringFormat("%s (%08x)", m_class->GetName(), static_cast<UInt32>(handle ^ 0x0000FFFF00000000));
 			}
@@ -59,13 +59,13 @@ namespace DarkId::Papyrus::DebugServer
 		
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		
-		RE::FormType32 formType;
-		if (vm->GetFormTypeID(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
+		RE::FormID formType;
+		if (vm->GetTypeIDForScriptObject((m_class->name), formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{
-			auto form = static_cast<RE::TESForm*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value)));
+			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 			
 #if SKYRIM
-
+// TODO: Fix this?????? Somehow????
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
 			{\
@@ -105,7 +105,7 @@ namespace DarkId::Papyrus::DebugServer
 			}
 		}
 
-		if (m_class->parent)
+		if (m_class->GetParent())
 		{
 			names.push_back("parent");
 		}
@@ -124,14 +124,14 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 
-		RE::FormType32 formType;
-		if (m_value && vm->GetFormTypeID(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
+		RE::FormID formType;
+		if (m_value && vm->GetTypeIDForScriptObject(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{
 			
 #define DEFINE_FORM_NODE_RETURN(type)  \
 			if (CaseInsensitiveEquals(name, STRING(type))) \
 			{\
-				auto form = static_cast<##type##*>(vm->GetHandlePolicy()->Resolve(formType, vm->GetHandle(m_value))); \
+				auto form = static_cast<##type##*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value))); \
 				node = std::make_shared<MetaNode<##type##*>>(STRING(type), form); \
  				return true; \
 			} \
@@ -141,13 +141,13 @@ namespace DarkId::Papyrus::DebugServer
 			
 		}
 		
-		if (m_value && m_class->parent && CaseInsensitiveEquals(name, "parent"))
+		if (m_value && m_class->GetParent() && CaseInsensitiveEquals(name, "parent"))
 		{
-			node = std::make_shared<ObjectStateNode>("parent", m_value.get(), m_class->parent.get(), true);
+			node = std::make_shared<ObjectStateNode>("parent", m_value.get(), m_class->GetParent(), true);
 			return true;
 		}
 		
-		const auto type = m_value->GetClass();
+		const auto type = m_value->GetTypeInfo();
 
 		const auto variableIter = type->GetVariableIter();
 		for (auto i = 0; i < type->GetNumVariables(); i++)
