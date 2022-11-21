@@ -4,6 +4,7 @@
 
 #include <functional>
 #include <variant>
+#include <RE/B/BSFixedString.h>
 #include "FormMetadata.h"
 #include "Meta.h"
 #include "Utilities.h"
@@ -63,7 +64,7 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				variable.value = m_value ? "true" : "false";
 			}
-			else if constexpr (std::is_same<T, RE::BSFixedString>() || std::is_same<T, BSFixedString>())
+			else if constexpr (std::is_same<T, RE::detail::BSFixedString<char>>() || std::is_same<T, RE::detail::BSFixedString<char>>())
 			{
 				variable.value = "\"" + std::string(m_value.c_str()) + "\"";
 			}

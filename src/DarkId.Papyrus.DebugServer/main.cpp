@@ -1,5 +1,6 @@
 ﻿#if SKYRIM
 #include <SKSE/Impl/PCH.h>
+#include <common/IPrefix.h>
 #include <skse64_common/skse_version.h>  // RUNTIME_VERSION
 #include <skse64_common/BranchTrampoline.h>
 #include <SKSE/API.h>
@@ -58,7 +59,7 @@ extern "C"
 #endif
 	{
 #if SKYRIM
-		IDebugLog::OpenRelative(FOLDERID_Documents, "\\My Games\\Skyrim Special Edition\\SKSE\\DarkId.Papyrus.DebugServer.log");
+		IDebugLog::OpenRelative(FOLDERID_Documents.Data1, "\\My Games\\Skyrim Special Edition\\SKSE\\DarkId.Papyrus.DebugServer.log");
 //		IDebugLog::UseLogStamp(true);
 
 #elif FALLOUT
@@ -122,11 +123,7 @@ extern "C"
 		}
 
 		g_debugServer = new DebugServer();
-
-		if (!Init(a_xse))
-		{
-			return false;
-		}
+		Init(a_xse);
 
 #if SKYRIM
 		XSE::GetMessagingInterface()->RegisterListener("SKSE", MessageHandler);

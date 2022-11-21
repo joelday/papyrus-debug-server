@@ -89,14 +89,12 @@
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>
-      </ForcedIncludeFiles>
+      <ForcedIncludeFiles>stupidPCH.h;common/IPrefix.h</ForcedIncludeFiles>
       <ExceptionHandling>Sync</ExceptionHandling>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <FloatingPointExceptions>true</FloatingPointExceptions>
-      <CompileAs>CompileAsCpp</CompileAs>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <UseFullPaths>false</UseFullPaths>
@@ -105,6 +103,9 @@
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stupidPCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>exports_skyrim.def</ModuleDefinitionFile>
@@ -143,12 +144,10 @@
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>
-      </ForcedIncludeFiles>
+      <ForcedIncludeFiles>stupidPCH.h;common/IPrefix.h</ForcedIncludeFiles>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <OmitFramePointers>
       </OmitFramePointers>
-      <CompileAs>CompileAsCpp</CompileAs>
       <LanguageStandard>stdcpp20</LanguageStandard>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <UseFullPaths>false</UseFullPaths>
@@ -157,6 +156,9 @@
       <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
       <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
       <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stupidPCH.h</PrecompiledHeaderFile>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>exports_skyrim.def</ModuleDefinitionFile>
@@ -211,32 +213,114 @@
     <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlagged.cpp" />
     <ClCompile Include="..\..\dependencies\Champollion\Pex\Value.cpp" />
     <ClCompile Include="..\..\dependencies\Champollion\Pex\Variable.cpp" />
-    <ClCompile Include="ArrayStateNode.cpp" />
-    <ClCompile Include="BreakpointManager.cpp" />
-    <ClCompile Include="DebugExecutionManager.cpp" />
-    <ClCompile Include="DebugServer.cpp" />
-    <ClCompile Include="DebugServerSession.cpp" />
-    <ClCompile Include="FormTypeMacros.cpp" />
-    <ClCompile Include="GameInterfaces.cpp" />
-    <ClCompile Include="IdHandleBase.cpp" />
-    <ClCompile Include="IdMap.cpp" />
-    <ClCompile Include="IdProvider.cpp" />
-    <ClCompile Include="LocalScopeStateNode.cpp" />
-    <ClCompile Include="main.cpp" />
-    <ClCompile Include="MetaNode.cpp" />
-    <ClCompile Include="ObjectStateNode.cpp" />
-    <ClCompile Include="PapyrusDebugger.cpp" />
-    <ClCompile Include="Pex.cpp" />
-    <ClCompile Include="PexCache.cpp" />
-    <ClCompile Include="PexStreamReader.cpp" />
-    <ClCompile Include="protocol\cputil.cpp" />
-    <ClCompile Include="protocol\vscodeprotocol.cpp" />
-    <ClCompile Include="RuntimeEvents.cpp" />
-    <ClCompile Include="RuntimeState.cpp" />
-    <ClCompile Include="StackFrameStateNode.cpp" />
-    <ClCompile Include="StackStateNode.cpp" />
-    <ClCompile Include="StateNodeBase.cpp" />
-    <ClCompile Include="ValueStateNode.cpp" />
+    <ClCompile Include="ArrayStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="BreakpointManager.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="DebugExecutionManager.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="DebugServer.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="DebugServerSession.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="FormTypeMacros.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="GameInterfaces.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="IdHandleBase.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="IdMap.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="IdProvider.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="LocalScopeStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="main.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="MetaNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="ObjectStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="PapyrusDebugger.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="Pex.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="PexCache.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="PexStreamReader.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="protocol\cputil.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="protocol\vscodeprotocol.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="RuntimeEvents.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="RuntimeState.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="StackFrameStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="StackStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="StateNodeBase.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
+    <ClCompile Include="stupidPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
+    <ClCompile Include="ValueStateNode.cpp">
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">stupidPCH.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles Condition="'$(Configuration)|$(Platform)'=='Release|x64'">stupidPCH.h</ForcedIncludeFiles>
+    </ClCompile>
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -324,6 +408,7 @@
     <ClInclude Include="StackFrameStateNode.h" />
     <ClInclude Include="StackStateNode.h" />
     <ClInclude Include="StateNodeBase.h" />
+    <ClInclude Include="stupidPCH.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="ValueStateNode.h" />
     <ClInclude Include="version.h" />

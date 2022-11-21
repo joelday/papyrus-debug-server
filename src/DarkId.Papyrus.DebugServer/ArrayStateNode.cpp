@@ -1,7 +1,6 @@
+#include "RuntimeState.h"
 #include "ArrayStateNode.h"
 #include "Utilities.h"
-#include "RuntimeState.h"
-#include <RE/B/BSCoreTypes.h>
 
 namespace DarkId::Papyrus::DebugServer
 {

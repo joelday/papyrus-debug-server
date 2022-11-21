@@ -3,7 +3,7 @@
 #if SKYRIM
 #include <common/IPrefix.h>
 #include <SKSE/Impl/PCH.h>
-#include <skse64/GameTypes.h>
+#include <SKSE/SKSE.h>
 #include <RE/Skyrim.h>
 #include <RE/F/FormTypes.h>
 

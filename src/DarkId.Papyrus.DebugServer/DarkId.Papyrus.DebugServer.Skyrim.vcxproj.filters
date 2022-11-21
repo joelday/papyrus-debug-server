@@ -152,6 +152,7 @@
     <ClCompile Include="FormTypeMacros.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="stupidPCH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -383,6 +384,7 @@
     <ClInclude Include="FormTypeMacros.h">
       <Filter>State</Filter>
     </ClInclude>
+    <ClInclude Include="stupidPCH.h" />
   </ItemGroup>
   <ItemGroup>
     <None Include="exports_skyrim.def" />

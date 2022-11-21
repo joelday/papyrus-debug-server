@@ -1,3 +1,5 @@
+#include <RE/B/BSFixedString.h>
+
 #include "ObjectStateNode.h"
 #include "Utilities.h"
 #include "RuntimeState.h"

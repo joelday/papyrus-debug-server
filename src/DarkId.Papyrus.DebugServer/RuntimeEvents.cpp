@@ -5,7 +5,7 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
-#include <SKSE/Impl/PCH.h>
+#include "stupidPCH.h"
 #include <skse64_common/SafeWrite.h>
 #include <skse64_common/BranchTrampoline.h>
 #include <common/ITypes.h>
@@ -81,7 +81,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		void CreateStack_Hook(RE::BSTSmartPointer<RE::BSScript::Stack>& a_stack)
 		{
-			if (&a_stack && a_stack._ptr)
+			if (&a_stack)
 			{
 				g_CreateStackEvent(a_stack);
 			}
