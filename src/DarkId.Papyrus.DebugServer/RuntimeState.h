@@ -18,17 +18,17 @@ namespace DarkId::Papyrus::DebugServer
 		explicit RuntimeState(const std::shared_ptr<IdProvider>& idProvider);
 
 		bool ResolveStateByPath(std::string requestedPath, std::shared_ptr<StateNodeBase>& node);
-		bool ResolveStateById(UInt32 id, std::shared_ptr<StateNodeBase>& node);
+		bool ResolveStateById(uint32_t id, std::shared_ptr<StateNodeBase>& node);
 		bool ResolveChildrenByParentPath(std::string requestedPath, std::vector<std::shared_ptr<StateNodeBase>>& nodes);
-		bool ResolveChildrenByParentId(UInt32 id, std::vector<std::shared_ptr<StateNodeBase>>& nodes);
+		bool ResolveChildrenByParentId(uint32_t id, std::vector<std::shared_ptr<StateNodeBase>>& nodes);
 
 		static std::shared_ptr<StateNodeBase> CreateNodeForVariable(std::string name, RE::BSScript::Variable* variable);
 		
-		static RE::BSTSmartPointer<RE::BSScript::Stack> GetStack(UInt32 stackId);
-		static RE::BSScript::StackFrame* GetFrame(UInt32 stackId, UInt32 level);
+		static RE::BSTSmartPointer<RE::BSScript::Stack> GetStack(uint32_t stackId);
+		static RE::BSScript::StackFrame* GetFrame(uint32_t stackId, uint32_t level);
 
 		static void GetStackFrames(RE::BSTSmartPointer<RE::BSScript::Stack> stack, std::vector<RE::BSScript::StackFrame*>& frames);
-		static bool GetStackFrames(UInt32 stackId, std::vector<RE::BSScript::StackFrame*>& frames);
+		static bool GetStackFrames(uint32_t stackId, std::vector<RE::BSScript::StackFrame*>& frames);
 	};
 }
 

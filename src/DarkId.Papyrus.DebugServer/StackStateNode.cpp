@@ -8,7 +8,7 @@
 
 namespace DarkId::Papyrus::DebugServer
 {
-	StackStateNode::StackStateNode(const UInt32 stackId) : m_stackId(stackId)
+	StackStateNode::StackStateNode(const uint32_t stackId) : m_stackId(stackId)
 	{
 	}
 

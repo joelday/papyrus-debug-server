@@ -46,7 +46,7 @@ namespace DarkId::Papyrus::DebugServer
 		m_session = NULL;
 	}
 
-	UInt32 DebugServer::ListenInternal()
+	uint32_t DebugServer::ListenInternal()
 	{
 		try
 		{

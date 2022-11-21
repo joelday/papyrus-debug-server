@@ -64,7 +64,7 @@ namespace DarkId::Papyrus::DebugServer
 
 					const auto discoveredPath = Join(discoveredElements, ".");
 
-					UInt32 addedId;
+					uint32_t addedId;
 					m_paths->AddOrGetExisting(discoveredPath, addedId);
 				}
 			}
@@ -90,7 +90,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (currentPathElements.size() > 1)
 		{
-			UInt32 id;
+			uint32_t id;
 			m_paths->AddOrGetExisting(path, id);
 			node->SetId(id);
 		}
@@ -102,7 +102,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool RuntimeState::ResolveStateById(const UInt32 id, std::shared_ptr<StateNodeBase>& node)
+	bool RuntimeState::ResolveStateById(const uint32_t id, std::shared_ptr<StateNodeBase>& node)
 	{
 		std::string path;
 
@@ -143,7 +143,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool RuntimeState::ResolveChildrenByParentId(const UInt32 id, std::vector<std::shared_ptr<StateNodeBase>>& nodes)
+	bool RuntimeState::ResolveChildrenByParentId(const uint32_t id, std::vector<std::shared_ptr<StateNodeBase>>& nodes)
 	{
 		std::string path;
 
@@ -187,7 +187,7 @@ namespace DarkId::Papyrus::DebugServer
 		return nullptr;
 	}
 
-	RE::BSTSmartPointer<RE::BSScript::Stack> RuntimeState::GetStack(UInt32 stackId)
+	RE::BSTSmartPointer<RE::BSScript::Stack> RuntimeState::GetStack(uint32_t stackId)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
 		RE::BSSpinLockGuard lock(vm->runningStacksLock);
@@ -201,7 +201,7 @@ namespace DarkId::Papyrus::DebugServer
 		return tableItem->second;
 	}
 
-	RE::BSScript::StackFrame* RuntimeState::GetFrame(const UInt32 stackId, const UInt32 level)
+	RE::BSScript::StackFrame* RuntimeState::GetFrame(const uint32_t stackId, const uint32_t level)
 	{
 		std::vector<RE::BSScript::StackFrame*> frames;
 		GetStackFrames(stackId, frames);
@@ -228,7 +228,7 @@ namespace DarkId::Papyrus::DebugServer
 		}
 	}
 
-	bool RuntimeState::GetStackFrames(const UInt32 stackId, std::vector<RE::BSScript::StackFrame*>& frames)
+	bool RuntimeState::GetStackFrames(const uint32_t stackId, std::vector<RE::BSScript::StackFrame*>& frames)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
 		RE::BSSpinLockGuard lock(vm->runningStacksLock);

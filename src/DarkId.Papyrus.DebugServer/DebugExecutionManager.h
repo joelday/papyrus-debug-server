@@ -31,7 +31,7 @@ namespace DarkId::Papyrus::DebugServer
 		BreakpointManager* m_breakpointManager;
 
 		DebuggerState m_state = DebuggerState::kRunning;
-		UInt32 m_currentStepStackId = 0;
+		uint32_t m_currentStepStackId = 0;
 		Debugger::StepType m_currentStepType = Debugger::StepType::STEP_IN;
 		RE::BSScript::StackFrame* m_currentStepStackFrame;
 	public:
@@ -46,6 +46,6 @@ namespace DarkId::Papyrus::DebugServer
 		void HandleInstruction(CodeTasklet* tasklet, CodeTasklet::OpCode opCode);
 		bool Continue();
 		bool Pause();
-		bool Step(UInt32 stackId, Debugger::StepType stepType);
+		bool Step(uint32_t stackId, Debugger::StepType stepType);
 	};
 }

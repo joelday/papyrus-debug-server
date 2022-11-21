@@ -7,7 +7,7 @@ namespace DarkId::Papyrus::DebugServer
 		return m_id;
 	}
 
-	void StateNodeBase::SetId(const UInt32 id)
+	void StateNodeBase::SetId(const uint32_t id)
 	{
 		m_id = id;
 	}

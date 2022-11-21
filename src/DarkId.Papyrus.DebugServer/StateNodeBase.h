@@ -8,13 +8,13 @@ namespace DarkId::Papyrus::DebugServer
 {
 	class StateNodeBase
 	{
-		UInt32 m_id = 0;
+		uint32_t m_id = 0;
 	public:
 		virtual ~StateNodeBase() = default;
 
 		int GetId() const;
 
-		void SetId(UInt32 id);
+		void SetId(uint32_t id);
 	};
 	
 	class RuntimeState;

@@ -40,7 +40,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		EVENT_WRAPPER_IMPL(InstructionExecution, void(RE::BSScript::Internal::CodeTasklet*, RE::BSScript::Internal::CodeTasklet::OpCode))
 		EVENT_WRAPPER_IMPL(CreateStack, void(RE::BSTSmartPointer<RE::BSScript::Stack>&))
-		EVENT_WRAPPER_IMPL(CleanupStack, void(UInt32))
+		EVENT_WRAPPER_IMPL(CleanupStack, void(uint32_t))
 		// EVENT_WRAPPER_IMPL(InitScript, void(RE::TESInitScriptEvent*))
 		EVENT_WRAPPER_IMPL(Log, void(const RE::BSScript::LogEvent*))
 
@@ -204,7 +204,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::size_t CAVE_START = 0x0;
 					constexpr std::size_t CAVE_END = 0x9;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
-					constexpr UInt8 NOP = 0x90;
+					constexpr uint8_t NOP = 0x90;
 // TODO: RELOCATION_ID
 					REL::Offset funcBase(FUNC_ADDR);
 
@@ -229,7 +229,7 @@ namespace DarkId::Papyrus::DebugServer
 
 					g_branchTrampoline.Write6Branch(funcBase.address() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
 
-					for (UInt8 i = CAVE_START + 6; i < CAVE_END; ++i) {
+					for (uint8_t i = CAVE_START + 6; i < CAVE_END; ++i) {
 						SafeWrite8(funcBase.address() + i, NOP);
 					}
 

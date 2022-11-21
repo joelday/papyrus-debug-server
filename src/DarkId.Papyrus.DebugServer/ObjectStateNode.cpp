@@ -35,7 +35,7 @@ namespace DarkId::Papyrus::DebugServer
 				auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 				const auto handle = vm->GetBoundHandle(m_value);
 
-				variable.value = StringFormat("%s (%08x)", m_class->GetName(), static_cast<UInt32>(handle ^ 0x0000FFFF00000000));
+				variable.value = StringFormat("%s (%08x)", m_class->GetName(), static_cast<uint32_t>(handle ^ 0x0000FFFF00000000));
 			}
 			else
 			{

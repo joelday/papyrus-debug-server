@@ -200,7 +200,7 @@ namespace meta
 	//inline auto registerMembers<RE::TESTexture>()
 	//{
 	//	return members(
-	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, UInt32, Size),
+	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, uint32_t, Size),
 	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, std::string, SearchDir),
 	//		member("Texture", &RE::TESTexture::texture)
 	//	);
@@ -217,7 +217,7 @@ namespace meta
 	//		member<RE::BGSTextureSet, std::vector<RE::TESTexture*>>("Textures", [](RE::BGSTextureSet* form)
 	//			{
 	//				// TODO: Is this a correct way to do this?
-	//				const UInt32 elementCount = sizeof(form->textures) / sizeof(RE::TESTexture);
+	//				const uint32_t elementCount = sizeof(form->textures) / sizeof(RE::TESTexture);
 	//			
 	//				std::vector<RE::TESTexture*> elements;
 	//				

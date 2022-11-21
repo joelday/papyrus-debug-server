@@ -120,7 +120,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool DebugExecutionManager::Step(UInt32 stackId, const Debugger::StepType stepType)
+	bool DebugExecutionManager::Step(uint32_t stackId, const Debugger::StepType stepType)
 	{
 		if (m_state != DebuggerState::kPaused)
 		{

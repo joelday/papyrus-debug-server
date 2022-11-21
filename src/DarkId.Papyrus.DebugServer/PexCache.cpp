@@ -37,7 +37,7 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		std::lock_guard<std::mutex> scriptLock(m_scriptsMutex);
 		
-		UInt32 reference = GetScriptReference(scriptName);
+		uint32_t reference = GetScriptReference(scriptName);
 
 		const auto entry = m_scripts.find(reference);
 		if (entry == m_scripts.end())

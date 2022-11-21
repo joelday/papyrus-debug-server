@@ -18,7 +18,7 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		EVENT_DECLARATION(InstructionExecution, void(RE::BSScript::Internal::CodeTasklet*, RE::BSScript::Internal::CodeTasklet::OpCode))
 		EVENT_DECLARATION(CreateStack, void(RE::BSTSmartPointer<RE::BSScript::Stack>&))
-		EVENT_DECLARATION(CleanupStack, void(UInt32))
+		EVENT_DECLARATION(CleanupStack, void(uint32_t))
 		// EVENT_DECLARATION(InitScript, void(RE::TESInitScriptEvent*))
 		EVENT_DECLARATION(Log, void(const RE::BSScript::LogEvent*))
 

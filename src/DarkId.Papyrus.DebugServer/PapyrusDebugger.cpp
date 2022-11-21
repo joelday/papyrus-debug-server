@@ -97,7 +97,7 @@ namespace DarkId::Papyrus::DebugServer
 		});
 	}
 	
-	void PapyrusDebugger::StackCleanedUp(UInt32 stackId)
+	void PapyrusDebugger::StackCleanedUp(uint32_t stackId)
 	{
 		XSE::GetTaskInterface()->AddTask([this, stackId]()
 		{
