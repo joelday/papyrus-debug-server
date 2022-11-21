@@ -1,3 +1,5 @@
+#if FALLOUT
+
 #include "StructStateNode.h"
 #include "RuntimeState.h"
 
@@ -54,3 +56,4 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 }
+#endif

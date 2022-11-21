@@ -6,6 +6,8 @@
 
 #include <iostream>
 #include <unordered_map>
+#include <SKSE/Impl/PCH.h>
+#include <SKSE/Logger.h>
 
 #include "torelease.h"
 #include "cputil.h"
@@ -697,5 +699,5 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	_MESSAGE("%s: %s", prefix.c_str(), text.c_str());
+	SKSE::log::info("%s: %s", prefix.c_str(), text.c_str());
 }

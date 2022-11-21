@@ -1,6 +1,5 @@
 #include "BreakpointManager.h"
 #include "Pex/Binary.hpp"
-
 #include <regex>
 
 namespace DarkId::Papyrus::DebugServer
@@ -54,23 +53,23 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool BreakpointManager::GetExecutionIsAtValidBreakpoint(RE::BSScript::Internal::CodeTasklet* tasklet)
 	{
-		auto func = tasklet->stackFrame->func;
+		auto func = tasklet->topFrame->owningFunction;
 
-		if (func->IsNative())
+		if (func->GetIsNative())
 		{
 			return false;
 		}
 
-		const auto sourceReference = m_pexCache->GetScriptReference(func->GetScriptName().c_str());
+		const auto sourceReference = m_pexCache->GetScriptReference(func->GetSourceFilename().c_str());
 		
 		if (m_breakpoints.find(sourceReference) != m_breakpoints.end())
 		{
 			auto breakpointLines = m_breakpoints[sourceReference];
 			if (!breakpointLines.empty())
 			{
-				UInt32 currentLine;
+				uint32_t currentLine;
 
-				return func->GetLineNumber(tasklet->stackFrame->taskletExecutionOffset, currentLine) &&
+				return func->TranslateIPToLineNumber(tasklet->topFrame->instructionPointer, currentLine) &&
 					breakpointLines.find(currentLine) != breakpointLines.end();
 			}
 		}

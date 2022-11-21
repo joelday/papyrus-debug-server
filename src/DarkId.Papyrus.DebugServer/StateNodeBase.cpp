@@ -1,5 +1,5 @@
 #include "StateNodeBase.h"
-
+#include <common/ITypes.h>
 namespace DarkId::Papyrus::DebugServer
 {
 	int StateNodeBase::GetId() const

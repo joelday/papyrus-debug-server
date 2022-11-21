@@ -1,9 +1,13 @@
 ﻿#if SKYRIM
+#include <SKSE/Impl/PCH.h>
 #include <skse64_common/skse_version.h>  // RUNTIME_VERSION
 #include <skse64_common/BranchTrampoline.h>
 #include <SKSE/API.h>
 #include <SKSE/Logger.h>
-
+#include <common/IDebugLog.h>
+#include <ShlObj.h>
+#include <string_view>
+#include <xstring>
 namespace XSE = SKSE;
 
 #elif FALLOUT
@@ -20,10 +24,10 @@ namespace XSE = F4SE;
 
 #include "DebugServer.h"
 #include "RuntimeEvents.h"
-
 using namespace DarkId::Papyrus::DebugServer;
 //TODO: Logger completely changed in SKSE/logger.h, Logger class no longer exists, fix it
 DebugServer* g_debugServer;
+using namespace std::literals;
 
 void MessageHandler(XSE::MessagingInterface::Message* msg)
 {
@@ -38,7 +42,7 @@ void MessageHandler(XSE::MessagingInterface::Message* msg)
 			RuntimeEvents::Internal::CommitHooks();
 
 			g_debugServer->Listen();
-			_MESSAGE("Listening for connections from adapter messaging proxy...");
+			SKSE::log::info("Listening for connections from adapter messaging proxy...");
 
 			break;
 		}
@@ -54,17 +58,17 @@ extern "C"
 #endif
 	{
 #if SKYRIM
-		XSE::Logger::OpenRelative(FOLDERID_Documents, L"\\My Games\\Skyrim Special Edition\\SKSE\\DarkId.Papyrus.DebugServer.log");
-		XSE::Logger::UseLogStamp(true);
+		IDebugLog::OpenRelative(FOLDERID_Documents, "\\My Games\\Skyrim Special Edition\\SKSE\\DarkId.Papyrus.DebugServer.log");
+//		IDebugLog::UseLogStamp(true);
 
 #elif FALLOUT
 		XSE::Logger::OpenRelative(FOLDERID_Documents, L"\\My Games\\Fallout 4\\F4SE\\DarkId.Papyrus.DebugServer.log");
 #endif
 
-		XSE::Logger::SetPrintLevel(XSE::Logger::Level::kDebugMessage);
-		XSE::Logger::SetFlushLevel(XSE::Logger::Level::kDebugMessage);
+		IDebugLog::SetLogLevel(IDebugLog::LogLevel::kLevel_DebugMessage);
+		IDebugLog::SetPrintLevel(IDebugLog::LogLevel::kLevel_DebugMessage);
 		
-		_MESSAGE("Papyrus Debug Server v%s", DIDPDS_VERSION_VERSTRING);
+		SKSE::log::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
 
 		a_info->infoVersion = 1;
 
@@ -72,16 +76,14 @@ extern "C"
 		a_info->version = DIDPDS_VERSION_MAJOR;
 
 		if (a_xse->IsEditor()) {
-			_FATALERROR("Loaded in editor, marking as incompatible!\n");
+			SKSE::log::critical("Loaded in editor, marking as incompatible!\n");
 			return false;
 		}
-		
-		switch (a_xse->RuntimeVersion()) {
-		case CURRENT_RELEASE_RUNTIME:
-			break;
-		default:
-			_FATALERROR("Unsupported runtime version %08X!\n", a_xse->RuntimeVersion());
+		auto result = a_xse->RuntimeVersion().compare(CURRENT_RELEASE_RUNTIME);
+		if (result == std::strong_ordering::greater){
+			SKSE::log::critical("Unsupported runtime version {}!\n"sv, a_xse->RuntimeVersion());
 			return false;
+
 		}
 
 		return true;
@@ -94,10 +96,10 @@ extern "C"
 #endif
 		
 	{
-		_MESSAGE("Papyrus Debug Server loaded");
+		SKSE::log::info("Papyrus Debug Server loaded");
 
 //#if _DEBUG
-//		_MESSAGE("Waiting for debugger to attach");
+//		SKSE::log::info("Waiting for debugger to attach");
 // 
 //		while (!IsDebuggerPresent())
 //		{
@@ -109,13 +111,13 @@ extern "C"
 
 		if (!g_branchTrampoline.Create(1024 * 64))
 		{
-			_ERROR("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
+			SKSE::log::error("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
 			return false;
 		}
 
 		if (!g_localTrampoline.Create(1024 * 64, nullptr))
 		{
-			_ERROR("Couldn't create codegen buffer. This is fatal. Skipping remainder of init process.");
+			SKSE::log::error("Couldn't create codegen buffer. This is fatal. Skipping remainder of init process.");
 			return false;
 		}
 

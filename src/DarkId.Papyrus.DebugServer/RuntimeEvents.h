@@ -3,7 +3,7 @@
 
 #include <functional>
 
-#include "eventpp/callbacklist.h"
+#include <eventpp/callbacklist.h>
 
 #include "GameInterfaces.h"
 
@@ -20,7 +20,7 @@ namespace DarkId::Papyrus::DebugServer
 		EVENT_DECLARATION(CreateStack, void(RE::BSTSmartPointer<RE::BSScript::Stack>&))
 		EVENT_DECLARATION(CleanupStack, void(UInt32))
 		// EVENT_DECLARATION(InitScript, void(RE::TESInitScriptEvent*))
-		EVENT_DECLARATION(Log, void(RE::BSScript::LogEvent*))
+		EVENT_DECLARATION(Log, void(const RE::BSScript::LogEvent*))
 
 		namespace Internal
 		{

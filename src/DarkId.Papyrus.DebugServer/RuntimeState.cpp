@@ -159,7 +159,7 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		if (variable->IsObject())
 		{
-			return std::make_shared<ObjectStateNode>(name, variable->GetObject(), variable->GetClass());
+			return std::make_shared<ObjectStateNode>(name, variable->GetObject(), variable->GetObject()->GetTypeInfo());
 		}
 
 #if FALLOUT
@@ -190,10 +190,10 @@ namespace DarkId::Papyrus::DebugServer
 	RE::BSTSmartPointer<RE::BSScript::Stack> RuntimeState::GetStack(UInt32 stackId)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
-		const auto tableItem = vm->allStacks.find(stackId);
-		if (tableItem == vm->allStacks.end())
+		const auto tableItem = vm->allRunningStacks.find(stackId);
+		if (tableItem == vm->allRunningStacks.end())
 		{
 			return nullptr;
 		}
@@ -217,21 +217,21 @@ namespace DarkId::Papyrus::DebugServer
 	void RuntimeState::GetStackFrames(const RE::BSTSmartPointer<RE::BSScript::Stack> stack, std::vector<RE::BSScript::StackFrame*>& frames)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
-		auto frame = stack->current;
+		auto frame = stack->top;
 
 		while (frame)
 		{
 			frames.push_back(frame);
-			frame = frame->parent;
+			frame = frame->previousFrame;
 		}
 	}
 
 	bool RuntimeState::GetStackFrames(const UInt32 stackId, std::vector<RE::BSScript::StackFrame*>& frames)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		const auto stack = GetStack(stackId);
 		if (!stack)

@@ -6,6 +6,7 @@
 #include "GameInterfaces.h"
 
 #if SKYRIM
+#include <SKSE/Impl/PCH.h>
 #include <SKSE/Logger.h>
 #elif FALLOUT
 #include <F4SE/Logger.h>
@@ -22,7 +23,7 @@ namespace DarkId::Papyrus::DebugServer
 #if SKYRIM
 		RE::BSResourceNiBinaryStream scriptStream(scriptPath);
 
-		if (scriptStream.is_open())
+		if (scriptStream.good())
 		{
 			char byte;
 			while (scriptStream.get(byte))
@@ -56,7 +57,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (!ReadPexResource(scriptName, buffer))
 		{
-			_ERROR("Failed to load pex resource.");
+			SKSE::log::error("Failed to load pex resource.");
 			return false;
 		}
 

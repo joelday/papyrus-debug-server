@@ -26,7 +26,7 @@ namespace DarkId::Papyrus::DebugServer
 		else
 		{
 			const auto frame = frames.back();
-			const auto name = frame->scriptClass ? frame->scriptClass->GetName() : "<unknown>";
+			const auto name = frame->owningObjectType ? frame->owningObjectType->GetName() : "<unknown>";
 			thread.name = StringFormat("%s (%d)", name, thread.id);
 		}
 

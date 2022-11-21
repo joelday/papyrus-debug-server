@@ -9,7 +9,9 @@
 #include "StackFrameStateNode.h"
 
 #if SKYRIM
-	#include <CommonLibSE/SKSE/API.h>
+	#include <SKSE/Impl/PCH.h>
+	#include <SKSE/Logger.h>
+	#include <SKSE/API.h>
 namespace XSE = SKSE;
 #elif FALLOUT
 	#include <F4SE/API.h>
@@ -54,10 +56,10 @@ namespace DarkId::Papyrus::DebugServer
 	//{
 	//}
 
-	void PapyrusDebugger::EventLogged(RE::BSScript::LogEvent* logEvent) const
+	void PapyrusDebugger::EventLogged(const RE::BSScript::LogEvent* logEvent) const
 	{
 #if SKYRIM
-		const auto message = std::string(logEvent->text);
+		const auto message = std::string(logEvent->errorMsg);
 #elif FALLOUT
 		const auto message = std::string(logEvent->message->text);
 #endif
@@ -87,9 +89,9 @@ namespace DarkId::Papyrus::DebugServer
 
 			m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
 			
-			if (stack->current && stack->current->func)
+			if (stack->top && stack->top->owningFunction)
 			{
-				const auto scriptName = stack->current->func->GetScriptName();
+				const auto scriptName = stack->top->owningFunction->GetSourceFilename();
 				CheckSourceLoaded(scriptName.c_str());
 			}
 		});
@@ -158,9 +160,9 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetLoadedSources(std::vector<Source>& sources)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->classLock);
+		RE::BSSpinLockGuard lock(vm->typeInfoLock);
 
-		for (const auto& script : vm->linkedClassMap)
+		for (const auto& script : vm->objectTypeMap)
 		{
 			Source source;
 			if (m_pexCache->GetSourceData(script.first.c_str(), source))
@@ -175,14 +177,14 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetThreads(std::vector<Thread>& threads)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::string> stackIdPaths;
 
-		for (auto& elem : vm->allStacks)
+		for (auto& elem : vm->allRunningStacks)
 		{
 			const auto stack = elem.second.get();
-			if (!stack || !stack->current)
+			if (!stack || !stack->top)
 			{
 				continue;
 			}
@@ -213,7 +215,7 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetScopes(const uint64_t frameId, std::vector<Scope>& scopes)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::shared_ptr<StateNodeBase>> frameScopes;
 		m_runtimeState->ResolveChildrenByParentId(frameId, frameScopes);
@@ -241,7 +243,7 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetVariables(uint64_t variablesReference, VariablesFilter filter, int start, int count, std::vector<Variable> & variables)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::shared_ptr<StateNodeBase>> variableNodes;
 		m_runtimeState->ResolveChildrenByParentId(variablesReference, variableNodes);
@@ -268,14 +270,14 @@ namespace DarkId::Papyrus::DebugServer
 
 	int PapyrusDebugger::GetNamedVariables(uint64_t variablesReference)
 	{
-		// _MESSAGE("Named variables count request: %d", variablesReference);
+		// SKSE::log::info("Named variables count request: %d", variablesReference);
 		return 0;
 	}
 
 	HRESULT PapyrusDebugger::GetStackTrace(int threadId, int startFrame, int levels, std::vector<StackFrame> & stackFrames, int& totalFrames)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		if (threadId == -1)
 		{

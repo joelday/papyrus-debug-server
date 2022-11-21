@@ -5,6 +5,7 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
+#include <SKSE/Impl/PCH.h>
 #include <skse64_common/SafeWrite.h>
 #include <skse64_common/BranchTrampoline.h>
 #include <common/ITypes.h>
@@ -41,7 +42,7 @@ namespace DarkId::Papyrus::DebugServer
 		EVENT_WRAPPER_IMPL(CreateStack, void(RE::BSTSmartPointer<RE::BSScript::Stack>&))
 		EVENT_WRAPPER_IMPL(CleanupStack, void(UInt32))
 		// EVENT_WRAPPER_IMPL(InitScript, void(RE::TESInitScriptEvent*))
-		EVENT_WRAPPER_IMPL(Log, void(RE::BSScript::LogEvent*))
+		EVENT_WRAPPER_IMPL(Log, void(const RE::BSScript::LogEvent*))
 
 #undef EVENT_WRAPPER_IMPL
 		
@@ -57,10 +58,12 @@ namespace DarkId::Papyrus::DebugServer
 
 		class LogEventSink : public RE::BSTEventSink<RE::BSScript::LogEvent>
 		{
+			using EventResult = RE::BSEventNotifyControl;
+
 			// TODO: I have no idea why this Intellisense is bitching about this, this seems to have the correct argument types
-			RE::BSEventNotifyControl ProcessEvent(RE::BSScript::LogEvent* evn, RE::BSTEventSource<RE::BSScript::LogEvent>* a_eventSource) override
+			EventResult ProcessEvent(const RE::BSScript::LogEvent* a_event, RE::BSTEventSource<RE::BSScript::LogEvent>*) override
 			{
-				g_LogEvent(evn);
+				g_LogEvent(a_event);
 
 				return RE::BSEventNotifyControl::kContinue;
 			};
@@ -108,7 +111,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::size_t CAVE_END = 0x176;
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 // TODO: RELOCATION_ID
-					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
+					REL::Offset funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -158,12 +161,12 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.GetAddress() + CAVE_END);
+					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.address() + CAVE_END);
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE == 6);
 
-					g_branchTrampoline.Write6Branch(funcBase.GetAddress() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					g_branchTrampoline.Write6Branch(funcBase.address() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
 				}
 
 				{
@@ -171,7 +174,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::uintptr_t FUNC_ADDR = 0x012641F0;	// 1_5_97
 					constexpr std::size_t HOOK_TARGET = 0x1D4;
 // TODO: RELOCATION_ID
-					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
+					REL::Offset funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -191,7 +194,7 @@ namespace DarkId::Papyrus::DebugServer
 					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
-					g_branchTrampoline.Write5Branch(funcBase.GetAddress() + HOOK_TARGET, reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					g_branchTrampoline.Write5Branch(funcBase.address() + HOOK_TARGET, reinterpret_cast<std::uintptr_t>(patch.getCode()));
 				}
 
 
@@ -203,7 +206,7 @@ namespace DarkId::Papyrus::DebugServer
 					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					constexpr UInt8 NOP = 0x90;
 // TODO: RELOCATION_ID
-					REL::Offset<std::uintptr_t> funcBase(FUNC_ADDR);
+					REL::Offset funcBase(FUNC_ADDR);
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -224,16 +227,16 @@ namespace DarkId::Papyrus::DebugServer
 
 					assert(CAVE_SIZE >= 6);
 
-					g_branchTrampoline.Write6Branch(funcBase.GetAddress() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					g_branchTrampoline.Write6Branch(funcBase.address() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
 
 					for (UInt8 i = CAVE_START + 6; i < CAVE_END; ++i) {
-						SafeWrite8(funcBase.GetAddress() + i, NOP);
+						SafeWrite8(funcBase.address() + i, NOP);
 					}
 
-					_CleanupStack = reinterpret_cast<CleanupStack_t*>(funcBase.GetAddress() + CAVE_END);
+					_CleanupStack = reinterpret_cast<CleanupStack_t*>(funcBase.address() + CAVE_END);
 				}
 
-				RE::BSScript::Internal::VirtualMachine::GetSingleton()->AddLogEventSink(new LogEventSink());
+				RE::BSScript::Internal::VirtualMachine::GetSingleton()->RegisterForLogEvent(new LogEventSink());
 				// RE::ScriptEventSourceHolder::GetSingleton()->AddEventSink(new ScriptInitEventSink());
 			}
 		}

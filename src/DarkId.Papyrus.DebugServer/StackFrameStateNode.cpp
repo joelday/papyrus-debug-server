@@ -17,21 +17,21 @@ namespace DarkId::Papyrus::DebugServer
 		stackFrame = StackFrame(GetId());
 
 		Source source;
-		if (pexCache->GetSourceData(m_stackFrame->func->GetScriptName().c_str(), source))
+		if (pexCache->GetSourceData(m_stackFrame->owningFunction->GetSourceFilename().c_str(), source))
 		{
 			stackFrame.source = source;
 
-			UInt32 lineNumber;
-			if (m_stackFrame->func->GetLineNumber(m_stackFrame->taskletExecutionOffset, lineNumber))
+			uint32_t lineNumber;
+			if (m_stackFrame->owningFunction->TranslateIPToLineNumber(m_stackFrame->instructionPointer, lineNumber))
 			{
 				stackFrame.line = lineNumber;
 			}
 		}
 
-		auto name = std::string(m_stackFrame->func->GetFunctionName().c_str());
-		if (strcmp(m_stackFrame->func->GetStateName().c_str(), "") != 0)
+		auto name = std::string(m_stackFrame->owningFunction->GetName().c_str());
+		if (strcmp(m_stackFrame->owningFunction->GetStateName().c_str(), "") != 0)
 		{
-			name = StringFormat("%s (%s)", name.c_str(), m_stackFrame->func->GetStateName().c_str());
+			name = StringFormat("%s (%s)", name.c_str(), m_stackFrame->owningFunction->GetStateName().c_str());
 		}
 
 		stackFrame.name = name;
@@ -41,7 +41,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool StackFrameStateNode::GetChildNames(std::vector<std::string>& names)
 	{
-		if (!m_stackFrame->func->IsNative())
+		if (!m_stackFrame->owningFunction->GetIsNative())
 		{
 			names.push_back("Local");
 		}
@@ -51,7 +51,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool StackFrameStateNode::GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node)
 	{
-		if (!m_stackFrame->func->IsNative() && CaseInsensitiveEquals(name, "local"))
+		if (!m_stackFrame->owningFunction->GetIsNative() && CaseInsensitiveEquals(name, "local"))
 		{
 			node = std::make_shared<LocalScopeStateNode>(m_stackFrame);
 			return true;
