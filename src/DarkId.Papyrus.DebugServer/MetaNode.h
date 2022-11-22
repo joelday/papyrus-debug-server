@@ -160,13 +160,20 @@ namespace DarkId::Papyrus::DebugServer
 				using TValue = meta::get_member_type<decltype(member)>;
 				TValue memberValue = member.getCopy(GetValue());
 
-				if (std::is_pointer<TValue>::value && unrestricted_cast<void*>(memberValue) == nullptr)
+				if (std::is_pointer<TValue>::value && SKSE::stl::unrestricted_cast<void*>(memberValue) == nullptr)
 				{
 					node = std::make_shared<NullNode<TValue>>(memberName);
 				}
+				// TODO: check if this should be checking if it's the same as RE::BSScript::BSSmartPointer<RE::BSScript::Object*>
 				else if constexpr (std::is_same<TValue, RE::BSScript::Object*>::value)
 				{
-					node = std::make_shared<ObjectStateNode>(memberName, memberValue, memberValue->GetClass(), false);
+					// TODO: Double-check this.
+					// GetObject() semantics changed from returning an Object* to returning a BSSmartPointer<Object*>
+					// See <RE/V/Variable.h>
+					// Do not know if these shenanigans will have reprecussions
+					RE::BSScript::Object * obj = static_cast<RE::BSScript::Object*>(memberValue);
+					RE::BSScript::ObjectTypeInfo * type_info = obj->GetTypeInfo();
+					node = std::make_shared<ObjectStateNode>(memberName, obj, type_info, false);
 				}
 				else if constexpr (meta::isRegistered<typename std::remove_pointer<TValue>::type>())
 				{

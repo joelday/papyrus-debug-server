@@ -1,5 +1,6 @@
 if (VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)
     message(WARNING "Warning: SKSE only supports static linkage, overriding setting.")
+    # we may want to statically link to the CRT here??
 endif ()
 set(VCPKG_LIBRARY_LINKAGE static)
 set(VCPKG_CRT_LINKAGE static)

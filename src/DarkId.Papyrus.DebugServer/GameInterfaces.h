@@ -1,12 +1,7 @@
 #pragma once
 
 #if SKYRIM
-#include <common/IPrefix.h>
-#include <SKSE/Impl/PCH.h>
-#include <SKSE/SKSE.h>
-#include <RE/Skyrim.h>
-#include <RE/F/FormTypes.h>
-
+#include "stupidPCH.h"
 #elif FALLOUT
 #include <f4se/GameTypes.h>
 #include <RE/Fallout.h>

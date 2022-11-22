@@ -9,7 +9,6 @@
 #include "StackFrameStateNode.h"
 
 #if SKYRIM
-	#include <SKSE/Impl/PCH.h>
 	#include <SKSE/Logger.h>
 	#include <SKSE/API.h>
 namespace XSE = SKSE;

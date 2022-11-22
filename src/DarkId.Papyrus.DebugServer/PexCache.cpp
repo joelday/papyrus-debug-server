@@ -1,7 +1,6 @@
 #include "PexCache.h"
 #include "Pex.h"
 
-#include <SKSE/Impl/PCH.h>
 #include <functional>
 #include <algorithm>
 #include <string>

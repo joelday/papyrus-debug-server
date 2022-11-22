@@ -1,6 +1,4 @@
 ﻿#if SKYRIM
-#include <SKSE/Impl/PCH.h>
-#include <common/IPrefix.h>
 #include <skse64_common/skse_version.h>  // RUNTIME_VERSION
 #include <skse64_common/BranchTrampoline.h>
 #include <SKSE/API.h>

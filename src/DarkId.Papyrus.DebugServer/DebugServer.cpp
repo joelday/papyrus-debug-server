@@ -1,6 +1,5 @@
 #include "DebugServer.h"
 #include <common/IDebugLog.h>
-#include <SKSE/Impl/PCH.h>
 #include <SKSE/Logger.h>
 namespace DarkId::Papyrus::DebugServer
 {

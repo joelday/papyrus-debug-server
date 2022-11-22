@@ -10,7 +10,7 @@
                 "${workspaceFolder}/dependencies/Champollion/Decompiler",
                 "${workspaceFolder}/dependencies/Champollion",
                 "${workspaceFolder}/src/DarkId.Papyrus.DebugServer",
-                "${workspaceFolder}/vcpkg_installed/skyrim/x64-windows-static-md/include"
+                "${workspaceFolder}/vcpkg_installed/skyrim/x64-windows-static/include"
             ],
             "defines": [
                 "WIN32",
@@ -20,6 +20,7 @@
                 "_USRDLL",
                 "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
             ],
+            "forcedInclude": ["stupidPCH.h"],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:/Program Files/Microsoft Visual Studio/2022/Community/VC/Tools/MSVC/14.34.31933/bin/Hostx64/x64/cl.exe",
             "cStandard": "c11",

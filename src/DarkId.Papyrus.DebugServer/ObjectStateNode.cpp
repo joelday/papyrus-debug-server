@@ -1,5 +1,3 @@
-#include <RE/B/BSFixedString.h>
-
 #include "ObjectStateNode.h"
 #include "Utilities.h"
 #include "RuntimeState.h"
@@ -67,11 +65,11 @@ namespace DarkId::Papyrus::DebugServer
 			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 			
 #if SKYRIM
-// TODO: Fix this?????? Somehow????
+
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
 			{\
-				auto asType = form->As<##type##*>(); \
+				auto asType = form->As<##type##>(); \
 				if (asType) \
 				{ \
 					names.push_back(STRING(type)); \

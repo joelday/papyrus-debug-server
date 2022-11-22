@@ -6,7 +6,6 @@
 #include "GameInterfaces.h"
 
 #if SKYRIM
-#include <SKSE/Impl/PCH.h>
 #include <SKSE/Logger.h>
 #elif FALLOUT
 #include <F4SE/Logger.h>

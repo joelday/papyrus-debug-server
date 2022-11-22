@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <SKSE/Impl/PCH.h>
 #include <SKSE/Logger.h>
 
 #include "torelease.h"
