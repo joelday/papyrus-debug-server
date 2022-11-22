@@ -29,7 +29,7 @@ namespace DarkId::Papyrus::DebugServer
 		std::string name = scriptName;
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 
-		return std::abs(SKSE::stl::unrestricted_cast<int>(hasher(name))) + 1;
+		return std::abs(XSE::stl::unrestricted_cast<int>(hasher(name))) + 1;
 	}
 
 	std::shared_ptr<Pex::Binary> PexCache::GetScript(const char* scriptName)

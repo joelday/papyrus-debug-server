@@ -269,7 +269,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	int PapyrusDebugger::GetNamedVariables(uint64_t variablesReference)
 	{
-		// SKSE::log::info("Named variables count request: %d", variablesReference);
+		// XSE::log::info("Named variables count request: %d", variablesReference);
 		return 0;
 	}
 

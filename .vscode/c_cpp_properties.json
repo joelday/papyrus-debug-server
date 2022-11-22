@@ -31,10 +31,13 @@
             "name": "Fallout",
             "includePath": [
                 "${workspaceFolder}/dependencies/MetaStuff/include",
+                "${workspaceFolder}/dependencies",
                 "${workspaceFolder}/dependencies/Champollion/Champollion",
                 "${workspaceFolder}/dependencies/Champollion/Pex",
                 "${workspaceFolder}/dependencies/Champollion/Decompiler",
-                "${workspaceFolder}/src/DarkId.Papyrus.DebugServer"
+                "${workspaceFolder}/dependencies/Champollion",
+                "${workspaceFolder}/src/DarkId.Papyrus.DebugServer",
+                "${workspaceFolder}/vcpkg_installed/fallout4/x64-windows-static/include"
             ],
             "defines": [
                 "WIN32",
@@ -45,8 +48,7 @@
                 "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
             ],
             "forcedInclude": [
-                "common/IPrefix.h",
-                "F4SE/Logger.h"
+                "stupidPCH.h"
             ],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe",

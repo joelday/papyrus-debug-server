@@ -8,7 +8,7 @@
 #include "DebugExecutionManager.h"
 #include "IdMap.h"
 #include <forward_list>
-#include <RE/B/BSTSmartPointer.h>
+
 namespace DarkId::Papyrus::DebugServer
 {
 	class PapyrusDebugger :

@@ -6,7 +6,6 @@
 #include <common/IDebugLog.h>
 #include <ShlObj.h>
 #include <string_view>
-#include <xstring>
 namespace XSE = SKSE;
 
 #elif FALLOUT
@@ -41,7 +40,7 @@ void MessageHandler(XSE::MessagingInterface::Message* msg)
 			RuntimeEvents::Internal::CommitHooks();
 
 			g_debugServer->Listen();
-			SKSE::log::info("Listening for connections from adapter messaging proxy...");
+			XSE::log::info("Listening for connections from adapter messaging proxy...");
 
 			break;
 		}
@@ -67,7 +66,7 @@ extern "C"
 		IDebugLog::SetLogLevel(IDebugLog::LogLevel::kLevel_DebugMessage);
 		IDebugLog::SetPrintLevel(IDebugLog::LogLevel::kLevel_DebugMessage);
 		
-		SKSE::log::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
+		XSE::log::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
 
 		a_info->infoVersion = 1;
 
@@ -75,12 +74,12 @@ extern "C"
 		a_info->version = DIDPDS_VERSION_MAJOR;
 
 		if (a_xse->IsEditor()) {
-			SKSE::log::critical("Loaded in editor, marking as incompatible!\n");
+			XSE::log::critical("Loaded in editor, marking as incompatible!\n");
 			return false;
 		}
 		auto result = a_xse->RuntimeVersion().compare(CURRENT_RELEASE_RUNTIME);
 		if (result == std::strong_ordering::greater){
-			SKSE::log::critical("Unsupported runtime version {}!\n"sv, a_xse->RuntimeVersion());
+			XSE::log::critical("Unsupported runtime version {}!\n"sv, a_xse->RuntimeVersion().string());
 			return false;
 
 		}
@@ -95,10 +94,10 @@ extern "C"
 #endif
 		
 	{
-		SKSE::log::info("Papyrus Debug Server loaded");
+		XSE::log::info("Papyrus Debug Server loaded");
 
 //#if _DEBUG
-//		SKSE::log::info("Waiting for debugger to attach");
+//		XSE::log::info("Waiting for debugger to attach");
 // 
 //		while (!IsDebuggerPresent())
 //		{
@@ -110,13 +109,13 @@ extern "C"
 
 		if (!g_branchTrampoline.Create(1024 * 64))
 		{
-			SKSE::log::error("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
+			XSE::log::error("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
 			return false;
 		}
 
 		if (!g_localTrampoline.Create(1024 * 64, nullptr))
 		{
-			SKSE::log::error("Couldn't create codegen buffer. This is fatal. Skipping remainder of init process.");
+			XSE::log::error("Couldn't create codegen buffer. This is fatal. Skipping remainder of init process.");
 			return false;
 		}
 

@@ -1,6 +1,5 @@
 #include "DebugServer.h"
 #include <common/IDebugLog.h>
-#include <SKSE/Logger.h>
 namespace DarkId::Papyrus::DebugServer
 {
 	DebugServer::DebugServer() :
@@ -79,7 +78,7 @@ namespace DarkId::Papyrus::DebugServer
 		}
 		catch (...)
 		{
-			SKSE::log::info("other_exception");
+			XSE::log::info("other_exception");
 			return -1;
 		}
 

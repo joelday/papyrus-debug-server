@@ -6,7 +6,6 @@
 
 #include <iostream>
 #include <unordered_map>
-#include <SKSE/Logger.h>
 
 #include "torelease.h"
 #include "cputil.h"
@@ -15,6 +14,13 @@
 
 // for convenience
 using json = nlohmann::json;
+#if SKYRIM
+#include <SKSE/Impl/PCH.h>
+#include <SKSE/Logger.h>
+namespace XSE = SKSE;
+#elif FALLOUT
+namespace XSE = F4SE;
+#endif
 
 void from_json(const nlohmann::json& value, Source& source)
 {
@@ -698,5 +704,5 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	SKSE::log::info("%s: %s", prefix.c_str(), text.c_str());
+	XSE::log::info("%s: %s", prefix.c_str(), text.c_str());
 }

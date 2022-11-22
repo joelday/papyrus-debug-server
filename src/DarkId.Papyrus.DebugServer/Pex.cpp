@@ -56,7 +56,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (!ReadPexResource(scriptName, buffer))
 		{
-			SKSE::log::error("Failed to load pex resource.");
+			XSE::log::error("Failed to load pex resource.");
 			return false;
 		}
 

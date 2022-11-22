@@ -5,7 +5,6 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
-#include "stupidPCH.h"
 #include <skse64_common/SafeWrite.h>
 #include <skse64_common/BranchTrampoline.h>
 #include <common/ITypes.h>
@@ -161,7 +160,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.address() + CAVE_END);
+					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.address() + CAVE_END);
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE == 6);
@@ -191,7 +190,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
+					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					g_branchTrampoline.Write5Branch(funcBase.address() + HOOK_TARGET, reinterpret_cast<std::uintptr_t>(patch.getCode()));
@@ -222,7 +221,7 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, SKSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
+					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE >= 6);

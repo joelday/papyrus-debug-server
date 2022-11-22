@@ -4,7 +4,6 @@
 
 #include <functional>
 #include <variant>
-#include <RE/B/BSFixedString.h>
 #include "FormMetadata.h"
 #include "Meta.h"
 #include "Utilities.h"
@@ -160,7 +159,7 @@ namespace DarkId::Papyrus::DebugServer
 				using TValue = meta::get_member_type<decltype(member)>;
 				TValue memberValue = member.getCopy(GetValue());
 
-				if (std::is_pointer<TValue>::value && SKSE::stl::unrestricted_cast<void*>(memberValue) == nullptr)
+				if (std::is_pointer<TValue>::value && XSE::stl::unrestricted_cast<void*>(memberValue) == nullptr)
 				{
 					node = std::make_shared<NullNode<TValue>>(memberName);
 				}

@@ -69,14 +69,14 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgTriplet>x64-windows-static-md</VcpkgTriplet>
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
     <VcpkgConfiguration>Debug</VcpkgConfiguration>
     <VcpkgInstalledDir>$(SolutionDir)vcpkg_installed\fallout4</VcpkgInstalledDir>
     <VcpkgAdditionalInstallOptions>--x-feature=fallout4</VcpkgAdditionalInstallOptions>
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg" Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
     <VcpkgUseStatic>true</VcpkgUseStatic>
-    <VcpkgTriplet>x64-windows-static-md</VcpkgTriplet>
+    <VcpkgTriplet>x64-windows-static</VcpkgTriplet>
     <VcpkgInstalledDir>$(SolutionDir)vcpkg_installed\fallout4</VcpkgInstalledDir>
     <VcpkgAdditionalInstallOptions>--x-feature=fallout4</VcpkgAdditionalInstallOptions>
   </PropertyGroup>
