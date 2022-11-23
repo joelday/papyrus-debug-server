@@ -59,7 +59,6 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			using EventResult = RE::BSEventNotifyControl;
 
-			// TODO: I have no idea why this Intellisense is bitching about this, this seems to have the correct argument types
 			EventResult ProcessEvent(const RE::BSScript::LogEvent* a_event, RE::BSTEventSource<RE::BSScript::LogEvent>*) override
 			{
 				g_LogEvent(a_event);
@@ -104,14 +103,24 @@ namespace DarkId::Papyrus::DebugServer
 			void CommitHooks()
 			{
 				{
-					// OLD: E8 ? ? ? ? 48 83 C3 08 48 3B DF 75 EF 48 83 7C 24 30 00
-					constexpr std::uintptr_t FUNC_ADDR = 0x01278110;	// 1_5_97
-					constexpr std::size_t CAVE_START = 0x170;
-					constexpr std::size_t CAVE_END = 0x176;
-					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
-// TODO: RELOCATION_ID
-					REL::Offset funcBase(FUNC_ADDR);
+					// InstructionExecute
+					// SE 1.5.97: 0x141278110: BSScript__Internal__CodeTasklet::VMProcess_141278110
+					// SE 1.5.97: 0x14139C860: BSScript__Internal__CodeTasklet::sub_14139C860
+					// 1_5_97  CAVE_START = 0x170
+					// 1_6_640 CAVE_START = 0x14C
+					// 1_5_97  CAVE_END   = 0x176
+					// 1_6_640 CAVE_END   = 0x152
+					// CAVE_SIZE = 6 
+					std::uintptr_t INSTRUCTION_EXECUTE_ADDR = RELOCATION_ID(98520, 105176).address();	
+					//TODO: Find VR offsets, using SE offsets as placeholders
+					auto cave_start_var_offset = REL::VariantOffset(0x170, 0x14C, 0x170);
+					auto cave_end_var_offset = REL::VariantOffset(0x176, 0x152, 0x176);
 
+					REL::Relocation<std::uintptr_t> cave_start_reloc{ RELOCATION_ID(98520, 105176), cave_start_var_offset };
+					REL::Relocation<std::uintptr_t> cave_end_reloc{ RELOCATION_ID(98520, 105176), cave_end_var_offset };
+					std::size_t CAVE_START = cave_start_var_offset.offset();
+					std::size_t CAVE_END = cave_end_var_offset.offset();
+					std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					struct Patch : Xbyak::CodeGenerator
 					{
 						Patch(void* a_buf, std::size_t a_callAddr, std::size_t a_retAddr) : Xbyak::CodeGenerator(1024, a_buf)
@@ -145,10 +154,13 @@ namespace DarkId::Papyrus::DebugServer
 							pop(rdx);
 							pop(rcx);
 							pop(rax);
-
-							mov(rax, r8);	// execute overridden ops
-							and_(eax, 0x3F);
-
+							if (REL::Module::IsAE()) {
+								mov(r10, r9);	// execute overridden ops
+								and_(r10d, 0x3F);
+							} else {
+								mov(rax, r8);	// execute overridden ops
+								and_(eax, 0x3F);
+							}
 							jmp(ptr[rip + retLbl]);	// resume execution
 
 							L(callLbl);
@@ -160,20 +172,22 @@ namespace DarkId::Papyrus::DebugServer
 					};
 
 					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), funcBase.address() + CAVE_END);
+					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), cave_end_reloc.address());
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
 					assert(CAVE_SIZE == 6);
 
-					g_branchTrampoline.Write6Branch(funcBase.address() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					g_branchTrampoline.Write6Branch(cave_start_reloc.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
 				}
 
 				{
-					// OLD: E8 ? ? ? ? 48 8B 5C 24 38 48 85 DB 74 19
-					constexpr std::uintptr_t FUNC_ADDR = 0x012641F0;	// 1_5_97
-					constexpr std::size_t HOOK_TARGET = 0x1D4;
-// TODO: RELOCATION_ID
-					REL::Offset funcBase(FUNC_ADDR);
+					// CreateStack
+					// 1.5.29:  0x1412641F0: BSScript__Internal__VirtualMachine::sub_1412641F0 
+					// 1_6_640: 0x14138AD20: BSScript__Internal__VirtualMachine::sub_14138AD20
+					// 1_5_97   HOOK_TARGET = 0x1D4;
+					// 1_6_640  HOOK_TARGET = 0x1D9;
+					//TODO: Find VR offsets, using SE offsets as placeholders
+					REL::Relocation<std::uintptr_t> create_stack_hook_target{ RELOCATION_ID(98149, 104870), REL::VariantOffset(0x1D4, 0x1D9, 0x1D4) };
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -193,20 +207,27 @@ namespace DarkId::Papyrus::DebugServer
 					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
 					g_localTrampoline.EndAlloc(patch.getCurr());
 
-					g_branchTrampoline.Write5Branch(funcBase.address() + HOOK_TARGET, reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					g_branchTrampoline.Write5Branch(create_stack_hook_target.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
 				}
 
 
 				{
-					// OLD: E8 ? ? ? ? 90 48 85 DB 74 24 41 8B C7
-					constexpr std::uintptr_t FUNC_ADDR = 0x012646F0;	// 1_5_97
-					constexpr std::size_t CAVE_START = 0x0;
-					constexpr std::size_t CAVE_END = 0x9;
-					constexpr std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
+					// CleanupStack 
+ 					// 1.5.97:  0x1412646F0: BSScript__Internal__VirtualMachine::sub_1412646F0
+					// 1.6.640: 0x14138B180: BSScript__Internal__VirtualMachine::sub_14138B180
+					// CAVE_START = 0x0; 	// 1_5_97 and 1_6_640
+					// CAVE_END = 0x9; 	// 1_5_97 and 1_6_640
+					// CAVE_SIZE = 9
 					constexpr uint8_t NOP = 0x90;
-// TODO: RELOCATION_ID
-					REL::Offset funcBase(FUNC_ADDR);
-
+					// TODO: Find VR offsets (they should be the same since SE and AE are the same)
+					auto cave_start_var_offset = REL::VariantOffset(0x0, 0x0, 0x0);
+					auto cave_end_var_offset = REL::VariantOffset(0x9, 0x9, 0x9);
+					REL::Relocation<std::uintptr_t> func_base_reloc{ RELOCATION_ID(98149, 104873) };
+					REL::Relocation<std::uintptr_t> cave_start_reloc{ RELOCATION_ID(98149, 104873), cave_start_var_offset };
+					REL::Relocation<std::uintptr_t> cave_end_reloc{ RELOCATION_ID(98149, 104873), cave_end_var_offset };
+					std::size_t CAVE_START = cave_start_var_offset.offset();
+					std::size_t CAVE_END = cave_end_var_offset.offset();
+					std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					struct Patch : Xbyak::CodeGenerator
 					{
 						Patch(void* a_buf, std::size_t a_funcAddr) : Xbyak::CodeGenerator(1024, a_buf)
@@ -226,13 +247,13 @@ namespace DarkId::Papyrus::DebugServer
 
 					assert(CAVE_SIZE >= 6);
 
-					g_branchTrampoline.Write6Branch(funcBase.address() + CAVE_START, reinterpret_cast<std::uintptr_t>(patch.getCode()));
-
+					g_branchTrampoline.Write6Branch(cave_start_reloc.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					// NOP out push rbp, push rsi, push rdi
 					for (uint8_t i = CAVE_START + 6; i < CAVE_END; ++i) {
-						SafeWrite8(funcBase.address() + i, NOP);
+						SafeWrite8(func_base_reloc.address() + i, NOP);
 					}
 
-					_CleanupStack = reinterpret_cast<CleanupStack_t*>(funcBase.address() + CAVE_END);
+					_CleanupStack = reinterpret_cast<CleanupStack_t*>(cave_end_reloc.address());
 				}
 
 				RE::BSScript::Internal::VirtualMachine::GetSingleton()->RegisterForLogEvent(new LogEventSink());
