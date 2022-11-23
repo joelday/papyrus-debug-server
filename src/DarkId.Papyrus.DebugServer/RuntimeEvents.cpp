@@ -5,7 +5,9 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
+//TODO: Replace this with `safe_write()` in REL/Relocation.h
 #include <skse64_common/SafeWrite.h>
+//TODO: Replace this with CommonLibSSE-NG's "SKSE/Trampoline.h"
 #include <skse64_common/BranchTrampoline.h>
 #include <common/ITypes.h>
 #include <SKSE/Events.h>
@@ -18,8 +20,7 @@
 
 #include <cassert>
 #include <mutex>
-// TODO: !!!!Change Offset to RELOCATION_ID
-// See REL/Relocation.h
+
 namespace DarkId::Papyrus::DebugServer
 {
 	namespace RuntimeEvents

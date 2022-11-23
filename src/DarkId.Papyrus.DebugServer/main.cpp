@@ -1,8 +1,11 @@
 ﻿#if SKYRIM
+// TODO: Replace this with SKSE/Version.h
 #include <skse64_common/skse_version.h>  // RUNTIME_VERSION
+// TODO: Replace this with CommonLibSSE-NG's "SKSE/Trampoline.h"
 #include <skse64_common/BranchTrampoline.h>
 #include <SKSE/API.h>
 #include <SKSE/Logger.h>
+// TODO: Stop using common's Debug log by figuring out how to open a new file with SKSE/Logger.h
 #include <common/IDebugLog.h>
 #include <ShlObj.h>
 #include <string_view>
@@ -23,7 +26,7 @@ namespace XSE = F4SE;
 #include "DebugServer.h"
 #include "RuntimeEvents.h"
 using namespace DarkId::Papyrus::DebugServer;
-//TODO: Logger completely changed in SKSE/logger.h, Logger class no longer exists, fix it
+
 DebugServer* g_debugServer;
 using namespace std::literals;
 
