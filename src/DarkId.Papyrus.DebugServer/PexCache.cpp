@@ -6,7 +6,6 @@
 #include <string>
 #include "Decompiler/PscCoder.hpp"
 #include "Decompiler/StreamWriter.hpp"
-#include <common/ITypes.h>
 
 namespace DarkId::Papyrus::DebugServer
 {

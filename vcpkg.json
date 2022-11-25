@@ -10,15 +10,13 @@
   "dependencies": [
     "nlohmann-json",
     "eventpp",
-    "websocketpp",
-    "openssl"
+    "websocketpp"
   ],
   "features": {
     "skyrim": {
       "description": "Add deps for Skyrim",
       "dependencies": [
-        "commonlibsse-ng",
-        "skse"
+        "commonlibsse-ng"
       ]
     },
     "fallout4": {
@@ -43,25 +41,17 @@
       "version": "0.8.2"
     },
     {
-      "name": "openssl",
-      "version-string": "1.1.1n"
-    },
-    {
       "name": "commonlibsse-ng",
-      "version": "3.5.6"
+      "version": "3.6.0"
     },
     {
       "name": "commonlibf4",
       "version-string": "2022-10-17"
     },
     {
-      "name": "skse",
-      "version": "2.2.3"
-    },
-    {
       "name": "f4se",
       "version": "0.6.23"
     }
   ],
-  "builtin-baseline": "3776224fd28bd7e0c78617d73696753219e8d272"
+  "builtin-baseline": "4cb4a5c5ddcb9de0c83c85837ee6974c8333f032"
 }

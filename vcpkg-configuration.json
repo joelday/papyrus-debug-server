@@ -2,32 +2,13 @@
   "registries": [
     {
       "kind": "git",
-      "baseline": "7ae42a349153542dc0887635c38e838a929743c4",
-      "repository": "file:///C:/Users/Nikita/Workspace/skyrim-mod-workspace/vcpkg-colorglass/",
+      "baseline": "6fb127f7d425ae3cf3fab0f79005d907c885c0d8",
+      "repository": "https://gitlab.com/colorglass/vcpkg-colorglass/",
       "packages": [
-        "articuno",
-        "bethesda-fallout4-scripts",
-        "bethesda-skyrim-scripts",
-        "commonlibf4",
-        "commonlibsse",
-        "commonlibsse-ng",
-        "commonlibsse-ng-ae",
-        "commonlibsse-ng-flatrim",
-        "commonlibsse-ng-prebuilt",
-        "commonlibsse-ng-se",
-        "commonlibsse-ng-vr",
-        "commonlibsse-po3-ae",
-        "commonlibsse-po3-se",
-        "commonlibvr",
-        "f4se",
-        "fully-dynamic-game-engine",
-        "gluino",
-        "hoshi",
-        "script-extender-common",
-        "skse",
-        "tsl-hat-trie"
       ]
     }
   ],
-  "overlay-ports" : [ "./dependencies/ports" ]
+  "overlay-ports": [
+    "./dependencies/ports"
+  ]
 }

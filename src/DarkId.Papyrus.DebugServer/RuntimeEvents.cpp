@@ -5,11 +5,6 @@
 #include "xbyak/xbyak.h"
 
 #if SKYRIM
-//TODO: Replace this with `safe_write()` in REL/Relocation.h
-#include <skse64_common/SafeWrite.h>
-//TODO: Replace this with CommonLibSSE-NG's "SKSE/Trampoline.h"
-#include <skse64_common/BranchTrampoline.h>
-#include <common/ITypes.h>
 #include <SKSE/Events.h>
 #include <RE/B/BSTEvent.h>
 #include <REL/Relocation.h>
@@ -105,12 +100,12 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				{
 					// InstructionExecute
-					// SE 1.5.97: 0x141278110: BSScript__Internal__CodeTasklet::VMProcess_141278110
-					// SE 1.5.97: 0x14139C860: BSScript__Internal__CodeTasklet::sub_14139C860
-					// 1_5_97  CAVE_START = 0x170
-					// 1_6_640 CAVE_START = 0x14C
-					// 1_5_97  CAVE_END   = 0x176
-					// 1_6_640 CAVE_END   = 0x152
+					// 1.5.97:  0x141278110: BSScript__Internal__CodeTasklet::VMProcess_141278110
+					// 1.6.640: 0x14139C860: BSScript__Internal__CodeTasklet::sub_14139C860
+					// 1_5_97   CAVE_START = 0x170
+					// 1_6_640  CAVE_START = 0x14C
+					// 1_5_97   CAVE_END   = 0x176
+					// 1_6_640  CAVE_END   = 0x152
 					// CAVE_SIZE = 6 
 					std::uintptr_t INSTRUCTION_EXECUTE_ADDR = RELOCATION_ID(98520, 105176).address();	
 					//TODO: Find VR offsets, using SE offsets as placeholders
@@ -124,7 +119,7 @@ namespace DarkId::Papyrus::DebugServer
 					std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					struct Patch : Xbyak::CodeGenerator
 					{
-						Patch(void* a_buf, std::size_t a_callAddr, std::size_t a_retAddr) : Xbyak::CodeGenerator(1024, a_buf)
+						Patch(std::uintptr_t a_callAddr, std::uintptr_t a_retAddr)
 						{
 							Xbyak::Label callLbl;
 							Xbyak::Label retLbl;
@@ -172,13 +167,16 @@ namespace DarkId::Papyrus::DebugServer
 						}
 					};
 
-					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), cave_end_reloc.address());
-					g_localTrampoline.EndAlloc(patch.getCurr());
-
+					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), cave_end_reloc.address());
+					auto& trampoline = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(patch.getSize());
+					auto result = trampoline.allocate(patch);
 					assert(CAVE_SIZE == 6);
-
-					g_branchTrampoline.Write6Branch(cave_start_reloc.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
+					auto& trampoline2 = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(14);
+					trampoline2.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
+					SKSE::log::info("InstructionExecuteHook hooked at address {:x}", cave_start_reloc.address());
+					SKSE::log::info("InstructionExecuteHook hooked at offset {:x}", cave_start_reloc.offset());
 				}
 
 				{
@@ -192,7 +190,7 @@ namespace DarkId::Papyrus::DebugServer
 
 					struct Patch : Xbyak::CodeGenerator
 					{
-						Patch(void* a_buf, std::size_t a_funcAddr) : Xbyak::CodeGenerator(1024, a_buf)
+						Patch(std::uintptr_t a_funcAddr)
 						{
 							Xbyak::Label funcLbl;
 
@@ -204,11 +202,16 @@ namespace DarkId::Papyrus::DebugServer
 						}
 					};
 
-					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
-					g_localTrampoline.EndAlloc(patch.getCurr());
+					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
+					auto& trampoline = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(patch.getSize());
+					auto result = trampoline.allocate(patch);
+					auto& trampoline2 = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(14);
+					trampoline2.write_branch<5>(create_stack_hook_target.address(), (std::uintptr_t)result);
+					SKSE::log::info("CreateStackHook hooked at address {:x}", create_stack_hook_target.address());
+					SKSE::log::info("CreateStackHook hooked at offset {:x}", create_stack_hook_target.offset());
 
-					g_branchTrampoline.Write5Branch(create_stack_hook_target.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
 				}
 
 
@@ -219,7 +222,6 @@ namespace DarkId::Papyrus::DebugServer
 					// CAVE_START = 0x0; 	// 1_5_97 and 1_6_640
 					// CAVE_END = 0x9; 	// 1_5_97 and 1_6_640
 					// CAVE_SIZE = 9
-					constexpr uint8_t NOP = 0x90;
 					// TODO: Find VR offsets (they should be the same since SE and AE are the same)
 					auto cave_start_var_offset = REL::VariantOffset(0x0, 0x0, 0x0);
 					auto cave_end_var_offset = REL::VariantOffset(0x9, 0x9, 0x9);
@@ -231,7 +233,7 @@ namespace DarkId::Papyrus::DebugServer
 					std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
 					struct Patch : Xbyak::CodeGenerator
 					{
-						Patch(void* a_buf, std::size_t a_funcAddr) : Xbyak::CodeGenerator(1024, a_buf)
+						Patch(std::size_t a_funcAddr)
 						{
 							Xbyak::Label funcLbl;
 
@@ -241,20 +243,21 @@ namespace DarkId::Papyrus::DebugServer
 							dq(a_funcAddr);
 						}
 					};
-
-					void* patchBuf = g_localTrampoline.StartAlloc();
-					Patch patch(patchBuf, XSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
-					g_localTrampoline.EndAlloc(patch.getCurr());
+					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
+					auto& trampoline = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(patch.getSize());
+					auto result = trampoline.allocate(patch);
+					auto& trampoline2 = SKSE::GetTrampoline();
+					SKSE::AllocTrampoline(14);
+					trampoline2.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
 
 					assert(CAVE_SIZE >= 6);
-
-					g_branchTrampoline.Write6Branch(cave_start_reloc.address(), reinterpret_cast<std::uintptr_t>(patch.getCode()));
 					// NOP out push rbp, push rsi, push rdi
-					for (uint8_t i = CAVE_START + 6; i < CAVE_END; ++i) {
-						SafeWrite8(func_base_reloc.address() + i, NOP);
-					}
+					REL::safe_fill(func_base_reloc.address() + CAVE_START + 6, REL::NOP, CAVE_END - (CAVE_START + 6));
 
 					_CleanupStack = reinterpret_cast<CleanupStack_t*>(cave_end_reloc.address());
+					SKSE::log::info("CleanupStackHook hooked at address {:x}", cave_start_reloc.address());
+					SKSE::log::info("CleanupStackHook hooked at offset {:x}", cave_start_reloc.offset());
 				}
 
 				RE::BSScript::Internal::VirtualMachine::GetSingleton()->RegisterForLogEvent(new LogEventSink());

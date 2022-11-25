@@ -18,7 +18,8 @@
                 "_DEBUG",
                 "_WINDOWS",
                 "_USRDLL",
-                "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
+                "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS",
+                "SKSE_SUPPORT_XBYAK"
             ],
             "forcedInclude": ["stupidPCH.h"],
             "windowsSdkVersion": "10.0.18362.0",

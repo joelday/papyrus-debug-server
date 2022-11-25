@@ -18,8 +18,10 @@ using json = nlohmann::json;
 #include <SKSE/Impl/PCH.h>
 #include <SKSE/Logger.h>
 namespace XSE = SKSE;
+namespace logger = SKSE::log;
 #elif FALLOUT
 namespace XSE = F4SE;
+namespace logger = F4SE::log;
 #endif
 
 void from_json(const nlohmann::json& value, Source& source)
@@ -704,5 +706,5 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	XSE::log::info("%s: %s", prefix.c_str(), text.c_str());
+	logger::info("%s: %s", prefix.c_str(), text.c_str());
 }
