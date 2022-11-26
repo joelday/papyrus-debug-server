@@ -3,6 +3,7 @@
 #include <string>
 #include <sstream>
 #include <boost/algorithm/string.hpp>
+#include <regex>
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -93,5 +94,9 @@ namespace DarkId::Papyrus::DebugServer
 		}
 
 		return name;
+	}
+	inline std::string NormalizeScriptName(std::string name)
+	{
+		return std::regex_replace(std::regex_replace(name, std::regex(":"), "/"), std::regex("\\.psc"), "");
 	}
 }

@@ -166,17 +166,17 @@ namespace DarkId::Papyrus::DebugServer
 							dq(a_retAddr);
 						}
 					};
+					assert(CAVE_SIZE == 6);
 
 					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), cave_end_reloc.address());
 					auto& trampoline = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(patch.getSize());
+					SKSE::AllocTrampoline(patch.getSize() + 14);
 					auto result = trampoline.allocate(patch);
-					assert(CAVE_SIZE == 6);
-					auto& trampoline2 = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(14);
-					trampoline2.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
+					trampoline.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
 					SKSE::log::info("InstructionExecuteHook hooked at address {:x}", cave_start_reloc.address());
 					SKSE::log::info("InstructionExecuteHook hooked at offset {:x}", cave_start_reloc.offset());
+					SKSE::log::info("InstructionExecuteHook:CAVE_START is {:x}", CAVE_START);
+					SKSE::log::info("InstructionExecuteHook:CAVE_END is {:x}", CAVE_END);
 				}
 
 				{
@@ -186,7 +186,7 @@ namespace DarkId::Papyrus::DebugServer
 					// 1_5_97   HOOK_TARGET = 0x1D4;
 					// 1_6_640  HOOK_TARGET = 0x1D9;
 					//TODO: Find VR offsets, using SE offsets as placeholders
-					REL::Relocation<std::uintptr_t> create_stack_hook_target{ RELOCATION_ID(98149, 104870), REL::VariantOffset(0x1D4, 0x1D9, 0x1D4) };
+					REL::Relocation<std::uintptr_t> create_stack_hook_target{ RELOCATION_ID(98146, 104870), REL::VariantOffset(0x1D4, 0x1D9, 0x1D4) };
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -204,11 +204,9 @@ namespace DarkId::Papyrus::DebugServer
 
 					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(CreateStack_Hook));
 					auto& trampoline = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(patch.getSize());
+					SKSE::AllocTrampoline(patch.getSize() + 14);
 					auto result = trampoline.allocate(patch);
-					auto& trampoline2 = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(14);
-					trampoline2.write_branch<5>(create_stack_hook_target.address(), (std::uintptr_t)result);
+					trampoline.write_branch<5>(create_stack_hook_target.address(), (std::uintptr_t)result);
 					SKSE::log::info("CreateStackHook hooked at address {:x}", create_stack_hook_target.address());
 					SKSE::log::info("CreateStackHook hooked at offset {:x}", create_stack_hook_target.offset());
 
@@ -245,11 +243,9 @@ namespace DarkId::Papyrus::DebugServer
 					};
 					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(CleanupStack_Hook));
 					auto& trampoline = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(patch.getSize());
+					SKSE::AllocTrampoline(patch.getSize() + 14);
 					auto result = trampoline.allocate(patch);
-					auto& trampoline2 = SKSE::GetTrampoline();
-					SKSE::AllocTrampoline(14);
-					trampoline2.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
+					trampoline.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
 
 					assert(CAVE_SIZE >= 6);
 					// NOP out push rbp, push rsi, push rdi

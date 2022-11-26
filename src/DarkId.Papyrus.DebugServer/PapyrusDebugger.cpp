@@ -90,7 +90,8 @@ namespace DarkId::Papyrus::DebugServer
 			
 			if (stack->top && stack->top->owningFunction)
 			{
-				const auto scriptName = stack->top->owningFunction->GetSourceFilename();
+
+				const auto scriptName = NormalizeScriptName(stack->top->owningFunction->GetSourceFilename().c_str());
 				CheckSourceLoaded(scriptName.c_str());
 			}
 		});

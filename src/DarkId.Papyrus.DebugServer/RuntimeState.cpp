@@ -159,9 +159,10 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		if (variable->IsObject())
 		{
-			// TODO: Double-check this.
-			// GetObject() semantics changed from returning an Object* to returning a BSSmartPointer<Object*>, Don't know using `get()` here will have reprecussions
-			return std::make_shared<ObjectStateNode>(name, variable->RE::BSScript::Variable::GetObject().get(), variable->GetObject()->GetTypeInfo());
+			auto obj = variable->GetObject();
+			auto typeinfo = obj ? obj->GetTypeInfo() : variable->GetType().GetTypeInfo();
+
+			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
 		}
 
 #if FALLOUT
@@ -178,9 +179,16 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (variable->IsArray())
 		{
-			// TODO: Double check this
-			// GetArray() semantics changed from returning an Array* to returning a BSSmartPointer<Array*>, Don't know using `get()` here will have reprecussions
-			return std::make_shared<ArrayStateNode>(name, variable->GetArray().get(), &variable->GetArray()->type_info());
+			auto arr = variable->GetArray();
+			if (arr){
+				auto &typeinfo = arr->type_info();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+			} else {
+				// TODO: This probably results in a dangling reference
+				auto typeinfo = variable->GetType();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+			}
+
 		}
 
 		if (variable->IsBool() || variable->IsFloat() || variable->IsInt() || variable->IsString())

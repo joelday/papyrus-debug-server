@@ -45,6 +45,18 @@ void MessageHandler(XSE::MessagingInterface::Message* msg)
 		}
 	}
 }
+#if SKYRIM
+extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
+	SKSE::PluginVersionData v;
+	v.PluginVersion(DIDPDS_VERSION_MAJOR);
+	v.PluginName("Papyrus Debug Server");
+	v.AuthorName("Joel Day");
+	v.UsesAddressLibrary(true);
+	// TODO: change this to use RUNTIME_SSE_LATEST when the address libraries get updated
+	v.CompatibleVersions({ SKSE::RUNTIME_SSE_1_5_97, SKSE::RUNTIME_SSE_1_6_659 });
+	return v;
+}();
+#endif
 
 extern "C"
 {
@@ -58,12 +70,14 @@ extern "C"
 		if (!path) {
 			//stl::report_and_fail("Failed to find standard logging directory"sv); // Doesn't work in VR
 		}
-		*path += "DarkId.Papyrus.DebugServer.log"sv;
+		*path /= "DarkId.Papyrus.DebugServer.log"sv;
 		auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
 
 		auto log = std::make_shared<spdlog::logger>("global log"s, std::move(sink));
 		log->set_level(spdlog::level::debug);
 		log->flush_on(spdlog::level::debug);
+		spdlog::set_default_logger(std::move(log));
+		spdlog::set_pattern("[%H:%M:%S:%e] %l: %v"s);
 
 		logger::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
 
@@ -95,18 +109,18 @@ extern "C"
 	{
 		logger::info("Papyrus Debug Server loaded");
 
-//#if _DEBUG
-//		logger::info("Waiting for debugger to attach");
-// 
-//		while (!IsDebuggerPresent())
-//		{
-//			Sleep(10);
-//		}
-// 
-//		Sleep(1000 * 2);
-//#endif
-	//SKSE::GetTrampoline().
-	
+ #if _DEBUG
+ 		logger::info("Waiting for debugger to attach...");
+
+ 		while (!IsDebuggerPresent())
+ 		{
+ 			Sleep(10);
+ 		}
+
+ 		Sleep(1000 * 4);
+ 		logger::info("Debugger attached!");
+ #endif
+		
 		// if (!g_branchTrampoline.Create(1024 * 64))
 		// {
 		// 	logger::error("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
@@ -120,10 +134,16 @@ extern "C"
 		// }
 
 		g_debugServer = new DebugServer();
+		logger::info("Initializing plugin...");
 		Init(a_xse);
-
+		logger::info("Plugin Initialized!");
 #if SKYRIM
-		XSE::GetMessagingInterface()->RegisterListener("SKSE", MessageHandler);
+		logger::info("Registering Listener...");
+		if (XSE::GetMessagingInterface()->RegisterListener("SKSE", MessageHandler)){
+			logger::info("Registered Listener!");
+		} else {
+			logger::critical("Failed to register listener!!");
+		}
 #elif FALLOUT
 		XSE::GetMessagingInterface()->RegisterListener("F4SE", MessageHandler);
 #endif 

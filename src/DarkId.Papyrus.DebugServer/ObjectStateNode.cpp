@@ -60,7 +60,8 @@ namespace DarkId::Papyrus::DebugServer
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		
 		RE::FormID formType;
-		if (vm->GetTypeIDForScriptObject((m_class->name), formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
+		bool success = vm->GetTypeIDForScriptObject((m_class->name), formType);
+		if (success && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{
 			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 			

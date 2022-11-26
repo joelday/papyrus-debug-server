@@ -1,5 +1,6 @@
 #include "PexCache.h"
 #include "Pex.h"
+#include "Utilities.h"
 
 #include <functional>
 #include <algorithm>
@@ -71,9 +72,9 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool PexCache::GetSourceData(const char* scriptName, Source& data)
 	{
-		const auto sourceReference = GetScriptReference(scriptName);
+		const auto sourceReference = GetScriptReference(NormalizeScriptName(scriptName).c_str());
 
-		auto binary = GetScript(scriptName);
+		auto binary = GetScript(NormalizeScriptName(scriptName).c_str());
 		if (!binary)
 		{
 			return false;

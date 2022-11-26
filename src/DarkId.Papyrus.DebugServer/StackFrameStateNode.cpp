@@ -17,7 +17,7 @@ namespace DarkId::Papyrus::DebugServer
 		stackFrame = StackFrame(GetId());
 
 		Source source;
-		if (pexCache->GetSourceData(m_stackFrame->owningFunction->GetSourceFilename().c_str(), source))
+		if (pexCache->GetSourceData(NormalizeScriptName(m_stackFrame->owningFunction->GetSourceFilename().c_str()).c_str(), source))
 		{
 			stackFrame.source = source;
 

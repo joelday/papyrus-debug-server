@@ -16,6 +16,7 @@ namespace DarkId::Papyrus::DebugServer
   namespace XSE = SKSE;
   namespace logger = SKSE::log;
 }
+#define DLLEXPORT __declspec(dllexport)
 
 #elif FALLOUT
 #include <F4SE/Impl/PCH.h>

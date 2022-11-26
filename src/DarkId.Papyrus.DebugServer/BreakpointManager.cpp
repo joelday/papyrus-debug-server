@@ -1,14 +1,14 @@
 #include "BreakpointManager.h"
 #include "Pex/Binary.hpp"
 #include <regex>
-
+#include "Utilities.h"
 namespace DarkId::Papyrus::DebugServer
 {
 	void BreakpointManager::SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints)
 	{
 		std::set<int> breakpointLines;
 
-		auto scriptName = std::regex_replace(source.name.c_str(), std::regex(".psc"), "");
+		auto scriptName = NormalizeScriptName(source.name);
 		auto binary = m_pexCache->GetScript(scriptName.c_str());
 
 		const auto sourceReference = m_pexCache->GetScriptReference(scriptName.c_str());
@@ -59,8 +59,9 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			return false;
 		}
-
-		const auto sourceReference = m_pexCache->GetScriptReference(func->GetSourceFilename().c_str());
+		const auto srcFileName = std::string(func->GetSourceFilename().c_str());
+		const auto sourceName = NormalizeScriptName(srcFileName);
+		const auto sourceReference = m_pexCache->GetScriptReference(sourceName.c_str());
 		
 		if (m_breakpoints.find(sourceReference) != m_breakpoints.end())
 		{

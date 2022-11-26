@@ -4,7 +4,7 @@
 #include <regex>
 
 #include "GameInterfaces.h"
-
+#include "Utilities.h"
 #if SKYRIM
 #include <SKSE/Logger.h>
 #elif FALLOUT
@@ -18,7 +18,7 @@ namespace DarkId::Papyrus::DebugServer
 {
 	bool ReadPexResource(const char* scriptName, std::ostream& stream)
 	{
-		const auto scriptPath = "Scripts/" + std::regex_replace(scriptName, std::regex(":"), "/") + ".pex";
+		const auto scriptPath = "Scripts/" + NormalizeScriptName(scriptName) + ".pex";
 #if SKYRIM
 		RE::BSResourceNiBinaryStream scriptStream(scriptPath);
 
@@ -56,7 +56,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (!ReadPexResource(scriptName, buffer))
 		{
-			logger::error("Failed to load pex resource.");
+			logger::error("Failed to load pex resource for script {}"sv, scriptName);
 			return false;
 		}
 
