@@ -7,7 +7,10 @@ vcpkg_check_features(OUT_FEATURE_OPTIONS FEATURE_OPTIONS
 
 if (BUILD_PLUGIN)
   if (VCPKG_LIBRARY_LINKAGE STREQUAL dynamic)
-    message(WARNING "Warning: F4SE only supports static linkage, overriding setting.")
+    message(WARNING "Warning: SKSE only supports static linkage, overriding setting.")
+  endif ()
+  if (VCPKG_CRT_LINKAGE STREQUAL dyanmic)
+    message(WARNING "Warning: SKSE only supports static linkage against CRT, overriding setting.")
   endif ()
   set(VCPKG_LIBRARY_LINKAGE static)
   set(VCPKG_CRT_LINKAGE static)
