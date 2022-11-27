@@ -45,6 +45,30 @@ void MessageHandler(XSE::MessagingInterface::Message* msg)
 		}
 	}
 }
+
+static bool log_initialized = false;
+bool InitializeLog()
+{
+	if (log_initialized) {
+		return true;
+	}
+	auto path = logger::log_directory();
+	if (!path) {
+		//XSE::stl::report_and_fail("Failed to find standard logging directory"sv); // Doesn't work in VR
+	}
+	*path /= "DarkId.Papyrus.DebugServer.log"sv;
+	auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
+
+	auto log = std::make_shared<spdlog::logger>("global log"s, std::move(sink));
+	log->set_level(spdlog::level::debug);
+	log->flush_on(spdlog::level::debug);
+	spdlog::set_default_logger(std::move(log));
+	spdlog::set_pattern("%H:%M:%S,%e %l %@: %v"s);
+	logger::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
+	log_initialized = true;
+	return true;
+}
+
 #if SKYRIM
 extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	SKSE::PluginVersionData v;
@@ -52,8 +76,8 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 	v.PluginName("Papyrus Debug Server");
 	v.AuthorName("Joel Day");
 	v.UsesAddressLibrary(true);
-	// TODO: change this to use RUNTIME_SSE_LATEST when the address libraries get updated
-	v.CompatibleVersions({ SKSE::RUNTIME_SSE_1_5_97, SKSE::RUNTIME_SSE_1_6_659 });
+	v.UsesSigScanning(true);
+	v.UsesNoStructs(true);
 	return v;
 }();
 #endif
@@ -66,21 +90,11 @@ extern "C"
 	bool F4SEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
 #endif
 	{
-		auto path = logger::log_directory();
-		if (!path) {
-			//stl::report_and_fail("Failed to find standard logging directory"sv); // Doesn't work in VR
+		// SKSEPlugin_Query does not get called by certain versions of skse64 if everything necessary in SKSEPlugin_Version is there,
+		// so we have to check if it was initialized
+		if (!log_initialized) {
+			InitializeLog();
 		}
-		*path /= "DarkId.Papyrus.DebugServer.log"sv;
-		auto sink = std::make_shared<spdlog::sinks::basic_file_sink_mt>(path->string(), true);
-
-		auto log = std::make_shared<spdlog::logger>("global log"s, std::move(sink));
-		log->set_level(spdlog::level::debug);
-		log->flush_on(spdlog::level::debug);
-		spdlog::set_default_logger(std::move(log));
-		spdlog::set_pattern("[%H:%M:%S:%e] %l: %v"s);
-
-		logger::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
-
 		a_info->infoVersion = 1;
 
 		a_info->name = "Papyrus Debug Server";
@@ -107,6 +121,9 @@ extern "C"
 #endif
 		
 	{
+		if (!log_initialized) {
+			InitializeLog();
+		}
 		logger::info("Papyrus Debug Server loaded");
 
  #if _DEBUG
@@ -120,18 +137,6 @@ extern "C"
  		Sleep(1000 * 4);
  		logger::info("Debugger attached!");
  #endif
-		
-		// if (!g_branchTrampoline.Create(1024 * 64))
-		// {
-		// 	logger::error("Couldn't create branch trampoline. This is fatal. Skipping remainder of init process.");
-		// 	return false;
-		// }
-
-		// if (!g_localTrampoline.Create(1024 * 64, nullptr))
-		// {
-		// 	logger::error("Couldn't create codegen buffer. This is fatal. Skipping remainder of init process.");
-		// 	return false;
-		// }
 
 		g_debugServer = new DebugServer();
 		logger::info("Initializing plugin...");

@@ -706,5 +706,6 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	logger::info("%s: %s", prefix.c_str(), text.c_str());
+	using namespace std::literals;
+	logger::info("{}: {}"sv, prefix.c_str(), text.c_str());
 }

@@ -60,6 +60,8 @@ namespace DarkId::Papyrus::DebugServer
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		
 		RE::FormID formType;
+		// TODO: get the type id elsewhere. generic "Form"s and unregistered script forms extended from built-in forms don't register here.
+		// May have to get it from the ESP.
 		bool success = vm->GetTypeIDForScriptObject((m_class->name), formType);
 		if (success && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
 		{

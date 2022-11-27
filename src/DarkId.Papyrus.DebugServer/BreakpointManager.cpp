@@ -69,9 +69,9 @@ namespace DarkId::Papyrus::DebugServer
 			if (!breakpointLines.empty())
 			{
 				uint32_t currentLine;
+				bool success = func->TranslateIPToLineNumber(tasklet->topFrame->instructionPointer, currentLine);
 
-				return func->TranslateIPToLineNumber(tasklet->topFrame->instructionPointer, currentLine) &&
-					breakpointLines.find(currentLine) != breakpointLines.end();
+				return success && breakpointLines.find(currentLine) != breakpointLines.end();
 			}
 		}
 

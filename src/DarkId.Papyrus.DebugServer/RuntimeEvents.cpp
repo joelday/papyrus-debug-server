@@ -98,6 +98,7 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			void CommitHooks()
 			{
+				std::size_t BASE_LOAD_ADDR = 0;
 				{
 					// InstructionExecute
 					// 1.5.97:  0x141278110: BSScript__Internal__CodeTasklet::VMProcess_141278110
@@ -105,15 +106,18 @@ namespace DarkId::Papyrus::DebugServer
 					// 1_5_97   CAVE_START = 0x170
 					// 1_6_640  CAVE_START = 0x14C
 					// 1_5_97   CAVE_END   = 0x176
-					// 1_6_640  CAVE_END   = 0x152
+					// 1_6_640  CAVE_END   = 0x153
+					// Cave start and cave end indicate the beginning and end of the instructions 
+					// that set the operand value that gets switched on in InstructionExecute
 					// CAVE_SIZE = 6 
-					std::uintptr_t INSTRUCTION_EXECUTE_ADDR = RELOCATION_ID(98520, 105176).address();	
+					auto vmprocess_reloc = RELOCATION_ID(98520, 105176);
+
 					//TODO: Find VR offsets, using SE offsets as placeholders
 					auto cave_start_var_offset = REL::VariantOffset(0x170, 0x14C, 0x170);
-					auto cave_end_var_offset = REL::VariantOffset(0x176, 0x152, 0x176);
+					auto cave_end_var_offset = REL::VariantOffset(0x176, 0x153, 0x176);
 
-					REL::Relocation<std::uintptr_t> cave_start_reloc{ RELOCATION_ID(98520, 105176), cave_start_var_offset };
-					REL::Relocation<std::uintptr_t> cave_end_reloc{ RELOCATION_ID(98520, 105176), cave_end_var_offset };
+					REL::Relocation<std::uintptr_t> cave_start_reloc{ vmprocess_reloc, cave_start_var_offset };
+					REL::Relocation<std::uintptr_t> cave_end_reloc{ vmprocess_reloc, cave_end_var_offset };
 					std::size_t CAVE_START = cave_start_var_offset.offset();
 					std::size_t CAVE_END = cave_end_var_offset.offset();
 					std::size_t CAVE_SIZE = CAVE_END - CAVE_START;
@@ -132,8 +136,11 @@ namespace DarkId::Papyrus::DebugServer
 							push(r10);
 							push(r11);
 							push(r11);
-
-							mov(rcx, rdi);	// rdi == BSScript::Internal::CodeTasklet*
+							if (REL::Module::IsAE()) {
+								mov(rcx, rsi);	// rsi == BSScript::Internal::CodeTasklet*
+							} else {
+								mov(rcx, rdi);	// rdi == BSScript::Internal::CodeTasklet*
+							}
 							mov(r8d, edx);	// edx == BSScript::Internal::CodeTasklet::OpCode
 							xor_(rdx, rdx);
 							mov(edx, r8d);
@@ -151,9 +158,11 @@ namespace DarkId::Papyrus::DebugServer
 							pop(rcx);
 							pop(rax);
 							if (REL::Module::IsAE()) {
+								// total bytes of instructions below = 7
 								mov(r10, r9);	// execute overridden ops
-								and_(r10d, 0x3F);
+								and_(r10d, 0x3F); 
 							} else {
+								// total bytes of instructions below = 6
 								mov(rax, r8);	// execute overridden ops
 								and_(eax, 0x3F);
 							}
@@ -166,17 +175,31 @@ namespace DarkId::Papyrus::DebugServer
 							dq(a_retAddr);
 						}
 					};
-					assert(CAVE_SIZE == 6);
-
+					assert(CAVE_SIZE >= 6);
 					auto patch = Patch(XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook), cave_end_reloc.address());
 					auto& trampoline = SKSE::GetTrampoline();
 					SKSE::AllocTrampoline(patch.getSize() + 14);
 					auto result = trampoline.allocate(patch);
 					trampoline.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
-					SKSE::log::info("InstructionExecuteHook hooked at address {:x}", cave_start_reloc.address());
-					SKSE::log::info("InstructionExecuteHook hooked at offset {:x}", cave_start_reloc.offset());
-					SKSE::log::info("InstructionExecuteHook:CAVE_START is {:x}", CAVE_START);
-					SKSE::log::info("InstructionExecuteHook:CAVE_END is {:x}", CAVE_END);
+					// A write_branch<6> writes a 6 byte branch to the address we want; if there's more than 6 bytes we have to skip over, we have to nop it out
+					// Maybe?? I don't think this affects anything since we jump to the CAVE_END regardless, so may not be needed.
+					if (CAVE_SIZE > 6){
+						REL::safe_fill(cave_start_reloc.address() + 6, REL::NOP, CAVE_SIZE-6);
+					}
+					BASE_LOAD_ADDR = vmprocess_reloc.address() - vmprocess_reloc.offset();
+					logger::info("Base for executable is: 0x{:X}", BASE_LOAD_ADDR);
+					logger::info("InstructionExecute address: 0x{:X}", vmprocess_reloc.address());
+					logger::info("InstructionExecute relocation offset: 0x{:X}", vmprocess_reloc.offset());
+
+					logger::info("InstructionExecuteHook hooked at address 0x{:X}", cave_start_reloc.address());
+					logger::info("InstructionExecuteHook hooked at offset 0x{:X}", cave_start_reloc.offset());
+					logger::info("InstructionExecuteHook:CAVE_START is 0x{:X}", CAVE_START);
+					logger::info("InstructionExecuteHook:CAVE_END is 0x{:X}", CAVE_END);
+					logger::info("InstructionExecuteHook:CAVE_SIZE is 0x{:X}", CAVE_SIZE);
+
+					std::size_t RESULT_ADDR = (std::uintptr_t)result;
+					logger::info("InstructionExecuteHook patch allocation address: 0x{:X}", RESULT_ADDR);
+					logger::info("InstructionExecuteHook patch allocation offset: 0x{:X}", RESULT_ADDR - BASE_LOAD_ADDR);
 				}
 
 				{
@@ -186,7 +209,9 @@ namespace DarkId::Papyrus::DebugServer
 					// 1_5_97   HOOK_TARGET = 0x1D4;
 					// 1_6_640  HOOK_TARGET = 0x1D9;
 					//TODO: Find VR offsets, using SE offsets as placeholders
-					REL::Relocation<std::uintptr_t> create_stack_hook_target{ RELOCATION_ID(98146, 104870), REL::VariantOffset(0x1D4, 0x1D9, 0x1D4) };
+					auto create_stack_reloc = RELOCATION_ID(98146, 104870);
+					auto create_stack_hook_target_offset = REL::VariantOffset(0x1D4, 0x1D9, 0x1D4);
+					REL::Relocation<std::uintptr_t> create_stack_hook_target{ create_stack_reloc, create_stack_hook_target_offset};
 
 					struct Patch : Xbyak::CodeGenerator
 					{
@@ -207,9 +232,16 @@ namespace DarkId::Papyrus::DebugServer
 					SKSE::AllocTrampoline(patch.getSize() + 14);
 					auto result = trampoline.allocate(patch);
 					trampoline.write_branch<5>(create_stack_hook_target.address(), (std::uintptr_t)result);
-					SKSE::log::info("CreateStackHook hooked at address {:x}", create_stack_hook_target.address());
-					SKSE::log::info("CreateStackHook hooked at offset {:x}", create_stack_hook_target.offset());
+					logger::info("CreateStack address: 0x{:X}", create_stack_reloc.address());
+					logger::info("CreateStack relocation offset: 0x{:X}", create_stack_reloc.offset());
 
+					logger::info("CreateStackHook hooked at address 0x{:X}", create_stack_hook_target.address());
+					logger::info("CreateStackHook hooked at offset 0x{:X}", create_stack_hook_target.offset());
+					logger::info("CreateStackHook:HOOK_OFFSET is 0x{:X}", create_stack_hook_target_offset.offset());
+
+					std::size_t RESULT_ADDR = (std::uintptr_t)result;
+					logger::info("CreateStackHook patch allocation address: 0x{:X}", RESULT_ADDR);
+					logger::info("CreateStackHook patch allocation offset: 0x{:X}", RESULT_ADDR - BASE_LOAD_ADDR);
 				}
 
 
@@ -248,12 +280,23 @@ namespace DarkId::Papyrus::DebugServer
 					trampoline.write_branch<6>(cave_start_reloc.address(), (std::uintptr_t)result);
 
 					assert(CAVE_SIZE >= 6);
-					// NOP out push rbp, push rsi, push rdi
+					// A write_branch<6> writes a 6 byte branch to the address we want; if there's more than 6 bytes we have to skip over, we have to nop it out
 					REL::safe_fill(func_base_reloc.address() + CAVE_START + 6, REL::NOP, CAVE_END - (CAVE_START + 6));
 
 					_CleanupStack = reinterpret_cast<CleanupStack_t*>(cave_end_reloc.address());
-					SKSE::log::info("CleanupStackHook hooked at address {:x}", cave_start_reloc.address());
-					SKSE::log::info("CleanupStackHook hooked at offset {:x}", cave_start_reloc.offset());
+					logger::info("CleanupStack address: 0x{:X}", func_base_reloc.address());
+					logger::info("CleanupStack relocation offset: 0x{:X}", func_base_reloc.offset());
+
+					logger::info("CleanupStackHook hooked at address 0x{:X}", cave_start_reloc.address());
+					logger::info("CleanupStackHook hooked at offset 0x{:X}", cave_start_reloc.offset());
+					logger::info("CleanupStackHook:CAVE_START is 0x{:X}", cave_start_var_offset.offset());
+					logger::info("CleanupStackHook:CAVE_END is 0x{:X}", cave_end_var_offset.offset());
+
+					std::size_t RESULT_ADDR = (std::uintptr_t)result;
+					logger::info("CleanupStackHook patch allocation address: 0x{:X}", RESULT_ADDR);
+					logger::info("CleanupStackHook patch allocation offset: 0x{:X}", RESULT_ADDR - BASE_LOAD_ADDR);
+
+
 				}
 
 				RE::BSScript::Internal::VirtualMachine::GetSingleton()->RegisterForLogEvent(new LogEventSink());
