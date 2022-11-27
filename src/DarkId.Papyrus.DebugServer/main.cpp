@@ -85,7 +85,7 @@ extern "C" DLLEXPORT constinit auto SKSEPlugin_Version = []() {
 extern "C"
 {
 #if SKYRIM
-	bool SKSEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
+	DLLEXPORT bool SKSEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
 #elif FALLOUT
 	bool F4SEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
 #endif
@@ -115,7 +115,7 @@ extern "C"
 	}
 
 #if SKYRIM
-	bool SKSEPlugin_Load(const XSE::LoadInterface* a_xse)
+	DLLEXPORT bool SKSEPlugin_Load(const XSE::LoadInterface* a_xse)
 #elif FALLOUT
 	bool F4SEPlugin_Load(const XSE::LoadInterface* a_xse)
 #endif

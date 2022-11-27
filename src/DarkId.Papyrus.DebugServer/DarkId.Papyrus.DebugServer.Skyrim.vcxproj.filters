@@ -386,7 +386,4 @@
     </ClInclude>
     <ClInclude Include="stupidPCH.h" />
   </ItemGroup>
-  <ItemGroup>
-    <None Include="exports_skyrim.def" />
-  </ItemGroup>
 </Project>

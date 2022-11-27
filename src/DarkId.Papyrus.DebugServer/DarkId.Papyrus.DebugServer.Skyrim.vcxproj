@@ -109,7 +109,6 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <ModuleDefinitionFile>exports_skyrim.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <AdditionalDependencies>Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
@@ -163,7 +162,6 @@
       <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <ModuleDefinitionFile>exports_skyrim.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
       <OptimizeReferences>true</OptimizeReferences>
@@ -415,9 +413,6 @@
     <ClInclude Include="ValueStateNode.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="Websocket.h" />
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="exports_skyrim.def" />
   </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets" />
