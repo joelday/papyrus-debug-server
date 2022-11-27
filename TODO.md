@@ -2,6 +2,8 @@
 
 - [x] Test debugging with Skyrim 1.5.97 and 1.6.640. 
 
+- [ ] Figure out why certain scripts (like those that come with Skyrim) aren't triggering on certain lines; HelgenRandomSoundScript is one of them.
+
 - [ ] Get Fallout 4 working:
   - [ ] figure out what to do with CommonLibF4. CommonLibF4 in this repo originally had a huge number of things copied over from CommonLibSSE. The upstream repo has a lot of things missing, most importantly the implementations for the internal BSScript classes like CodeTasklet. We may have to just copy back the old one for now to get this working in the short term.
 
@@ -18,3 +20,4 @@
 - [ ]Upstream necessary changes to the portfiles to the vcpkg-colorglass repo. The less we need to maintain, the better.
 
 - [ ]Replace build system with CMake. This will make the builds far more flexible and less prone to weird MSBuild crap. It will also make this easy to package and turn into a vcpkg for consumption downstream.
+

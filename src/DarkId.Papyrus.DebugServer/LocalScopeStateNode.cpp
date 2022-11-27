@@ -69,7 +69,7 @@ namespace DarkId::Papyrus::DebugServer
 			if (CaseInsensitiveEquals(name, varName.c_str()))
 			{
 				const uint32_t pageHint = m_stackFrame->parent->GetPageForFrame(m_stackFrame);
-				RE::BSScript::Variable variable = m_stackFrame->GetStackFrameVariable(i, pageHint);
+				RE::BSScript::Variable& variable = m_stackFrame->GetStackFrameVariable(i, pageHint);
 				if (&variable)
 				{
 					node = RuntimeState::CreateNodeForVariable(varName.c_str(), &variable);
