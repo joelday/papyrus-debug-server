@@ -13,8 +13,8 @@ File any issues here: https://github.com/joelday/papyrus-lang/issues
 NOTE: Fallout 4 doesn't build on this branch currently, only attempt building Skyrim for right now.
 
 Requirements:
-[Visual Studio 2022](https://visualstudio.microsoft.com/vs/community/)
-[vcpkg](https://vcpkg.io/en/getting-started.html)
+- [Visual Studio 2022](https://visualstudio.microsoft.com/vs/community/)
+- [vcpkg](https://vcpkg.io/en/getting-started.html)
 
 Make sure you've initialized the submodules in this project, i.e. `git clone --recurse-submodules` when cloning.
 
