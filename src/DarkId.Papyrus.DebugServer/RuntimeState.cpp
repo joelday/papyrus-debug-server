@@ -2,7 +2,6 @@
 #include "Utilities.h"
 #include "StateNodeBase.h"
 
-#include <boost/algorithm/string.hpp>
 #include "StackStateNode.h"
 #include "ObjectStateNode.h"
 
@@ -24,7 +23,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool RuntimeState::ResolveStateByPath(const std::string requestedPath, std::shared_ptr<StateNodeBase>& node)
 	{
-		const auto path = boost::algorithm::to_lower_copy(requestedPath);
+		const auto path = ToLowerCopy(requestedPath);
 
 		auto elements = Split(path, ".");
 
@@ -58,7 +57,7 @@ namespace DarkId::Papyrus::DebugServer
 
 				for (auto childName : childNames)
 				{
-					boost::algorithm::to_lower(childName);
+					ToLower(childName);
 					auto discoveredElements(currentPathElements);
 					discoveredElements.push_back(childName);
 

@@ -2,7 +2,6 @@
 
 #include <string>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
 #include <regex>
 
 namespace DarkId::Papyrus::DebugServer
@@ -78,10 +77,22 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
+	inline void ToLower(std::string &p_str){
+		for (int i = 0; i < p_str.size(); i++){
+				p_str[i] = tolower(p_str[i]);
+		}
+	}
+
+	inline std::string ToLowerCopy(const std::string &p_str){
+		std::string r_str = p_str;
+		ToLower(r_str);
+		return r_str;
+	}
+
 	inline bool CaseInsensitiveEquals(std::string a, std::string b)
 	{
-		boost::algorithm::to_lower(a);
-		boost::algorithm::to_lower(b);
+		ToLower(a);
+		ToLower(b);
 
 		return a == b;
 	}
