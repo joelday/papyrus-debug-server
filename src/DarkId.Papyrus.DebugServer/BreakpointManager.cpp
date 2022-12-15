@@ -1,5 +1,5 @@
 #include "BreakpointManager.h"
-#include "Pex/Binary.hpp"
+#include <Champollion/Pex/Binary.hpp>
 #include <regex>
 #include "Utilities.h"
 #ifdef _DEBUG_DUMP_PEX

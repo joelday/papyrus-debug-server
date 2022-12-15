@@ -5,8 +5,8 @@
 #include <functional>
 #include <algorithm>
 #include <string>
-#include "Decompiler/PscCoder.hpp"
-#include "Decompiler/StreamWriter.hpp"
+#include <Champollion/Decompiler/PscCoder.hpp>
+#include <Champollion/Decompiler/StreamWriter.hpp>
 
 namespace DarkId::Papyrus::DebugServer
 {

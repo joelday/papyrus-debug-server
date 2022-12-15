@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Champollion/Pex/Binary.hpp"
+#include <Champollion/Pex/Binary.hpp>
 #include <map>
 
 #include "Protocol/protocol.h"

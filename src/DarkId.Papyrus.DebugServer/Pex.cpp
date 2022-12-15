@@ -12,7 +12,7 @@
 #include <f4se/GameStreams.h>
 #endif 
 
-#include "Pex/FileReader.hpp"
+#include <Champollion/Pex/FileReader.hpp>
 
 namespace DarkId::Papyrus::DebugServer
 {

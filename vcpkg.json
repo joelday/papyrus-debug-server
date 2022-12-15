@@ -1,5 +1,5 @@
 {
-  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg/master/scripts/vcpkg.schema.json",
+  "$schema": "https://raw.githubusercontent.com/microsoft/vcpkg-tool/master/docs/vcpkg.schema.json",
   "name": "papyrus-debug-server",
   "version-semver": "3.5.3",
   "port-version": 0,
@@ -9,6 +9,10 @@
   "supports": "windows & x64",
   "dependencies": [
     "nlohmann-json",
+    {
+      "name": "champollion",
+      "default-features": false
+    },
     "eventpp",
     "websocketpp"
   ],

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "Pex/Binary.hpp"
+#include <Champollion/Pex/Binary.hpp>
 
 namespace DarkId::Papyrus::DebugServer
 {
