@@ -4,5 +4,6 @@
 
 namespace DarkId::Papyrus::DebugServer
 {
-	bool LoadPexData(const char* scriptName, Pex::Binary& binary);
+    bool LoadAndDumpPexData(const char* scriptName, std::string outputDir);
+    bool LoadPexData(const char* scriptName, Pex::Binary& binary);
 }
