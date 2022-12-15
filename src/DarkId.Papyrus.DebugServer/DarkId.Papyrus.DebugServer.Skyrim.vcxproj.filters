@@ -109,7 +109,6 @@
     <ClCompile Include="DebugServerSession.cpp" />
     <ClCompile Include="Pex.cpp" />
     <ClCompile Include="PexCache.cpp" />
-    <ClCompile Include="PexStreamReader.cpp" />
     <ClCompile Include="RuntimeEvents.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PapyrusDebugger.cpp" />
@@ -341,7 +340,6 @@
     <ClInclude Include="PapyrusDebugger.h" />
     <ClInclude Include="Pex.h" />
     <ClInclude Include="PexCache.h" />
-    <ClInclude Include="PexStreamReader.hpp" />
     <ClInclude Include="RuntimeEvents.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="BreakpointManager.h" />
@@ -385,5 +383,9 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="stupidPCH.h" />
+    <ClInclude Include="..\..\dependencies\Champollion\Pex\ByteSwap.hpp">
+      <Filter>Champollion\Pex</Filter>
+    </ClInclude>
+    <ClInclude Include="PDError.h" />
   </ItemGroup>
 </Project>

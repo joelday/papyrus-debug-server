@@ -6,6 +6,7 @@
 #include "GameInterfaces.h"
 
 #include "PexCache.h"
+#include "PDError.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -20,7 +21,7 @@ namespace DarkId::Papyrus::DebugServer
 		{
 		}
 
-		void SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints);
+		PDError SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints);
 		bool GetExecutionIsAtValidBreakpoint(RE::BSScript::Internal::CodeTasklet* tasklet);
 	};
 }

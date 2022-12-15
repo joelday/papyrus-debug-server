@@ -132,8 +132,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	HRESULT PapyrusDebugger::SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints)
 	{
-		m_breakpointManager->SetBreakpoints(source, srcBreakpoints, breakpoints);
-		return 0;
+		return m_breakpointManager->SetBreakpoints(source, srcBreakpoints, breakpoints);
 	}
 
 	HRESULT PapyrusDebugger::Initialize()
