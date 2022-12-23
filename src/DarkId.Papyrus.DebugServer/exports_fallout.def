@@ -1,4 +1,0 @@
-LIBRARY	"DarkId.Papyrus.DebugServer.Fallout4.dll"
-EXPORTS
-F4SEPlugin_Query
-F4SEPlugin_Load

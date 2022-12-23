@@ -21,7 +21,7 @@ namespace DarkId::Papyrus::DebugServer
 		bool ResolveChildrenByParentPath(std::string requestedPath, std::vector<std::shared_ptr<StateNodeBase>>& nodes);
 		bool ResolveChildrenByParentId(uint32_t id, std::vector<std::shared_ptr<StateNodeBase>>& nodes);
 
-		static std::shared_ptr<StateNodeBase> CreateNodeForVariable(std::string name, RE::BSScript::Variable* variable);
+		static std::shared_ptr<StateNodeBase> CreateNodeForVariable(std::string name, const RE::BSScript::Variable* variable);
 		
 		static RE::BSTSmartPointer<RE::BSScript::Stack> GetStack(uint32_t stackId);
 		static RE::BSScript::StackFrame* GetFrame(uint32_t stackId, uint32_t level);

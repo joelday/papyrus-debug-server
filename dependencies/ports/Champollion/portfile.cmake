@@ -34,7 +34,7 @@ vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO nikitalita/Champollion
   REF f72bd6a41a6ab32702c677670702640bc8984f37
-  SHA512 d284d054e7fcdfff720220b629d8ad0615995084041f60bc05f21a5984dff582d5be28e80b91dbf820706ff4bd0c429df652e1b568390754f105d1b11f93b47d
+  SHA512 96cc234483f3947afc39a4b930c47ec94cb227d7046758ebf93dc17b14de80ebe6a1646a63c4a8b820aa38f6fbf0f0a8b82c686f0f3d74c0a364cce92c0f22d0
   HEAD_REF c++20
 )
 # Check if one or more features are a part of a package installation.

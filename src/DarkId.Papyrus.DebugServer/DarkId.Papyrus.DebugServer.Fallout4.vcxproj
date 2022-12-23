@@ -49,7 +49,7 @@
     <PostBuildEventUseInBuild>false</PostBuildEventUseInBuild>
     <PreBuildEventUseInBuild>false</PreBuildEventUseInBuild>
     <PreLinkEventUseInBuild>false</PreLinkEventUseInBuild>
-    <OutDir>$(ProjectDir)bin\$(ProjectName)\$(Platform)\$(Configuration)\</OutDir>
+    <OutDir>F:\Games\fallout_4_mods_folder\mods\Papyrus Debug Extension\F4SE\Plugins</OutDir>
     <IntDir>$(ProjectDir)obj\$(ProjectName)\$(Platform)\$(Configuration)\</IntDir>
   </PropertyGroup>
   <PropertyGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -83,30 +83,35 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(VcpkgInstalledDir)\$(VcpkgTriplet)\include\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;FALLOUT;SPDLOG_COMPILED_LIB;SPDLOG_FMT_EXTERNAL;F4SE_SUPPORT_XBYAK;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>common\IPrefix.h;F4SE\Logger.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>stupidPCH.h</ForcedIncludeFiles>
       <ExceptionHandling>Sync</ExceptionHandling>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <ControlFlowGuard>Guard</ControlFlowGuard>
       <FloatingPointExceptions>true</FloatingPointExceptions>
-      <CompileAs>CompileAsCpp</CompileAs>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <UseFullPaths>false</UseFullPaths>
       <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stupidPCH.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
-      <ModuleDefinitionFile>exports_fallout.def</ModuleDefinitionFile>
       <GenerateDebugInformation>true</GenerateDebugInformation>
       <SubSystem>Windows</SubSystem>
-      <AdditionalDependencies>%(AdditionalDependencies)</AdditionalDependencies>
+      <AdditionalDependencies>Version.lib;%(AdditionalDependencies)</AdditionalDependencies>
       <AdditionalLibraryDirectories>%(AdditionalLibraryDirectories)</AdditionalLibraryDirectories>
     </Link>
     <PreBuildEvent>
@@ -126,7 +131,7 @@
       </Message>
     </PostBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>FALLOUT;DIDPDS_VERSION_MINOR=$(BuildNumber)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FALLOUT;DIDPDS_VERSION_BETA=$(BuildNumber)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Release|x64'">
@@ -134,22 +139,27 @@
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
       <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;FALLOUT;F4SE_SUPPORT_XBYAK;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
-      <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>common\IPrefix.h;F4SE\Logger.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>stupidPCH.h</ForcedIncludeFiles>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <OmitFramePointers>
       </OmitFramePointers>
-      <MultiProcessorCompilation>
-      </MultiProcessorCompilation>
-      <CompileAs>CompileAsCpp</CompileAs>
-      <LanguageStandard>stdcpp17</LanguageStandard>
+      <LanguageStandard>stdcpp20</LanguageStandard>
       <EnforceTypeConversionRules>true</EnforceTypeConversionRules>
       <UseFullPaths>false</UseFullPaths>
+      <MultiProcessorCompilation>true</MultiProcessorCompilation>
+      <TreatAngleIncludeAsExternal>true</TreatAngleIncludeAsExternal>
+      <DisableAnalyzeExternal>true</DisableAnalyzeExternal>
+      <ExternalWarningLevel>TurnOffAllWarnings</ExternalWarningLevel>
+      <ExternalTemplatesDiagnostics>false</ExternalTemplatesDiagnostics>
+      <CompileAs>CompileAsCpp</CompileAs>
+      <PrecompiledHeader>Use</PrecompiledHeader>
+      <PrecompiledHeaderFile>stupidPCH.h</PrecompiledHeaderFile>
+      <AdditionalOptions>/bigobj %(AdditionalOptions)</AdditionalOptions>
     </ClCompile>
     <Link>
       <ModuleDefinitionFile>exports_fallout.def</ModuleDefinitionFile>
@@ -173,40 +183,10 @@
       </Command>
     </PostBuildEvent>
     <ResourceCompile>
-      <PreprocessorDefinitions>FALLOUT;DIDPDS_VERSION_MINOR=$(BuildNumber)</PreprocessorDefinitions>
+      <PreprocessorDefinitions>FALLOUT;DIDPDS_VERSION_BETA=$(BuildNumber)</PreprocessorDefinitions>
     </ResourceCompile>
   </ItemDefinitionGroup>
   <ItemGroup>
-    <None Include="exports_fallout.def" />
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\AsmCoder.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Coder.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\Base.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\NodeComparer.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\Visitor.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCodeBlock.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCodeGenerator.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCoder.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscDecompiler.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Binary.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\DebugInfo.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\DocumentedItem.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\FileReader.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Function.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Header.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Instruction.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\NamedItem.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Object.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Property.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\State.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\StringTable.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\TypedItem.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\TypedName.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlag.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlagged.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Value.cpp" />
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Variable.cpp" />
     <ClCompile Include="ArrayStateNode.cpp" />
     <ClCompile Include="BreakpointManager.cpp" />
     <ClCompile Include="DebugExecutionManager.cpp" />
@@ -223,7 +203,6 @@
     <ClCompile Include="PapyrusDebugger.cpp" />
     <ClCompile Include="Pex.cpp" />
     <ClCompile Include="PexCache.cpp" />
-    <ClCompile Include="PexStreamReader.cpp" />
     <ClCompile Include="protocol\cputil.cpp" />
     <ClCompile Include="protocol\vscodeprotocol.cpp" />
     <ClCompile Include="RuntimeEvents.cpp" />
@@ -232,66 +211,16 @@
     <ClCompile Include="StackStateNode.cpp" />
     <ClCompile Include="StateNodeBase.cpp" />
     <ClCompile Include="StructStateNode.cpp" />
+    <ClCompile Include="stupidPCH.cpp">
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">Create</PrecompiledHeader>
+      <PrecompiledHeader Condition="'$(Configuration)|$(Platform)'=='Release|x64'">Create</PrecompiledHeader>
+    </ClCompile>
     <ClCompile Include="ValueStateNode.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
   </ItemGroup>
   <ItemGroup>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\AsmCoder.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Coder.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\DumpTree.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayAccess.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayCreate.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayLength.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Assign.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\AssignOperator.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Base.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\BinaryOperator.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\CallMethod.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Cast.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Constant.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Copy.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Declare.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\FieldNodeMixin.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\IdentifierString.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\IfElse.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\NodeComparer.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Nodes.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Params.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\PropertyAccess.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Return.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Scope.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\StructCreate.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\UnaryOperator.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Visitor.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\While.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\WithNode.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\OutputWriter.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCodeBlock.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCodeGenerator.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCoder.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscDecompiler.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\StreamWriter.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Binary.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\DebugInfo.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\DocumentedItem.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\FileReader.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Function.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Header.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Instruction.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\NamedItem.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Object.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Property.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\State.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\StringTable.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\StructInfo.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\TypedItem.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\TypedName.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\UserFlag.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\UserFlagged.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Value.hpp" />
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Variable.hpp" />
     <ClInclude Include="ArrayStateNode.h" />
     <ClInclude Include="BreakpointManager.h" />
     <ClInclude Include="DebugExecutionManager.h" />
@@ -306,9 +235,9 @@
     <ClInclude Include="MetaNode.h" />
     <ClInclude Include="ObjectStateNode.h" />
     <ClInclude Include="PapyrusDebugger.h" />
+    <ClInclude Include="PDError.h" />
     <ClInclude Include="Pex.h" />
     <ClInclude Include="PexCache.h" />
-    <ClInclude Include="PexStreamReader.hpp" />
     <ClInclude Include="protocol\cputil.h" />
     <ClInclude Include="protocol\debugger.h" />
     <ClInclude Include="protocol\protocol.h" />
@@ -320,6 +249,7 @@
     <ClInclude Include="StackStateNode.h" />
     <ClInclude Include="StateNodeBase.h" />
     <ClInclude Include="StructStateNode.h" />
+    <ClInclude Include="stupidPCH.h" />
     <ClInclude Include="Utilities.h" />
     <ClInclude Include="ValueStateNode.h" />
     <ClInclude Include="version.h" />

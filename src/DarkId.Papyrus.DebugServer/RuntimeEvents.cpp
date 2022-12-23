@@ -2,15 +2,15 @@
 
 #include "RuntimeEvents.h"
 
-#include "xbyak/xbyak.h"
+#include <xbyak/xbyak.h>
 
 #if SKYRIM
 #include <SKSE/Events.h>
 #include <RE/B/BSTEvent.h>
 #include <REL/Relocation.h>
 #elif FALLOUT
-#include <f4se_common/SafeWrite.h>
-#include <f4se_common/BranchTrampoline.h>
+#include <REL/Relocation.h>
+#include <F4SE/Trampoline.h>
 #endif
 
 #include <cassert>
@@ -54,13 +54,20 @@ namespace DarkId::Papyrus::DebugServer
 		class LogEventSink : public RE::BSTEventSink<RE::BSScript::LogEvent>
 		{
 			using EventResult = RE::BSEventNotifyControl;
-
+			#ifdef SKYRIM
 			EventResult ProcessEvent(const RE::BSScript::LogEvent* a_event, RE::BSTEventSource<RE::BSScript::LogEvent>*) override
 			{
 				g_LogEvent(a_event);
-
 				return RE::BSEventNotifyControl::kContinue;
 			};
+			#else // FALLOUT
+			EventResult ProcessEvent(const RE::BSScript::LogEvent& a_event, RE::BSTEventSource<RE::BSScript::LogEvent>*) override
+			{
+				g_LogEvent(&a_event);
+				return RE::BSEventNotifyControl::kContinue;
+			};
+			#endif
+
 		};
 
 #if SKYRIM
@@ -304,22 +311,26 @@ namespace DarkId::Papyrus::DebugServer
 			}
 		}
 #elif FALLOUT
-
-		RelocAddr<uintptr_t> InstructionExecute(0x0276eadd);
-
+		//BSScript::Internal::CodeTasklet::Process 14276E9E0
+		auto vmprocess_reloc = REL::ID(614585);
+   	//hooks at 14276EADD
+		auto cave_start_offset = REL::Offset(0xFD);
+		// REL::ID(614585) + REL::Offset(0xFD) == 14276EADD
+		REL::Relocation<uintptr_t> InstructionExecute(vmprocess_reloc,cave_start_offset.offset());
 		void InstructionExecute_Hook(RE::BSScript::Internal::CodeTasklet* tasklet, RE::BSScript::Internal::CodeTasklet::OpCode opCode)
 		{
-			if (tasklet->stackFrame)
+			if (tasklet->topFrame)
 			{
 				g_InstructionExecutionEvent(tasklet, opCode);
 			}
 		}
-
-		typedef bool (*_CreateStack)(RE::BSScript::Internal::VirtualMachine* vm, UInt64 unk1, UInt64 unk2, UInt64 unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack);
-		RelocAddr<_CreateStack> CreateStack(0x02742070);
+		// TODO: There's a second CreateStack() @ 1427422C0, do we need to hook that?
+		// Probably not, it's only used by LoadStackTable() and the first CreateStack*()
+		typedef bool (*_CreateStack)(RE::BSScript::Internal::VirtualMachine* vm, std::uint64_t unk1, std::uint64_t unk2, std::uint64_t unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack);
+		REL::Relocation<_CreateStack> CreateStack(REL::ID(107558)); //REL::ID(107558)
 		_CreateStack CreateStack_Original = nullptr;
 
-		bool CreateStack_Hook(RE::BSScript::Internal::VirtualMachine* vm, UInt64 unk1, UInt64 unk2, UInt64 unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack)
+		bool CreateStack_Hook(RE::BSScript::Internal::VirtualMachine* vm, std::uint64_t unk1, std::uint64_t unk2, std::uint64_t unk3, RE::BSTSmartPointer<RE::BSScript::Stack>& stack)
 		{
 			bool result = CreateStack_Original(vm, unk1, unk2, unk3, stack);
 
@@ -330,9 +341,8 @@ namespace DarkId::Papyrus::DebugServer
 
 			return result;
 		}
-
 		typedef void (*_CleanupStack)(RE::BSScript::Internal::VirtualMachine* vm, RE::BSScript::Stack* stack);
-		RelocAddr<_CleanupStack> CleanupStack(0x02742610);
+		REL::Relocation<_CleanupStack> CleanupStack(REL::ID(38511)); //REL::ID(38511)
 		_CleanupStack CleanupStack_Original = nullptr;
 
 		void CleanupStack_Hook(RE::BSScript::Internal::VirtualMachine* vm, RE::BSScript::Stack* stack)
@@ -352,7 +362,7 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				{
 					struct InstructionExecute_Code : Xbyak::CodeGenerator {
-						InstructionExecute_Code(void* buf, uintptr_t funcAddr) : Xbyak::CodeGenerator(4096, buf)
+						InstructionExecute_Code(uintptr_t funcAddr)
 						{
 							Xbyak::Label funcLabel;
 							Xbyak::Label retnLabel;
@@ -395,20 +405,25 @@ namespace DarkId::Papyrus::DebugServer
 							dq(funcAddr);
 
 							L(retnLabel);
-							dq(InstructionExecute + 0x15);
+							dq(InstructionExecute.address() + 0x15);
 						}
 					};
+					auto patch = InstructionExecute_Code(XSE::stl::unrestricted_cast<std::uintptr_t>(InstructionExecute_Hook));
+					auto& trampoline = XSE::GetTrampoline();
+					XSE::AllocTrampoline(patch.getSize() + 14);
+					auto result = trampoline.allocate(patch);
+					trampoline.write_branch<6>(InstructionExecute.address(), (std::uintptr_t)result);
 
-					void* codeBuf = g_localTrampoline.StartAlloc();
-					InstructionExecute_Code code(codeBuf, (uintptr_t)InstructionExecute_Hook);
-					g_localTrampoline.EndAlloc(code.getCurr());
+					// void* codeBuf = g_localTrampoline.StartAlloc();
+					// InstructionExecute_Code code(codeBuf, (uintptr_t)InstructionExecute_Hook);
+					// g_localTrampoline.EndAlloc(code.getCurr());
 
-					g_branchTrampoline.Write6Branch(InstructionExecute, uintptr_t(code.getCode()));
+					// g_branchTrampoline.Write6Branch(InstructionExecute, uintptr_t(code.getCode()));
 				}
 
 				{
 					struct CreateStack_Code : Xbyak::CodeGenerator {
-						CreateStack_Code(void* buf) : Xbyak::CodeGenerator(4096, buf)
+						CreateStack_Code() 
 						{
 							Xbyak::Label retnLabel;
 
@@ -417,22 +432,28 @@ namespace DarkId::Papyrus::DebugServer
 							jmp(ptr[rip + retnLabel]);
 
 							L(retnLabel);
-							dq(CreateStack.GetUIntPtr() + 5);
+							dq(CreateStack.address() + 5);
 						}
 					};
+					auto patch = CreateStack_Code();
+					auto& trampoline = XSE::GetTrampoline();
+					XSE::AllocTrampoline(patch.getSize() + 14);
+					auto result = trampoline.allocate(patch);
+					CreateStack_Original = (_CreateStack)result;
+					trampoline.write_branch<5>(CreateStack.address(), (std::uintptr_t)CreateStack_Hook);
 
-					void* codeBuf = g_localTrampoline.StartAlloc();
-					CreateStack_Code code(codeBuf);
-					g_localTrampoline.EndAlloc(code.getCurr());
+					// void* codeBuf = g_localTrampoline.StartAlloc();
+					// CreateStack_Code code(codeBuf);
+					// g_localTrampoline.EndAlloc(code.getCurr());
 
-					CreateStack_Original = (_CreateStack)codeBuf;
+					// CreateStack_Original = (_CreateStack)codeBuf;
 
-					g_branchTrampoline.Write5Branch(CreateStack.GetUIntPtr(), (uintptr_t)CreateStack_Hook);
+					// g_branchTrampoline.Write5Branch(CreateStack.address(), (uintptr_t)CreateStack_Hook);
 				}
 
 				{
 					struct CleanupStack_Code : Xbyak::CodeGenerator {
-						CleanupStack_Code(void* buf) : Xbyak::CodeGenerator(4096, buf)
+						CleanupStack_Code()
 						{
 							Xbyak::Label retnLabel;
 							Xbyak::Label jmpLabel;
@@ -440,20 +461,26 @@ namespace DarkId::Papyrus::DebugServer
 							jmp(ptr[rip + retnLabel]);
 
 							L(retnLabel);
-							dq(CleanupStack.GetUIntPtr() + 9);
+							dq(CleanupStack.address() + 9);
 						}
 					};
+					auto patch = CleanupStack_Code();
+					auto& trampoline = XSE::GetTrampoline();
+					XSE::AllocTrampoline(patch.getSize() + 14);
+					auto result = trampoline.allocate(patch);
+					CleanupStack_Original = (_CleanupStack) result;
+					trampoline.write_branch<5>(CleanupStack.address(), (std::uintptr_t)CleanupStack_Hook);
 
-					void* codeBuf = g_localTrampoline.StartAlloc();
-					CleanupStack_Code code(codeBuf);
-					g_localTrampoline.EndAlloc(code.getCurr());
+					// void* codeBuf = g_localTrampoline.StartAlloc();
+					// CleanupStack_Code code(codeBuf);
+					// g_localTrampoline.EndAlloc(code.getCurr());
 
-					CleanupStack_Original = (_CleanupStack)codeBuf;
+					// CleanupStack_Original = (_CleanupStack)codeBuf;
 
-					g_branchTrampoline.Write5Branch(CleanupStack.GetUIntPtr(), (uintptr_t)CleanupStack_Hook);
+					// g_branchTrampoline.Write5Branch(CleanupStack.GetUIntPtr(), (uintptr_t)CleanupStack_Hook);
 				}
-
-				RE::BSScript::Internal::VirtualMachine::GetSingleton()->AddLogEventSink(new LogEventSink());
+	
+				RE::BSScript::Internal::VirtualMachine::GetSingleton()->RegisterForLogEvent(new LogEventSink());
 				
 				//GetEventDispatcher<TESInitScriptEvent>()->AddEventSink(
 				//	reinterpret_cast<BSTEventSink<TESInitScriptEvent>*>(new ScriptInitEventSink()));

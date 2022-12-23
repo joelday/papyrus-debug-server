@@ -8,8 +8,6 @@
 namespace XSE = SKSE;
 
 #elif FALLOUT
-#include <f4se_common/f4se_version.h>  // RUNTIME_VERSION
-#include <f4se_common/BranchTrampoline.h>
 #include <F4SE/Logger.h>
 #include <F4SE/API.h>
 
@@ -87,7 +85,7 @@ extern "C"
 #if SKYRIM
 	DLLEXPORT bool SKSEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
 #elif FALLOUT
-	bool F4SEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
+	DLLEXPORT bool F4SEPlugin_Query(const XSE::QueryInterface* a_xse, XSE::PluginInfo* a_info)
 #endif
 	{
 		// SKSEPlugin_Query does not get called by certain versions of skse64 if everything necessary in SKSEPlugin_Version is there,
@@ -104,20 +102,27 @@ extern "C"
 			logger::critical("Loaded in editor, marking as incompatible!\n");
 			return false;
 		}
+#if SKYRIM
 		auto result = a_xse->RuntimeVersion().compare(SKSE::RUNTIME_SSE_LATEST);
 		if (result == std::strong_ordering::greater){
 			logger::critical("Unsupported runtime version {}!\n"sv, a_xse->RuntimeVersion().string());
 			return false;
-
 		}
-
+#endif
+#if FALLOUT
+		auto result = a_xse->RuntimeVersion().compare(F4SE::RUNTIME_1_10_163);
+		if (result == std::strong_ordering::greater){
+			logger::critical("Unsupported runtime version {}!\n"sv, a_xse->RuntimeVersion().string());
+			return false;
+		}
+#endif
 		return true;
 	}
 
 #if SKYRIM
 	DLLEXPORT bool SKSEPlugin_Load(const XSE::LoadInterface* a_xse)
 #elif FALLOUT
-	bool F4SEPlugin_Load(const XSE::LoadInterface* a_xse)
+	DLLEXPORT bool F4SEPlugin_Load(const XSE::LoadInterface* a_xse)
 #endif
 		
 	{
@@ -150,9 +155,9 @@ extern "C"
 			logger::critical("Failed to register listener!!");
 		}
 #elif FALLOUT
-		XSE::GetMessagingInterface()->RegisterListener("F4SE", MessageHandler);
+		auto messaging = XSE::GetMessagingInterface();
+		messaging->RegisterListener(MessageHandler);
 #endif 
-
 		return true;
 	}
 };

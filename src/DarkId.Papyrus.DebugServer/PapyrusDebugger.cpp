@@ -14,11 +14,15 @@
 namespace XSE = SKSE;
 #elif FALLOUT
 	#include <F4SE/API.h>
-	#include <f4se/GameReferences.h>
+	#include <F4SE/Logger.h>
 namespace XSE = F4SE;
+namespace RE{
+	using BSSpinLockGuard = BSAutoLock<BSSpinLock, BSAutoLockDefaultPolicy>;
+}
 #endif
 
 #include "StateNodeBase.h"
+
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -55,15 +59,33 @@ namespace DarkId::Papyrus::DebugServer
 	//{
 	//}
 
+	std::string LogSeverityEnumStr(RE::BSScript::ErrorLogger::Severity severity) {
+		if (severity == RE::BSScript::ErrorLogger::Severity::kInfo) {
+			return std::string("INFO");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kWarning) {
+			return std::string("WARNING");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kError) {
+			return std::string("ERROR");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kFatal) {
+			return std::string("FATAL");
+		}
+		return std::string("UNKNOWN_ENUM_LEVEL");
+	}
+
 	void PapyrusDebugger::EventLogged(const RE::BSScript::LogEvent* logEvent) const
 	{
+		const std::string severity = LogSeverityEnumStr(logEvent->severity);
 #if SKYRIM
 		const auto message = std::string(logEvent->errorMsg);
+		const OutputEvent output(OutputCategory::OutputConsole, severity + " - " + message + "\r\n");
 #elif FALLOUT
-		const auto message = std::string(logEvent->message->text);
+		RE::BSFixedString message;
+		logEvent->errorMsg.GetErrorMsg(message);
+		const auto msg = std::string(message.c_str());
+		const auto ownerModule = std::string(logEvent->ownerModule.c_str());
+		const OutputEvent output(OutputCategory::OutputConsole, ownerModule + " - " + severity + " - " + msg + "\r\n");
 #endif
-		
-		const OutputEvent output(OutputCategory::OutputConsole, message + "\r\n");
+	
 
 		m_protocol->EmitOutputEvent(output);
 	}
@@ -164,7 +186,8 @@ namespace DarkId::Papyrus::DebugServer
 		for (const auto& script : vm->objectTypeMap)
 		{
 			Source source;
-			if (m_pexCache->GetSourceData(script.first.c_str(), source))
+			std::string scriptName = std::string(script.first.c_str());
+			if (m_pexCache->GetSourceData(scriptName.c_str(), source))
 			{
 				sources.push_back(source);
 			}

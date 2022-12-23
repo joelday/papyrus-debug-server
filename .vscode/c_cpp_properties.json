@@ -5,10 +5,6 @@
             "includePath": [
                 "${workspaceFolder}/dependencies/MetaStuff/include",
                 "${workspaceFolder}/dependencies",
-                "${workspaceFolder}/dependencies/Champollion/Champollion",
-                "${workspaceFolder}/dependencies/Champollion/Pex",
-                "${workspaceFolder}/dependencies/Champollion/Decompiler",
-                "${workspaceFolder}/dependencies/Champollion",
                 "${workspaceFolder}/src/DarkId.Papyrus.DebugServer",
                 "${workspaceFolder}/vcpkg_installed/skyrim/x64-windows-static/include"
             ],
@@ -33,10 +29,6 @@
             "includePath": [
                 "${workspaceFolder}/dependencies/MetaStuff/include",
                 "${workspaceFolder}/dependencies",
-                "${workspaceFolder}/dependencies/Champollion/Champollion",
-                "${workspaceFolder}/dependencies/Champollion/Pex",
-                "${workspaceFolder}/dependencies/Champollion/Decompiler",
-                "${workspaceFolder}/dependencies/Champollion",
                 "${workspaceFolder}/src/DarkId.Papyrus.DebugServer",
                 "${workspaceFolder}/vcpkg_installed/fallout4/x64-windows-static/include"
             ],
@@ -46,10 +38,11 @@
                 "_DEBUG",
                 "_WINDOWS",
                 "_USRDLL",
-                "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS"
+                "DARKID_PAPYRUS_DEBUGSERVER_EXPORTS",
+                "F4SE_SUPPORT_XBYAK"
             ],
             "forcedInclude": [
-                "stupidPCH.h"
+                "${workspaceFolder}/src/DarkId.Papyrus.DebugServer/stupidPCH.h"
             ],
             "windowsSdkVersion": "10.0.18362.0",
             "compilerPath": "C:/Program Files (x86)/Microsoft Visual Studio/2019/Community/VC/Tools/MSVC/14.22.27905/bin/Hostx64/x64/cl.exe",

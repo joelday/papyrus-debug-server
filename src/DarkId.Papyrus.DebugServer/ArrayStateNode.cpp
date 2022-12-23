@@ -17,17 +17,11 @@ namespace DarkId::Papyrus::DebugServer
 		variable.name = m_name;
 
 		std::string elementTypeName;
-
+#if SKYRIM
 		if (m_type->IsObjectArray())
 		{
 			elementTypeName = m_type->GetTypeInfo()->GetName();
 		}
-#if FALLOUT
-		else if (m_type->IsStructArray())
-		{
-			elementTypeName = m_type->GetStructType()->GetName();
-		}
-#endif
 		else
 		{
 			switch (m_type->GetUnmangledRawType())
@@ -48,6 +42,37 @@ namespace DarkId::Papyrus::DebugServer
 				break;
 			}
 		}
+#else // FALLOUT
+		if (m_type->IsObjectArray())
+		{
+			elementTypeName = ((RE::BSScript::ObjectTypeInfo * )m_type->data.complexTypeInfo)->GetName();
+		}
+		else if (m_type->IsStructArray())
+		{
+			elementTypeName = ((RE::BSScript::StructTypeInfo * )m_type->data.complexTypeInfo)->GetName();
+		}
+		else
+		{
+			switch (m_type->GetRawType())
+			{
+			case RE::BSScript::TypeInfo::RawType::kArrayString:
+				elementTypeName = "string";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kArrayInt:
+				elementTypeName = "int";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kArrayFloat:
+				elementTypeName = "float";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kArrayBool:
+				elementTypeName = "bool";
+				break;
+			default:
+				break;
+			}
+		}
+#endif
+
 
 		variable.type = StringFormat("%s[]", elementTypeName.c_str());
 

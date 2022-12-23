@@ -28,7 +28,7 @@ namespace DarkId::Papyrus::DebugServer
 			logger::error("Could not save PEX dump for {}"sv, scriptName);
 		}
 #endif
-		bool hasDebugInfo = !binary || !(binary->getDebugInfo().getFunctionInfos().size() == 0);
+		bool hasDebugInfo = binary && binary->getDebugInfo().getFunctionInfos().size() > 0;
 		// only log error if PEX is loaded
 		if (binary && !hasDebugInfo) {
 			logger::error("No debug info in script {}"sv, scriptName);
@@ -96,8 +96,11 @@ namespace DarkId::Papyrus::DebugServer
 			if (!breakpointLines.empty())
 			{
 				uint32_t currentLine;
+				#ifdef SKYRIM
 				bool success = func->TranslateIPToLineNumber(tasklet->topFrame->instructionPointer, currentLine);
-
+				#else // FAllOUT
+				bool success = func->TranslateIPToLineNumber(tasklet->topFrame->ip, currentLine);
+				#endif
 				return success && breakpointLines.find(currentLine) != breakpointLines.end();
 			}
 		}

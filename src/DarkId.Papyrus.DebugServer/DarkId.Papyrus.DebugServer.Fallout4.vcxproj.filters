@@ -1,107 +1,14 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <Project ToolsVersion="4.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <ItemGroup>
-    <Filter Include="Champollion">
-      <UniqueIdentifier>{cd155446-b15b-4bb9-b824-f2f36d02e190}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Champollion\Decompiler">
-      <UniqueIdentifier>{3a57ef58-1fce-4623-b3a6-6ece5f7c99bd}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Champollion\Pex">
-      <UniqueIdentifier>{e06934a4-77ce-406a-87eb-110c0956dd8e}</UniqueIdentifier>
-    </Filter>
     <Filter Include="Protocol">
       <UniqueIdentifier>{9e986540-246c-4e15-958c-7bb549b5f3b9}</UniqueIdentifier>
-    </Filter>
-    <Filter Include="Champollion\Decompiler\Node">
-      <UniqueIdentifier>{254ae7fd-9028-4ecf-8048-37c8600adb5b}</UniqueIdentifier>
     </Filter>
     <Filter Include="State">
       <UniqueIdentifier>{f7a50b50-e949-497e-bc8c-ca4e89fd0126}</UniqueIdentifier>
     </Filter>
   </ItemGroup>
   <ItemGroup>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\AsmCoder.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Coder.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCodeBlock.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCodeGenerator.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscCoder.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\PscDecompiler.cpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\Base.cpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\NodeComparer.cpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Decompiler\Node\Visitor.cpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Binary.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\DebugInfo.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\DocumentedItem.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\FileReader.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Function.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Header.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Instruction.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\NamedItem.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Object.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Property.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\State.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\StringTable.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\TypedItem.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\TypedName.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlag.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\UserFlagged.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Value.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\dependencies\Champollion\Pex\Variable.cpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClCompile>
     <ClCompile Include="protocol\cputil.cpp">
       <Filter>Protocol</Filter>
     </ClCompile>
@@ -109,7 +16,6 @@
     <ClCompile Include="DebugServerSession.cpp" />
     <ClCompile Include="Pex.cpp" />
     <ClCompile Include="PexCache.cpp" />
-    <ClCompile Include="PexStreamReader.cpp" />
     <ClCompile Include="RuntimeEvents.cpp" />
     <ClCompile Include="main.cpp" />
     <ClCompile Include="PapyrusDebugger.cpp" />
@@ -152,6 +58,7 @@
     <ClCompile Include="MetaNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
+    <ClCompile Include="stupidPCH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -172,175 +79,12 @@
     <ClInclude Include="protocol\vscodeprotocol.h">
       <Filter>Protocol</Filter>
     </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\AsmCoder.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Coder.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\DumpTree.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\OutputWriter.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCodeBlock.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCodeGenerator.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscCoder.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\PscDecompiler.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\StreamWriter.hpp">
-      <Filter>Champollion\Decompiler</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayAccess.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayCreate.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\ArrayLength.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Assign.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\AssignOperator.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Base.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\BinaryOperator.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\CallMethod.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Cast.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Constant.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Copy.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Declare.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\FieldNodeMixin.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\IdentifierString.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\IfElse.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\NodeComparer.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Nodes.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Params.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\PropertyAccess.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Return.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Scope.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\StructCreate.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\UnaryOperator.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\Visitor.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\While.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Decompiler\Node\WithNode.hpp">
-      <Filter>Champollion\Decompiler\Node</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Binary.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\DebugInfo.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\DocumentedItem.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\FileReader.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Function.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Header.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Instruction.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\NamedItem.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Object.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Property.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\State.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\StringTable.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\StructInfo.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\TypedItem.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\TypedName.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\UserFlag.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\UserFlagged.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Value.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
-    <ClInclude Include="..\..\dependencies\Champollion\Pex\Variable.hpp">
-      <Filter>Champollion\Pex</Filter>
-    </ClInclude>
     <ClInclude Include="Websocket.h" />
     <ClInclude Include="DebugServer.h" />
     <ClInclude Include="DebugServerSession.h" />
     <ClInclude Include="PapyrusDebugger.h" />
     <ClInclude Include="Pex.h" />
     <ClInclude Include="PexCache.h" />
-    <ClInclude Include="PexStreamReader.hpp" />
     <ClInclude Include="RuntimeEvents.h" />
     <ClInclude Include="version.h" />
     <ClInclude Include="BreakpointManager.h" />
@@ -383,8 +127,7 @@
     <ClInclude Include="MetaNode.h">
       <Filter>State</Filter>
     </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <None Include="exports_fallout.def" />
+    <ClInclude Include="stupidPCH.h" />
+    <ClInclude Include="PDError.h" />
   </ItemGroup>
 </Project>

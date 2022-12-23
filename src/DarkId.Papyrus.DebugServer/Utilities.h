@@ -108,6 +108,14 @@ namespace DarkId::Papyrus::DebugServer
 	}
 	inline std::string NormalizeScriptName(std::string name)
 	{
-		return std::regex_replace(std::regex_replace(name, std::regex(":"), "/"), std::regex("\\.psc"), "");
+#if FALLOUT
+		//F:\\Games\\fallout_4_mods_folder\\mods\\Auto Loot\\scripts\\Source\\User\\AutoLoot\\dubhAutoLootQuestScript
+		// TODO: We really need to stop relying on the file name in the compiled script header for the source name. This is just for testing.
+		// Most Fallout4 scripts will not be found.
+		// Get it from pyro?
+		name = std::regex_replace(name, std::regex("[fF]:\\\\Games\\\\fallout_4_mods_folder\\\\mods\\\\Auto Loot\\\\scripts\\\\Source\\\\User\\\\"), "");
+		name = std::regex_replace(name, std::regex("[Gg]:\\\\_F4(\\\\[\\w\\d_]+)?\\\\Art\\\\Raw\\\\Scripts\\\\"), "");
+#endif
+		return std::regex_replace(std::regex_replace(std::regex_replace(name, std::regex(":"), "/"), std::regex("\\.psc"), ""),std::regex("\\\\"),"/");
 	}
 }

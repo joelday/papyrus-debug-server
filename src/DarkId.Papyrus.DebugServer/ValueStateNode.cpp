@@ -3,7 +3,7 @@
 
 namespace DarkId::Papyrus::DebugServer
 {
-	ValueStateNode::ValueStateNode(std::string name, RE::BSScript::Variable* variable) :
+	ValueStateNode::ValueStateNode(std::string name, const RE::BSScript::Variable* variable) :
 		m_name(name), m_variable(variable)
 	{
 	}
@@ -11,7 +11,7 @@ namespace DarkId::Papyrus::DebugServer
 	bool ValueStateNode::SerializeToProtocol(Variable& variable)
 	{
 		variable.name = m_name;
-		
+		#if SKYRIM
 		if (m_variable->IsString()){
 							variable.type = "string";
 				variable.value = StringFormat("\"%s\"", m_variable->GetString());
@@ -25,7 +25,21 @@ namespace DarkId::Papyrus::DebugServer
 				variable.type = "bool";
 				variable.value = StringFormat(m_variable->GetBool() ? "true" : "false");
 		}
-				
+		#else
+		if (m_variable->is<RE::BSFixedString>()){
+							variable.type = "string";
+				variable.value = StringFormat("\"%s\"", RE::BSScript::get<RE::BSFixedString>(*m_variable).c_str());
+		} else if (m_variable->is<int32_t>()){
+				variable.type = "int";
+				variable.value = StringFormat("%d", RE::BSScript::get<int32_t>(*m_variable));
+		} else if (m_variable->is<float>()){
+				variable.type = "float";
+				variable.value = StringFormat("%f", RE::BSScript::get<float>(*m_variable));
+		} else if (m_variable->is<bool>()){
+				variable.type = "bool";
+				variable.value = StringFormat(RE::BSScript::get<bool>(*m_variable) ? "true" : "false");
+		}
+		#endif
 		return true;
 	}
 }

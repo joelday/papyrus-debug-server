@@ -5,8 +5,11 @@
 #include "FormMetadata.h"
 #include "MetaNode.h"
 
+
+
 namespace DarkId::Papyrus::DebugServer
 {
+
 	ObjectStateNode::ObjectStateNode(const std::string name, RE::BSScript::Object* value, RE::BSScript::ObjectTypeInfo* asClass, const bool subView) :
 		m_name(name), m_subView(subView), m_value(value), m_class(asClass)
 	{
@@ -59,15 +62,16 @@ namespace DarkId::Papyrus::DebugServer
 		
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 		
-		RE::FormID formType;
+		FormID formType;
 		// TODO: get the type id elsewhere. generic "Form"s and unregistered script forms extended from built-in forms don't register here.
-		// May have to get it from the ESP.
+		// May have to get it from the ESP. 
+		// Take a look at the getters in TESForms.h, GetFormByEditorID()?
 		bool success = vm->GetTypeIDForScriptObject((m_class->name), formType);
-		if (success && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
+		if (success && static_cast<FormType>(formType) < FORM_TYPE_MAX && formType > 0)
 		{
-			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 			
 #if SKYRIM
+			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy2()->GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
@@ -83,11 +87,11 @@ namespace DarkId::Papyrus::DebugServer
 #undef DEFINE_FORM_TYPE_CHECK
 
 #else
-			
+			auto form = static_cast<RE::TESForm*>(vm->GetObjectHandlePolicy().GetObjectForHandle(formType, vm->GetBoundHandle(m_value)));
 #define DEFINE_FORM_TYPE_CHECK(type)  \
 			if constexpr (meta::isRegistered<##type##>() && !std::is_same<RE::TESForm, ##type##>::value) \
 			{ \
-				if (static_cast<RE::FormType>(##type##::kTypeID) == form->GetFormType()) \
+				if (static_cast<FormType>(##type##::FORM_ID) == form->GetFormType()) \
 				{ \
 					auto asType = static_cast<##type##*>(form); \
 					if (asType) \
@@ -127,10 +131,11 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 
-		RE::FormID formType;
-		if (m_value && vm->GetTypeIDForScriptObject(m_class->name, formType) && static_cast<RE::FormType>(formType) < RE::FormType::Max && formType > 0)
+		FormID formType;
+		if (m_value && vm->GetTypeIDForScriptObject(m_class->name, formType) && static_cast<FormType>(formType) < FORM_TYPE_MAX && formType > 0)
 		{
-			
+
+#if SKYRIM
 #define DEFINE_FORM_NODE_RETURN(type)  \
 			if (CaseInsensitiveEquals(name, STRING(type))) \
 			{\
@@ -141,7 +146,19 @@ namespace DarkId::Papyrus::DebugServer
 
 			FORM_TYPE_LIST(DEFINE_FORM_NODE_RETURN)
 #undef DEFINE_FORM_NODE_RETURN
-			
+#else // FALLOUT
+#define DEFINE_FORM_NODE_RETURN(type)  \
+			if (CaseInsensitiveEquals(name, STRING(type))) \
+			{\
+				auto form = static_cast<##type##*>(vm->GetObjectHandlePolicy().GetObjectForHandle(formType, vm->GetBoundHandle(m_value))); \
+				node = std::make_shared<MetaNode<##type##*>>(STRING(type), form); \
+ 				return true; \
+			} \
+
+			FORM_TYPE_LIST(DEFINE_FORM_NODE_RETURN)
+#undef DEFINE_FORM_NODE_RETURN
+#endif
+
 		}
 		
 		if (m_value && m_class->GetParent() && CaseInsensitiveEquals(name, "parent"))

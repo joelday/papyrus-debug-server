@@ -3,7 +3,6 @@
 #include "Meta.h"
 #include "FormTypeMacros.h"
 #include "GameInterfaces.h"
-#include <RE/B/BSCoreTypes.h>
 
 #ifndef STRING
 #define STRING(s) #s
@@ -59,12 +58,7 @@ namespace meta
 	inline std::string toDisplayValue<RE::TESForm*>(RE::TESForm* value)
 	{
 		char description[512];
-#if SKYRIM
-		value->GetFormDetailedString(description, sizeof(description));
-#else
-		value->GetFormDescription(description, sizeof(description));
-#endif
-		
+		value->GetFormDetailedString(description, sizeof(description));		
 		return std::string(description);
 	}
 

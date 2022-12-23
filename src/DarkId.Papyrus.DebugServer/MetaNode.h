@@ -63,7 +63,11 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				variable.value = m_value ? "true" : "false";
 			}
+			#if SKYRIM
 			else if constexpr (std::is_same<T, RE::detail::BSFixedString<char>>() || std::is_same<T, RE::detail::BSFixedString<char>>())
+			#else
+			else if constexpr (std::is_same<T, RE::detail::BSFixedString<char, false>>() || std::is_same<T, RE::detail::BSFixedString<char, true>>())
+			#endif
 			{
 				variable.value = "\"" + std::string(m_value.c_str()) + "\"";
 			}

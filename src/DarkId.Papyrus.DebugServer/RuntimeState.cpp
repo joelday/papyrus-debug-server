@@ -10,6 +10,10 @@
 
 #if FALLOUT
 #include "StructStateNode.h"
+#include "RE/Bethesda/BSScriptUtil.h"
+namespace RE {
+	using BSSpinLockGuard = BSAutoLock<BSSpinLock, BSAutoLockDefaultPolicy>;
+}
 #endif
 
 namespace DarkId::Papyrus::DebugServer
@@ -154,8 +158,9 @@ namespace DarkId::Papyrus::DebugServer
 		return false;
 	}
 
-	std::shared_ptr<StateNodeBase> RuntimeState::CreateNodeForVariable(std::string name, RE::BSScript::Variable* variable)
+	std::shared_ptr<StateNodeBase> RuntimeState::CreateNodeForVariable(std::string name, const RE::BSScript::Variable* variable)
 	{
+#if SKYRIM
 		if (variable->IsObject())
 		{
 			auto obj = variable->GetObject();
@@ -163,19 +168,6 @@ namespace DarkId::Papyrus::DebugServer
 
 			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
 		}
-
-#if FALLOUT
-		if (variable->IsVariable())
-		{
-			return CreateNodeForVariable(name, variable->GetVariable());
-		}
-		
-		if (variable->IsStruct())
-		{
-			return std::make_shared<StructStateNode>(name, variable->GetStruct(), variable->GetStructType());
-		}
-#endif
-
 		if (variable->IsArray())
 		{
 			auto arr = variable->GetArray();
@@ -189,12 +181,49 @@ namespace DarkId::Papyrus::DebugServer
 			}
 
 		}
-
 		if (variable->IsBool() || variable->IsFloat() || variable->IsInt() || variable->IsString())
 		{
 			return std::make_shared<ValueStateNode>(name, variable);
 		}
+#else // FALLOUT
+		if (variable->is<RE::BSScript::Object>())
+		{	
+			auto obj = RE::BSScript::get<RE::BSScript::Object>(*variable);
+			auto typeinfo = obj ? obj->GetTypeInfo() : static_cast<RE::BSScript::ObjectTypeInfo*>(variable->GetType().data.complexTypeInfo);
+  
+			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
+		}
+		if (variable->is<RE::BSScript::Array>())
+		{
+			auto arr = RE::BSScript::get<RE::BSScript::Array>( *variable);
+			if (arr){
+				auto &typeinfo = arr->type_info();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+			} else {
+				// TODO: This probably results in a dangling reference
+				auto typeinfo = variable->GetType();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+			}
+		}
+		if (variable->is<bool>() || variable->is<float>() || variable->is<std::uint32_t>() || variable->is<RE::BSFixedString>())
+		{
+			return std::make_shared<ValueStateNode>(name, variable);
+		}
+		if (variable->is<RE::BSScript::Variable>())
+		{
+			auto var = RE::BSScript::get<RE::BSScript::Variable>(*variable);
+			return CreateNodeForVariable(name, var);
+		}
 		
+		if (variable->is<RE::BSScript::Struct>())
+		{
+			auto _struct = RE::BSScript::get<RE::BSScript::Struct>(*variable);
+			RE::BSScript::StructTypeInfo * t_tinfo(static_cast<RE::BSScript::StructTypeInfo*>(variable->GetType().data.complexTypeInfo));
+			auto typeinfo = _struct ? _struct->type.get() : t_tinfo;
+
+			return std::make_shared<StructStateNode>(name, _struct.get(), typeinfo);
+		}
+#endif
 		return nullptr;
 	}
 

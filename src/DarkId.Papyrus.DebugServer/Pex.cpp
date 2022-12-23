@@ -9,7 +9,6 @@
 #include <SKSE/Logger.h>
 #elif FALLOUT
 #include <F4SE/Logger.h>
-#include <f4se/GameStreams.h>
 #endif 
 
 #include <Champollion/Pex/FileReader.hpp>
@@ -19,7 +18,6 @@ namespace DarkId::Papyrus::DebugServer
 	bool ReadPexResource(const char* scriptName, std::ostream& stream)
 	{
 		const auto scriptPath = "Scripts/" + NormalizeScriptName(scriptName) + ".pex";
-#if SKYRIM
 		RE::BSResourceNiBinaryStream scriptStream(scriptPath);
 
 		if (scriptStream.good())
@@ -32,21 +30,6 @@ namespace DarkId::Papyrus::DebugServer
 
 			return true;
 		}
-#elif FALLOUT
-		BSResourceNiBinaryStream scriptStream(scriptPath.c_str());
-
-		if (scriptStream.IsValid())
-		{
-			char byte;
-			while (scriptStream.Read(&byte, 1))
-			{
-				stream.put(byte);
-			}
-
-			return true;
-		}
-#endif 
-
 		return false;
 	}
 

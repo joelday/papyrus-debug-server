@@ -8,7 +8,7 @@
 #include <locale>
 
 #ifdef _MSC_VER
-#include <stringapiset.h>
+
 static std::wstring_convert<std::codecvt_utf8_utf16<wchar_t>,wchar_t> convert;
 
 std::string to_utf8(const wchar_t *wstr)

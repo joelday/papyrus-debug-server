@@ -14,7 +14,8 @@
       "default-features": false
     },
     "eventpp",
-    "websocketpp"
+    "websocketpp",
+    "xbyak"
   ],
   "features": {
     "skyrim": {
@@ -26,8 +27,7 @@
     "fallout4": {
       "description": "Add deps for Fallout 4",
       "dependencies": [
-        "commonlibf4",
-        "f4se"
+        "commonlibf4"
       ]
     }
   },

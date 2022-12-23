@@ -7,13 +7,13 @@ namespace DarkId::Papyrus::DebugServer
 {
 	StructStateNode::StructStateNode(std::string name, RE::BSScript::Struct* value, RE::BSScript::StructTypeInfo* knownType) : m_name(name), m_value(value)
 	{
-		m_type = RE::BSTSmartPointer<RE::BSScript::StructTypeInfo>(value ? value->GetTypeInfo() : knownType);
+		m_type = RE::BSTSmartPointer<RE::BSScript::StructTypeInfo>(value ? value->type.get() : knownType);
 	}
 
 	bool StructStateNode::SerializeToProtocol(Variable& variable)
 	{
 		variable.variablesReference = m_value ? GetId() : 0;
-		variable.namedVariables = m_value ? m_value->GetNumProperties() : 0;
+		variable.namedVariables = m_value ? m_type->variables.size() : 0;
 		
 		variable.name = m_name;
 		variable.type = m_type->GetName();
@@ -29,7 +29,7 @@ namespace DarkId::Papyrus::DebugServer
 			return true;
 		}
 		
-		for (const auto pair : m_type->members)
+		for (const auto pair : m_type->varNameIndexMap)
 		{
 			names.push_back(pair.first.c_str());
 		}
@@ -44,13 +44,13 @@ namespace DarkId::Papyrus::DebugServer
 			return false;
 		}
 		
-		const auto propIndex = m_type->members.find(RE::BSFixedString(name));
-		if (propIndex == m_type->members.end())
+		const auto propIndex = m_type->varNameIndexMap.find(RE::BSFixedString(name));
+		if (propIndex == m_type->varNameIndexMap.end())
 		{
 			return false;
 		}
 
-		const auto propValue = &m_value->GetPropertyIter()[propIndex->second];
+		const auto propValue = &m_value->variables[propIndex->second];
 		node = RuntimeState::CreateNodeForVariable(propIndex->first.c_str(), propValue);
 		
 		return true;

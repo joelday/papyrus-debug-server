@@ -127,7 +127,7 @@
     <ClInclude Include="FormTypeMacros.h">
       <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="stupidPCH.h" />
     <ClInclude Include="PDError.h" />
+    <ClInclude Include="stupidPCH.h" />
   </ItemGroup>
 </Project>
