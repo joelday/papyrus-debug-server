@@ -17,7 +17,10 @@ namespace DarkId::Papyrus::DebugServer
 		stackFrame = StackFrame(GetId());
 
 		Source source;
-		if (pexCache->GetSourceData(NormalizeScriptName(m_stackFrame->owningFunction->GetSourceFilename().c_str()).c_str(), source))
+		std::string ScriptName = NormalizeScriptName(m_stackFrame->owningObjectType->GetName());
+		// TODO: ignoring this for now, just for debugging reference
+		std::string srcFileName = m_stackFrame->owningFunction->GetSourceFilename().c_str();
+		if (pexCache->GetSourceData(ScriptName.c_str(), source))
 		{
 			stackFrame.source = source;
 			#if SKYRIM

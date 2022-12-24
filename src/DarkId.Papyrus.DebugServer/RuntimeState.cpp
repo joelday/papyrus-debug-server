@@ -175,9 +175,7 @@ namespace DarkId::Papyrus::DebugServer
 				auto &typeinfo = arr->type_info();
 				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
 			} else {
-				// TODO: This probably results in a dangling reference
-				auto typeinfo = variable->GetType();
-				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, variable->GetType());
 			}
 
 		}
@@ -189,7 +187,7 @@ namespace DarkId::Papyrus::DebugServer
 		if (variable->is<RE::BSScript::Object>())
 		{	
 			auto obj = RE::BSScript::get<RE::BSScript::Object>(*variable);
-			auto typeinfo = obj ? obj->GetTypeInfo() : static_cast<RE::BSScript::ObjectTypeInfo*>(variable->GetType().data.complexTypeInfo);
+			auto typeinfo = obj ? obj->GetTypeInfo() : variable->GetType().GetObjectTypeInfo();
   
 			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
 		}
@@ -197,15 +195,14 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			auto arr = RE::BSScript::get<RE::BSScript::Array>( *variable);
 			if (arr){
-				auto &typeinfo = arr->type_info();
-				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+				//auto &typeinfo = arr->type_info();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &arr->type_info());
 			} else {
-				// TODO: This probably results in a dangling reference
-				auto typeinfo = variable->GetType();
-				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+				auto type = variable->GetType();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, type);
 			}
 		}
-		if (variable->is<bool>() || variable->is<float>() || variable->is<std::uint32_t>() || variable->is<RE::BSFixedString>())
+		if (variable->is<bool>() || variable->is<float>() || variable->is<std::int32_t>() || variable->is<std::uint32_t>() || variable->is<RE::BSFixedString>())
 		{
 			return std::make_shared<ValueStateNode>(name, variable);
 		}
@@ -218,8 +215,7 @@ namespace DarkId::Papyrus::DebugServer
 		if (variable->is<RE::BSScript::Struct>())
 		{
 			auto _struct = RE::BSScript::get<RE::BSScript::Struct>(*variable);
-			RE::BSScript::StructTypeInfo * t_tinfo(static_cast<RE::BSScript::StructTypeInfo*>(variable->GetType().data.complexTypeInfo));
-			auto typeinfo = _struct ? _struct->type.get() : t_tinfo;
+			auto typeinfo = _struct ? _struct->type.get() : variable->GetType().GetStructTypeInfo();
 
 			return std::make_shared<StructStateNode>(name, _struct.get(), typeinfo);
 		}

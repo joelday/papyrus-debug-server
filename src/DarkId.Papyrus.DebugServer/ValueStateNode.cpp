@@ -13,8 +13,9 @@ namespace DarkId::Papyrus::DebugServer
 		variable.name = m_name;
 		#if SKYRIM
 		if (m_variable->IsString()){
-							variable.type = "string";
-				variable.value = StringFormat("\"%s\"", m_variable->GetString());
+				variable.type = "string";
+				auto str = std::string(m_variable->GetString());
+				variable.value = StringFormat("\"%s\"", str.c_str());
 		} else if (m_variable->IsInt()){
 				variable.type = "int";
 				variable.value = StringFormat("%d", m_variable->GetSInt());
@@ -27,11 +28,14 @@ namespace DarkId::Papyrus::DebugServer
 		}
 		#else
 		if (m_variable->is<RE::BSFixedString>()){
-							variable.type = "string";
+				variable.type = "string";
 				variable.value = StringFormat("\"%s\"", RE::BSScript::get<RE::BSFixedString>(*m_variable).c_str());
 		} else if (m_variable->is<int32_t>()){
 				variable.type = "int";
 				variable.value = StringFormat("%d", RE::BSScript::get<int32_t>(*m_variable));
+		} else if (m_variable->is<uint32_t>()) {
+				variable.type = "uint";
+				variable.value = StringFormat("%d", RE::BSScript::get<uint32_t>(*m_variable));
 		} else if (m_variable->is<float>()){
 				variable.type = "float";
 				variable.value = StringFormat("%f", RE::BSScript::get<float>(*m_variable));

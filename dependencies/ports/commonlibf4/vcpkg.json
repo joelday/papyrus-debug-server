@@ -1,6 +1,6 @@
 {
     "name": "commonlibf4",
-    "version-string": "2022-10-20",
+    "version-string": "2022-12-24",
     "description": "A reverse engineered resource for developing F4SE plugins for Fallout 4",
     "homepage": "https://github.com/Ryan-rsm-McKenzie/CommonLibF4",
     "license": "MIT",

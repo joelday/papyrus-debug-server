@@ -1,12 +1,12 @@
 vcpkg_from_github(
   OUT_SOURCE_PATH SOURCE_PATH
   REPO nikitalita/CommonLibF4
-  REF eef6972d698dbd93545f807e25c1f2370feb0a9d
-  SHA512 ad5753514479d3c7b7a76ff7d8a509a84026f91c74303be9261d0a5830d84ab2f92d135f13cfce308063c5c6e20704e7264c04776a77674c617ebe749066f63d
+  REF 71da8c1d96b6084795a61dce4b453583396f240b
+  SHA512 9b0c4a7ef09b7fd4362dce16cfd4bdc57b077498d534ccf7b52a28916ecafe913f24281668323612c52a558d7dc829e8840aea771f4c7818e56b2f0876deddf2
   HEAD_REF master
 )
      
-#set(SOURCE_PATH "C:\\Users\\Nikita\\Workspace\\skyrim-mod-workspace\\CommonLibF4-merge-ws\\CommonLibF4")
+# set(SOURCE_PATH "C:\\Users\\Nikita\\Workspace\\skyrim-mod-workspace\\CommonLibF4-merge-ws\\CommonLibF4")
 
 if ( VCPKG_HOST_IS_WINDOWS AND VCPKG_TARGET_IS_WINDOWS AND NOT VCPKG_TARGET_IS_MINGW AND DEFINED $ENV{VisualStudioVersion} )
   set( MSVC_RUNTIME_VCPKG_CONFIG_ARG "-DCMAKE_MSVC_RUNTIME_LIBRARY=\"MultiThreaded$<$<CONFIG:Debug>:Debug>DLL\"")

@@ -170,10 +170,6 @@ namespace DarkId::Papyrus::DebugServer
 				// TODO: check if this should be checking if it's the same as RE::BSScript::BSSmartPointer<RE::BSScript::Object*>
 				else if constexpr (std::is_same<TValue, RE::BSScript::Object*>::value)
 				{
-					// TODO: Double-check this.
-					// GetObject() semantics changed from returning an Object* to returning a BSSmartPointer<Object*>
-					// See <RE/V/Variable.h>
-					// Do not know if these shenanigans will have reprecussions
 					RE::BSScript::Object * obj = static_cast<RE::BSScript::Object*>(memberValue);
 					RE::BSScript::ObjectTypeInfo * type_info = obj->GetTypeInfo();
 					node = std::make_shared<ObjectStateNode>(memberName, obj, type_info, false);

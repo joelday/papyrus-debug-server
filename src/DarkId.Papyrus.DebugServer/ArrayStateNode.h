@@ -13,8 +13,11 @@ namespace DarkId::Papyrus::DebugServer
 
 		RE::BSTSmartPointer<RE::BSScript::Array> m_value;
 		RE::BSScript::TypeInfo* m_type;
+		RE::BSScript::TypeInfo _m_inst_type;
 	public:
 		ArrayStateNode(std::string name, RE::BSScript::Array* value, RE::BSScript::TypeInfo* type);
+		ArrayStateNode(std::string name, RE::BSScript::Array* value, const RE::BSScript::TypeInfo &type);
+
 		virtual ~ArrayStateNode() override = default;
 
 		bool SerializeToProtocol(Variable& variable) override;

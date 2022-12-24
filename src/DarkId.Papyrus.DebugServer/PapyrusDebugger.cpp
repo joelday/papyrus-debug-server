@@ -112,8 +112,9 @@ namespace DarkId::Papyrus::DebugServer
 			
 			if (stack->top && stack->top->owningFunction)
 			{
-
-				const auto scriptName = NormalizeScriptName(stack->top->owningFunction->GetSourceFilename().c_str());
+				// TODO: Not in use, just for debugging reference.
+				auto srcFileName = stack->top->owningFunction->GetSourceFilename().c_str();
+				auto scriptName = NormalizeScriptName(stack->top->owningObjectType->GetName());
 				CheckSourceLoaded(scriptName.c_str());
 			}
 		});
@@ -186,7 +187,7 @@ namespace DarkId::Papyrus::DebugServer
 		for (const auto& script : vm->objectTypeMap)
 		{
 			Source source;
-			std::string scriptName = std::string(script.first.c_str());
+			std::string scriptName = script.first.c_str();
 			if (m_pexCache->GetSourceData(scriptName.c_str(), source))
 			{
 				sources.push_back(source);

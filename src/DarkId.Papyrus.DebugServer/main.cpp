@@ -131,7 +131,7 @@ extern "C"
 		}
 		logger::info("Papyrus Debug Server loaded");
 
- #if _DEBUG
+ #if _DEBUG && _PAUSE_ON_START
  		logger::info("Waiting for debugger to attach...");
 
  		while (!IsDebuggerPresent())

@@ -86,9 +86,8 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			return false;
 		}
-		const auto srcFileName = std::string(func->GetSourceFilename().c_str());
-		const auto sourceName = NormalizeScriptName(srcFileName);
-		const auto sourceReference = m_pexCache->GetScriptReference(sourceName.c_str());
+		const auto scriptName = tasklet->topFrame->owningObjectType->GetName();
+		const auto sourceReference = m_pexCache->GetScriptReference(scriptName);
 		
 		if (m_breakpoints.find(sourceReference) != m_breakpoints.end())
 		{
@@ -101,7 +100,8 @@ namespace DarkId::Papyrus::DebugServer
 				#else // FAllOUT
 				bool success = func->TranslateIPToLineNumber(tasklet->topFrame->ip, currentLine);
 				#endif
-				return success && breakpointLines.find(currentLine) != breakpointLines.end();
+				auto found = breakpointLines.find(currentLine);
+				return success && found != breakpointLines.end();
 			}
 		}
 
