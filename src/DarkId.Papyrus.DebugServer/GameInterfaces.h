@@ -14,5 +14,5 @@ namespace RE
 
 #elif FALLOUT
 #include "f4se/GameTypes.h"
-#include "RE/Fallout.h"
+#include "CommonLibF4/RE/Fallout.h"
 #endif

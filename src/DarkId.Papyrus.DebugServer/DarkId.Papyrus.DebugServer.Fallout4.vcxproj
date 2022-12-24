@@ -63,14 +63,14 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>ForceInclude.h;F4SE\Logger.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>ForceInclude.h;CommonLibF4\F4SE\Logger.h</ForcedIncludeFiles>
       <ExceptionHandling>Sync</ExceptionHandling>
       <WholeProgramOptimization>false</WholeProgramOptimization>
       <FunctionLevelLinking>true</FunctionLevelLinking>
@@ -113,14 +113,14 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\f4se\src\f4se\CommonLibF4\include;$(ProjectDir)..\..\dependencies\Champollion;$(ProjectDir)..\..\dependencies\f4se\src\f4se;$(ProjectDir)..\..\dependencies\f4se\src;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <AdditionalIncludeDirectories>$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(ProjectDir)..\..\dependencies\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
       <PreprocessorDefinitions>DIDPDS_VERSION_MINOR=$(BuildNumber);WIN32;FALLOUT;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <PrecompiledHeader>NotUsing</PrecompiledHeader>
       <WarningLevel>Level3</WarningLevel>
       <DebugInformationFormat>ProgramDatabase</DebugInformationFormat>
-      <ForcedIncludeFiles>ForceInclude.h;F4SE\Logger.h</ForcedIncludeFiles>
+      <ForcedIncludeFiles>ForceInclude.h;CommonLibF4\F4SE\Logger.h</ForcedIncludeFiles>
       <WholeProgramOptimization>true</WholeProgramOptimization>
       <OmitFramePointers>
       </OmitFramePointers>
@@ -305,11 +305,6 @@
     <ClInclude Include="version.h" />
     <ClInclude Include="Websocket.h" />
   </ItemGroup>
-  <ItemGroup>
-    <ProjectReference Include="..\..\dependencies\f4se\src\f4se\CommonLibF4\CommonLibF4.vcxproj">
-      <Project>{4d608e7e-fd4f-4725-bec0-3b25d5b79a9f}</Project>
-    </ProjectReference>
-  </ItemGroup>
   <Import Project="$(VCTargetsPath)\Microsoft.Cpp.targets" />
   <ImportGroup Label="ExtensionTargets">
   </ImportGroup>
@@ -319,6 +314,9 @@
   </PropertyGroup>
   <PropertyGroup Label="Vcpkg">
     <VcpkgEnableManifest>true</VcpkgEnableManifest>
+  </PropertyGroup>
+  <PropertyGroup Label="Vcpkg">
+    <VcpkgInstalledDir>$(SolutionDir)fartslmao</VcpkgInstalledDir>
   </PropertyGroup>
   <Target Name="AfterBuild" Condition="'$(Configuration)' == 'Debug' AND $(F4SEPluginPath) != ''">
     <Copy SourceFiles="$(TargetPath)" DestinationFolder="$(F4SEPluginPath)" />

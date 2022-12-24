@@ -1,0 +1,4 @@
+[submodule "dependencies/Champollion"]
+	path = dependencies/Champollion
+	url = https://github.com/nikitalita/Champollion
+	branch = c++20
