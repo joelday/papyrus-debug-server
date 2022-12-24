@@ -333,4 +333,7 @@ ASALocalRun/
 # Local History for Visual Studio
 .localhistory/
 
+# vcpkg installed files
+vcpkg_installed/
+
 papyrus-debug-server.zip
