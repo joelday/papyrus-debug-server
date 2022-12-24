@@ -58,7 +58,7 @@
     <ClCompile Include="MetaNode.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="stupidPCH.cpp" />
+    <ClCompile Include="pdsPCH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -127,7 +127,7 @@
     <ClInclude Include="MetaNode.h">
       <Filter>State</Filter>
     </ClInclude>
-    <ClInclude Include="stupidPCH.h" />
+    <ClInclude Include="pdsPCH.h" />
     <ClInclude Include="PDError.h" />
   </ItemGroup>
 </Project>

@@ -58,7 +58,7 @@
     <ClCompile Include="FormTypeMacros.cpp">
       <Filter>State</Filter>
     </ClCompile>
-    <ClCompile Include="stupidPCH.cpp" />
+    <ClCompile Include="pdsPCH.cpp" />
   </ItemGroup>
   <ItemGroup>
     <ResourceCompile Include="version.rc" />
@@ -128,6 +128,6 @@
       <Filter>State</Filter>
     </ClInclude>
     <ClInclude Include="PDError.h" />
-    <ClInclude Include="stupidPCH.h" />
+    <ClInclude Include="pdsPCH.h" />
   </ItemGroup>
 </Project>

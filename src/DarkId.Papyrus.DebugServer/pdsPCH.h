@@ -1,4 +1,3 @@
-// fuck everything about this
 #pragma once
 #if SKYRIM
 #define SPDLOG_LEVEL_NAMES { "TRACE", "DEBUG", "INFO", "WARNING", "ERROR", "CRITICAL", "OFF" }
