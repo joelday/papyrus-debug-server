@@ -83,8 +83,8 @@
   <ItemDefinitionGroup Condition="'$(Configuration)|$(Platform)'=='Debug|x64'">
     <ClCompile>
       <Optimization>Disabled</Optimization>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(VcpkgInstalledDir)\$(VcpkgTriplet)\include\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;SKYRIM;ENABLE_SKYRIM_VR;ENABLE_SKYRIM_AE;ENABLE_SKYRIM_SE;SKSE_SUPPORT_XBYAK;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;SKYRIM;ENABLE_SKYRIM_VR;ENABLE_SKYRIM_AE;ENABLE_SKYRIM_SE;SKSE_SUPPORT_XBYAK;SPDLOG_COMPILED_LIB;SPDLOG_FMT_EXTERNAL;_DEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <BasicRuntimeChecks>EnableFastChecks</BasicRuntimeChecks>
       <RuntimeLibrary>MultiThreadedDebug</RuntimeLibrary>
       <WarningLevel>Level3</WarningLevel>
@@ -138,8 +138,8 @@
     <ClCompile>
       <Optimization>MaxSpeed</Optimization>
       <IntrinsicFunctions>true</IntrinsicFunctions>
-      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;$(VcpkgInstalledDir)\$(VcpkgTriplet)\include\Champollion;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
-      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;SKYRIM;ENABLE_SKYRIM_VR;ENABLE_SKYRIM_AE;ENABLE_SKYRIM_SE;SKSE_SUPPORT_XBYAK;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
+      <AdditionalIncludeDirectories>$(ProjectDir);$(ProjectDir)..\..\dependencies;$(ProjectDir)..\..\dependencies\MetaStuff\include;%(AdditionalIncludeDirectories)</AdditionalIncludeDirectories>
+      <PreprocessorDefinitions>DIDPDS_VERSION_BETA=$(BuildNumber);WIN32;SKYRIM;ENABLE_SKYRIM_VR;ENABLE_SKYRIM_AE;ENABLE_SKYRIM_SE;SKSE_SUPPORT_XBYAK;SPDLOG_COMPILED_LIB;SPDLOG_FMT_EXTERNAL;NDEBUG;_WINDOWS;_USRDLL;DARKID_PAPYRUS_DEBUGSERVER_EXPORTS;%(PreprocessorDefinitions)</PreprocessorDefinitions>
       <RuntimeLibrary>MultiThreaded</RuntimeLibrary>
       <FunctionLevelLinking>true</FunctionLevelLinking>
       <WarningLevel>Level3</WarningLevel>
