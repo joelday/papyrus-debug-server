@@ -9,15 +9,20 @@
 #include "StackFrameStateNode.h"
 
 #if SKYRIM
-	#include "SKSE/API.h"
+	#include <SKSE/Logger.h>
+	#include <SKSE/API.h>
 namespace XSE = SKSE;
 #elif FALLOUT
-	#include "F4SE/API.h"
-	#include "f4se/GameReferences.h"
+	#include <F4SE/API.h>
+	#include <F4SE/Logger.h>
 namespace XSE = F4SE;
+namespace RE{
+	using BSSpinLockGuard = BSAutoLock<BSSpinLock, BSAutoLockDefaultPolicy>;
+}
 #endif
 
 #include "StateNodeBase.h"
+
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -54,15 +59,33 @@ namespace DarkId::Papyrus::DebugServer
 	//{
 	//}
 
-	void PapyrusDebugger::EventLogged(RE::BSScript::LogEvent* logEvent) const
+	std::string LogSeverityEnumStr(RE::BSScript::ErrorLogger::Severity severity) {
+		if (severity == RE::BSScript::ErrorLogger::Severity::kInfo) {
+			return std::string("INFO");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kWarning) {
+			return std::string("WARNING");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kError) {
+			return std::string("ERROR");
+		} else if (severity == RE::BSScript::ErrorLogger::Severity::kFatal) {
+			return std::string("FATAL");
+		}
+		return std::string("UNKNOWN_ENUM_LEVEL");
+	}
+
+	void PapyrusDebugger::EventLogged(const RE::BSScript::LogEvent* logEvent) const
 	{
+		const std::string severity = LogSeverityEnumStr(logEvent->severity);
 #if SKYRIM
-		const auto message = std::string(logEvent->text);
+		const auto message = std::string(logEvent->errorMsg);
+		const OutputEvent output(OutputCategory::OutputConsole, severity + " - " + message + "\r\n");
 #elif FALLOUT
-		const auto message = std::string(logEvent->message->text);
+		RE::BSFixedString message;
+		logEvent->errorMsg.GetErrorMsg(message);
+		const auto msg = std::string(message.c_str());
+		const auto ownerModule = std::string(logEvent->ownerModule.c_str());
+		const OutputEvent output(OutputCategory::OutputConsole, ownerModule + " - " + severity + " - " + msg + "\r\n");
 #endif
-		
-		const OutputEvent output(OutputCategory::OutputConsole, message + "\r\n");
+	
 
 		m_protocol->EmitOutputEvent(output);
 	}
@@ -87,15 +110,17 @@ namespace DarkId::Papyrus::DebugServer
 
 			m_protocol->EmitThreadEvent(ThreadEvent(ThreadReason::ThreadStarted, stackId));
 			
-			if (stack->current && stack->current->func)
+			if (stack->top && stack->top->owningFunction)
 			{
-				const auto scriptName = stack->current->func->GetScriptName();
+				// TODO: Not in use, just for debugging reference.
+				auto srcFileName = stack->top->owningFunction->GetSourceFilename().c_str();
+				auto scriptName = NormalizeScriptName(stack->top->owningObjectType->GetName());
 				CheckSourceLoaded(scriptName.c_str());
 			}
 		});
 	}
 	
-	void PapyrusDebugger::StackCleanedUp(UInt32 stackId)
+	void PapyrusDebugger::StackCleanedUp(uint32_t stackId)
 	{
 		XSE::GetTaskInterface()->AddTask([this, stackId]()
 		{
@@ -130,8 +155,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	HRESULT PapyrusDebugger::SetBreakpoints(Source& source, const std::vector<SourceBreakpoint>& srcBreakpoints, std::vector<Breakpoint>& breakpoints)
 	{
-		m_breakpointManager->SetBreakpoints(source, srcBreakpoints, breakpoints);
-		return 0;
+		return m_breakpointManager->SetBreakpoints(source, srcBreakpoints, breakpoints);
 	}
 
 	HRESULT PapyrusDebugger::Initialize()
@@ -158,12 +182,13 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetLoadedSources(std::vector<Source>& sources)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->classLock);
+		RE::BSSpinLockGuard lock(vm->typeInfoLock);
 
-		for (const auto& script : vm->linkedClassMap)
+		for (const auto& script : vm->objectTypeMap)
 		{
 			Source source;
-			if (m_pexCache->GetSourceData(script.first.c_str(), source))
+			std::string scriptName = script.first.c_str();
+			if (m_pexCache->GetSourceData(scriptName.c_str(), source))
 			{
 				sources.push_back(source);
 			}
@@ -175,14 +200,14 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetThreads(std::vector<Thread>& threads)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::string> stackIdPaths;
 
-		for (auto& elem : vm->allStacks)
+		for (auto& elem : vm->allRunningStacks)
 		{
 			const auto stack = elem.second.get();
-			if (!stack || !stack->current)
+			if (!stack || !stack->top)
 			{
 				continue;
 			}
@@ -213,7 +238,7 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetScopes(const uint64_t frameId, std::vector<Scope>& scopes)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::shared_ptr<StateNodeBase>> frameScopes;
 		m_runtimeState->ResolveChildrenByParentId(frameId, frameScopes);
@@ -241,7 +266,7 @@ namespace DarkId::Papyrus::DebugServer
 	HRESULT PapyrusDebugger::GetVariables(uint64_t variablesReference, VariablesFilter filter, int start, int count, std::vector<Variable> & variables)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		std::vector<std::shared_ptr<StateNodeBase>> variableNodes;
 		m_runtimeState->ResolveChildrenByParentId(variablesReference, variableNodes);
@@ -268,14 +293,14 @@ namespace DarkId::Papyrus::DebugServer
 
 	int PapyrusDebugger::GetNamedVariables(uint64_t variablesReference)
 	{
-		// _MESSAGE("Named variables count request: %d", variablesReference);
+		// logger::info("Named variables count request: %d", variablesReference);
 		return 0;
 	}
 
 	HRESULT PapyrusDebugger::GetStackTrace(int threadId, int startFrame, int levels, std::vector<StackFrame> & stackFrames, int& totalFrames)
 	{
 		const auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		if (threadId == -1)
 		{

@@ -2,7 +2,7 @@
 
 #include "GameInterfaces.h"
 
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 #include "PexCache.h"
 #include "StateNodeBase.h"
 

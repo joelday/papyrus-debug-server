@@ -12,8 +12,18 @@
 #include <iomanip>
 #include <sstream>
 
+#include "PDError.h"
 // for convenience
 using json = nlohmann::json;
+#if SKYRIM
+#include <SKSE/Impl/PCH.h>
+#include <SKSE/Logger.h>
+namespace XSE = SKSE;
+namespace logger = SKSE::log;
+#elif FALLOUT
+namespace XSE = F4SE;
+namespace logger = F4SE::log;
+#endif
 
 void from_json(const nlohmann::json& value, Source& source)
 {
@@ -350,7 +360,23 @@ HRESULT VSCodeProtocol::HandleCommand(const std::string &command, const json &ar
 		std::vector<Breakpoint> breakpoints;
 
 		Source source = arguments.at("source");
-		IfFailRet(m_debugger->SetBreakpoints(source, srcBreakpoints, breakpoints));
+		Status = m_debugger->SetBreakpoints(source, srcBreakpoints, breakpoints);
+		if (FAILED(Status)) {
+			if (Status == DarkId::Papyrus::DebugServer::PDError::NO_DEBUG_INFO) {
+				body["breakpoints"] = breakpoints;
+				body["messasge"] = std::string("Debug info for " + source.name + " not present in PEX data, ensure script is compiled with Debug and that the game is configured to load papyrus debug info");
+				return Status;
+			}
+			else if (Status == DarkId::Papyrus::DebugServer::PDError::NO_PEX_DATA) {
+				body["breakpoints"] = breakpoints;
+				body["messasge"] = std::string("Could not locate PEX data for " + source.name + ", ensure that it is loaded.");
+				return Status;
+			}
+			else {
+				body["messasge"] = std::string("setBreakpoints failed for " + source.name);
+				return Status;
+			}
+		}
 
 		body["breakpoints"] = breakpoints;
 
@@ -697,5 +723,6 @@ const std::string VSCodeProtocol::LOG_EVENT("<- (E) ");
 
 void VSCodeProtocol::Log(const std::string &prefix, const std::string &text)
 {
-	_MESSAGE("%s: %s", prefix.c_str(), text.c_str());
+	using namespace std::literals;
+	logger::info("{}: {}"sv, prefix.c_str(), text.c_str());
 }

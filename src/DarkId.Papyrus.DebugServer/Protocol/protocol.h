@@ -34,7 +34,7 @@ struct Source
 
 struct StackFrame
 {
-	UInt32 id; // (threadId << 32) | level
+	uint32_t id; // (threadId << 32) | level
 	std::string name;
 	Source source;
 	int line;

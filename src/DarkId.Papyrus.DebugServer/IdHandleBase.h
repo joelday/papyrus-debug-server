@@ -21,7 +21,7 @@ namespace DarkId::Papyrus::DebugServer
 			m_idMap->Remove(static_cast<T*>(this));
 		}
 
-		UInt32 GetId() const
+		uint32_t GetId() const
 		{
 			return m_idMap->GetId(static_cast<T*>(this));
 		}

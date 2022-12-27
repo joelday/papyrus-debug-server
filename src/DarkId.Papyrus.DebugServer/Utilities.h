@@ -2,7 +2,8 @@
 
 #include <string>
 #include <sstream>
-#include <boost/algorithm/string.hpp>
+#include <regex>
+#include <boost/algorithm/string/replace.hpp>
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -77,10 +78,22 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
+	inline void ToLower(std::string &p_str){
+		for (int i = 0; i < p_str.size(); i++){
+				p_str[i] = tolower(p_str[i]);
+		}
+	}
+
+	inline std::string ToLowerCopy(const std::string &p_str){
+		std::string r_str = p_str;
+		ToLower(r_str);
+		return r_str;
+	}
+
 	inline bool CaseInsensitiveEquals(std::string a, std::string b)
 	{
-		boost::algorithm::to_lower(a);
-		boost::algorithm::to_lower(b);
+		ToLower(a);
+		ToLower(b);
 
 		return a == b;
 	}
@@ -94,4 +107,35 @@ namespace DarkId::Papyrus::DebugServer
 
 		return name;
 	}
+	inline std::string NormalizeScriptName(std::string name)
+	{
+		boost::algorithm::replace_all(name, "\\\\", "/");
+		boost::algorithm::replace_all(name, "/", ":");
+		boost::algorithm::replace_all(name, ".psc", "");
+		//std::regex_replace(std::regex_replace(std::regex_replace(name, std::regex("\\\\"), "/"), std::regex("\\.psc"), ""), std::regex("/"), ":")
+		return name;
+	}
+	inline std::string ScriptNameToPathPrefix(std::string name) {
+		// TODO: We really need to stop relying on the file name in the compiled script header for the source name. This is just for testing.
+		// Most Fallout4 scripts will not be found.
+		// Get it from pyro?
+		//F:\\Games\\fallout_4_mods_folder\\mods\\Auto Loot\\scripts\\Source\\User\\AutoLoot\\dubhAutoLootQuestScript
+		//name = std::regex_replace(name, std::regex("[fF]:\\\\Games\\\\fallout_4_mods_folder\\\\mods\\\\Auto Loot\\\\Scripts\\\\Source\\\\User\\\\"), "");
+		//name = std::regex_replace(name, std::regex("[Gg]:\\\\_F4(\\\\[\\w\\d_]+)?\\\\Art\\\\Raw\\\\Scripts\\\\"), "");
+		boost::algorithm::replace_all(name, ":", "/");
+		return name;
+	}
+	inline std::string ScriptNameToPSCPath(std::string name) {
+		name = ScriptNameToPathPrefix(name);
+		boost::algorithm::replace_all(name, ".psc", "");
+		boost::algorithm::replace_all(name, ".pex", "");
+		return name + ".psc";
+	}
+	inline std::string ScriptNameToPEXPath(std::string name) {
+		name = ScriptNameToPathPrefix(name);
+		boost::algorithm::replace_all(name, ".psc", "");
+		boost::algorithm::replace_all(name, ".pex", "");
+		return name + ".pex";
+	}
+
 }

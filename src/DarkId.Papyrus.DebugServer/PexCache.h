@@ -1,9 +1,9 @@
 #pragma once
 
-#include "Champollion/Pex/Binary.hpp"
+#include <Champollion/Pex/Binary.hpp>
 #include <map>
 
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 #include <mutex>
 
 namespace DarkId::Papyrus::DebugServer

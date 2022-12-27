@@ -1,5 +1,4 @@
 #include "DebugServer.h"
-
 namespace DarkId::Papyrus::DebugServer
 {
 	DebugServer::DebugServer() :
@@ -44,7 +43,7 @@ namespace DarkId::Papyrus::DebugServer
 		m_session = NULL;
 	}
 
-	UInt32 DebugServer::ListenInternal()
+	uint32_t DebugServer::ListenInternal()
 	{
 		try
 		{
@@ -73,12 +72,12 @@ namespace DarkId::Papyrus::DebugServer
 		}
 		catch (websocketpp::exception const & e)
 		{
-			_MESSAGE(e.what());
+			logger::info("{}"sv, e.what());
 			return e.code().value();
 		}
 		catch (...)
 		{
-			_MESSAGE("other_exception");
+			logger::info("other_exception");
 			return -1;
 		}
 

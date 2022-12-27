@@ -13,7 +13,7 @@ namespace DarkId::Papyrus::DebugServer
 			return;
 		}
 		
-		const auto func = tasklet->stackFrame->func;
+		const auto func = tasklet->topFrame->owningFunction;
 		auto shouldSendPause = false;
 		StopReason stopReason = StopReason::StopPause;
 		
@@ -120,7 +120,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool DebugExecutionManager::Step(UInt32 stackId, const Debugger::StepType stepType)
+	bool DebugExecutionManager::Step(uint32_t stackId, const Debugger::StepType stepType)
 	{
 		if (m_state != DebuggerState::kPaused)
 		{
@@ -128,9 +128,9 @@ namespace DarkId::Papyrus::DebugServer
 		}
 
 		const auto stack = RuntimeState::GetStack(stackId);
-		if (stack->current)
+		if (stack->stackID)
 		{
-			m_currentStepStackFrame = stack->current;
+			m_currentStepStackFrame = stack->top;
 		}
 		else
 		{

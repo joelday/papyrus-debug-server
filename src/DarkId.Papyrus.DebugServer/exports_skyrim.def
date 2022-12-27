@@ -1,4 +1,0 @@
-LIBRARY	"DarkId.Papyrus.DebugServer.Skyrim.dll"
-EXPORTS
-SKSEPlugin_Query
-SKSEPlugin_Load

@@ -1,8 +1,8 @@
 #pragma once
-
+#if FALLOUT
 #include "GameInterfaces.h"
 
-#include "protocol/protocol.h"
+#include "Protocol/protocol.h"
 #include "StateNodeBase.h"
 
 namespace DarkId::Papyrus::DebugServer
@@ -22,3 +22,4 @@ namespace DarkId::Papyrus::DebugServer
 		bool GetChildNode(std::string name, std::shared_ptr<StateNodeBase>& node) override;
 	};
 }
+#endif

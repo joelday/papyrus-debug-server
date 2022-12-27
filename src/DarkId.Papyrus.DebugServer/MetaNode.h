@@ -63,7 +63,11 @@ namespace DarkId::Papyrus::DebugServer
 			{
 				variable.value = m_value ? "true" : "false";
 			}
-			else if constexpr (std::is_same<T, RE::BSFixedString>() || std::is_same<T, BSFixedString>())
+			#if SKYRIM
+			else if constexpr (std::is_same<T, RE::detail::BSFixedString<char>>() || std::is_same<T, RE::detail::BSFixedString<char>>())
+			#else
+			else if constexpr (std::is_same<T, RE::detail::BSFixedString<char, false>>() || std::is_same<T, RE::detail::BSFixedString<char, true>>())
+			#endif
 			{
 				variable.value = "\"" + std::string(m_value.c_str()) + "\"";
 			}
@@ -159,13 +163,16 @@ namespace DarkId::Papyrus::DebugServer
 				using TValue = meta::get_member_type<decltype(member)>;
 				TValue memberValue = member.getCopy(GetValue());
 
-				if (std::is_pointer<TValue>::value && unrestricted_cast<void*>(memberValue) == nullptr)
+				if (std::is_pointer<TValue>::value && XSE::stl::unrestricted_cast<void*>(memberValue) == nullptr)
 				{
 					node = std::make_shared<NullNode<TValue>>(memberName);
 				}
+				// TODO: check if this should be checking if it's the same as RE::BSScript::BSSmartPointer<RE::BSScript::Object*>
 				else if constexpr (std::is_same<TValue, RE::BSScript::Object*>::value)
 				{
-					node = std::make_shared<ObjectStateNode>(memberName, memberValue, memberValue->GetClass(), false);
+					RE::BSScript::Object * obj = static_cast<RE::BSScript::Object*>(memberValue);
+					RE::BSScript::ObjectTypeInfo * type_info = obj->GetTypeInfo();
+					node = std::make_shared<ObjectStateNode>(memberName, obj, type_info, false);
 				}
 				else if constexpr (meta::isRegistered<typename std::remove_pointer<TValue>::type>())
 				{

@@ -1,12 +1,18 @@
+#include "RuntimeState.h"
 #include "ArrayStateNode.h"
 #include "Utilities.h"
-#include "RuntimeState.h"
 
 namespace DarkId::Papyrus::DebugServer
 {
-	ArrayStateNode::ArrayStateNode(std::string name, RE::BSScript::Array* value, RE::BSScript::Type* type) :
-		m_name(name), m_value(value), m_type(type)
+	ArrayStateNode::ArrayStateNode(std::string name, RE::BSScript::Array* value, RE::BSScript::TypeInfo* type) :
+		m_name(name), m_value(value), m_type(type), _m_inst_type()
 	{
+	}
+
+	ArrayStateNode::ArrayStateNode(std::string name, RE::BSScript::Array* value, const RE::BSScript::TypeInfo& type) :
+		m_name(name), m_value(value), _m_inst_type(type)
+	{
+		m_type = &_m_inst_type;
 	}
 
 	bool ArrayStateNode::SerializeToProtocol(Variable& variable)
@@ -17,37 +23,73 @@ namespace DarkId::Papyrus::DebugServer
 		variable.name = m_name;
 
 		std::string elementTypeName;
-
-		if (m_type->IsObjectArray())
+#if SKYRIM
+		if (m_type->IsObjectArray() || m_type->IsObject())
 		{
-			elementTypeName = m_type->GetClass()->GetName();
+			elementTypeName = m_type->GetTypeInfo()->GetName();
 		}
-#if FALLOUT
-		else if (m_type->IsStructArray())
-		{
-			elementTypeName = m_type->GetStructType()->GetName();
-		}
-#endif
 		else
 		{
-			switch (m_type->GetUnmangledType())
+			switch (m_type->GetUnmangledRawType())
 			{
-			case RE::VMTypeID::kStringArray:
+			// if we had a null array and we instead got the variable's type info,
+			// it'll have k${type}Array instead of k${type}
+			case RE::BSScript::TypeInfo::RawType::kString:
+			case RE::BSScript::TypeInfo::RawType::kStringArray:
 				elementTypeName = "string";
 				break;
-			case RE::VMTypeID::kIntArray:
+			case RE::BSScript::TypeInfo::RawType::kInt:
+			case RE::BSScript::TypeInfo::RawType::kIntArray:
 				elementTypeName = "int";
 				break;
-			case RE::VMTypeID::kFloatArray:
+			case RE::BSScript::TypeInfo::RawType::kFloat:
+			case RE::BSScript::TypeInfo::RawType::kFloatArray:
 				elementTypeName = "float";
 				break;
-			case RE::VMTypeID::kBoolArray:
+			case RE::BSScript::TypeInfo::RawType::kBool:
+			case RE::BSScript::TypeInfo::RawType::kBoolArray:
 				elementTypeName = "bool";
 				break;
 			default:
 				break;
 			}
 		}
+#else // FALLOUT
+		if (m_type->IsObjectArray() || m_type->IsObject())
+		{
+			elementTypeName = m_type->GetObjectTypeInfo()->GetName();
+		}
+		else if (m_type->IsStructArray() || m_type->IsStruct())
+		{
+			elementTypeName = m_type->GetStructTypeInfo()->GetName();
+		}
+		else
+		{
+			RE::BSScript::TypeInfo::RawType raw_type = m_type->GetRawType();
+			switch (raw_type)
+			{
+			case RE::BSScript::TypeInfo::RawType::kString:
+			case RE::BSScript::TypeInfo::RawType::kArrayString:
+				elementTypeName = "string";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kInt:
+			case RE::BSScript::TypeInfo::RawType::kArrayInt:
+				elementTypeName = "int";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kFloat:
+			case RE::BSScript::TypeInfo::RawType::kArrayFloat:
+				elementTypeName = "float";
+				break;
+			case RE::BSScript::TypeInfo::RawType::kBool:
+			case RE::BSScript::TypeInfo::RawType::kArrayBool:
+				elementTypeName = "bool";
+				break;
+			default:
+				break;
+			}
+		}
+#endif
+
 
 		variable.type = StringFormat("%s[]", elementTypeName.c_str());
 
@@ -96,7 +138,7 @@ namespace DarkId::Papyrus::DebugServer
 			return false;
 		}
 
-		node = RuntimeState::CreateNodeForVariable(std::to_string(elementIndex), &m_value->at(elementIndex));
+		node = RuntimeState::CreateNodeForVariable(std::to_string(elementIndex), &(*m_value)[elementIndex]);
 		
 		return true;
 	}

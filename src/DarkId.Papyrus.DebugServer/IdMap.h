@@ -9,8 +9,8 @@ namespace DarkId::Papyrus::DebugServer
 	class IdMap
 	{
 		std::shared_ptr<IdProvider> m_idProvider;
-		std::unordered_map<UInt32, T> m_idsToElements;
-		std::unordered_map<T, UInt32> m_elementsToIds;
+		std::unordered_map<uint32_t, T> m_idsToElements;
+		std::unordered_map<T, uint32_t> m_elementsToIds;
 
 		std::recursive_mutex m_elementsMutex;
 	public:
@@ -24,7 +24,7 @@ namespace DarkId::Papyrus::DebugServer
 			Clear();
 		}
 
-		bool Get(UInt32 id, T& value)
+		bool Get(uint32_t id, T& value)
 		{
 			std::lock_guard lock(m_elementsMutex);
 
@@ -38,7 +38,7 @@ namespace DarkId::Papyrus::DebugServer
 			return false;
 		}
 
-		bool GetId(T element, UInt32& id)
+		bool GetId(T element, uint32_t& id)
 		{
 			std::lock_guard lock(m_elementsMutex);
 
@@ -52,7 +52,7 @@ namespace DarkId::Papyrus::DebugServer
 			return false;
 		}
 
-		bool AddOrGetExisting(T element, UInt32& id)
+		bool AddOrGetExisting(T element, uint32_t& id)
 		{
 			std::lock_guard lock(m_elementsMutex);
 
@@ -68,7 +68,7 @@ namespace DarkId::Papyrus::DebugServer
 			return true;
 		}
 
-		bool Remove(UInt32 id)
+		bool Remove(uint32_t id)
 		{
 			std::lock_guard lock(m_elementsMutex);
 
@@ -87,7 +87,7 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			std::lock_guard lock(m_elementsMutex);
 
-			UInt32 id;
+			uint32_t id;
 			if (GetId(element), id)
 			{
 				return Remove(id);

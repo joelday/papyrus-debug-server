@@ -22,7 +22,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		std::basic_streambuf<char>* m_streamBuffer;
 
-		UInt32 ListenInternal();
+		uint32_t ListenInternal();
 		
 		void Send(std::string message);
 

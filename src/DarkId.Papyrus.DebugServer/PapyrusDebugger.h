@@ -1,6 +1,6 @@
 #pragma once
 
-#include "protocol/debugger.h"
+#include "Protocol/debugger.h"
 
 #include "RuntimeEvents.h"
 #include "PexCache.h"
@@ -66,9 +66,9 @@ namespace DarkId::Papyrus::DebugServer
 		RuntimeEvents::LogEventHandle m_logEventHandle;
 
 		// void InitScriptEvent(RE::TESInitScriptEvent* initEvent);
-		void EventLogged(RE::BSScript::LogEvent* logEvent) const;
+		void EventLogged(const RE::BSScript::LogEvent* logEvent) const;
 		void StackCreated(RE::BSTSmartPointer<RE::BSScript::Stack>& stack);
-		void StackCleanedUp(UInt32 stackId);
+		void StackCleanedUp(uint32_t stackId);
 		void InstructionExecution(CodeTasklet* tasklet, CodeTasklet::OpCode opCode) const;
 		void CheckSourceLoaded(const char* scriptName) const;
 	};

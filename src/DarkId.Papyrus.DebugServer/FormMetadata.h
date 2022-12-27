@@ -41,6 +41,12 @@ namespace meta
 
 #define VIRT_FUNC_MEMBER(type, returnType, name) \
 	VIRT_FUNC_MEMBER_IMPL(type, returnType, name, name) \
+
+#define VIRT_FUNC_MEMBER_IMPL_ARGS(type, returnType, funcName, name, ...) \
+	member<##type##, ##returnType##>(STRING(name), [](##type##* value) { return value->##funcName##(__VA_ARGS__); }) \
+
+#define VIRT_FUNC_MEMBER_ARGS(type, returnType, name, ...) \
+	VIRT_FUNC_MEMBER_IMPL_ARGS(type, returnType, name, name, __VA_ARGS__) \
 	
 #define VIRT_FUNC_GET_MEMBER(type, returnType, name) \
 	VIRT_FUNC_MEMBER_IMPL(type, returnType, Get##name##, name) \
@@ -58,58 +64,71 @@ namespace meta
 	inline std::string toDisplayValue<RE::TESForm*>(RE::TESForm* value)
 	{
 		char description[512];
-#if SKYRIM
-		value->GetFormDesc(description, sizeof(description));
-#else
-		value->GetFormDescription(description, sizeof(description));
-#endif
-		
+		value->GetFormDetailedString(description, sizeof(description));		
 		return std::string(description);
 	}
 
 	template <>
 	inline auto registerMembers<RE::TESForm>()
 	{
-		return members(
 #if SKYRIM
+		using VMTypeID = RE::VMTypeID;
+#else // FALLOUT
+		using VMTypeID = std::uint32_t;
+#endif
+		return members(
 			member<RE::TESForm, RE::BSScript::Object*>("VM Object", [](RE::TESForm* form)
 				{
 					auto vm = RE::BSScript::Internal::VirtualMachine::GetSingleton();
 
-					RE::BSTSmartPointer<RE::BSScript::Class> classType;
+					RE::BSTSmartPointer<RE::BSScript::ObjectTypeInfo> classType;
 
-					// TODO: This is blowing up in F4, I assume because the type id needs to be fixed up first.
-					if (vm->GetScriptClassByTypeID(static_cast<RE::FormType32>(form->GetFormType()), classType))
+					if (vm->GetScriptObjectType(static_cast<VMTypeID>(form->GetFormType()), classType))
 					{
-						const auto handle = vm->GetHandlePolicy()->GetHandle(static_cast<RE::FormType32>(form->GetFormType()), form);
-						if (vm->GetHandlePolicy()->IsValidHandle(handle))
+#if SKYRIM
+						const auto handle = vm->GetObjectHandlePolicy2()->GetHandleForObject(static_cast<VMTypeID>(form->GetFormType()), form);
+						if (vm->GetObjectHandlePolicy2()->IsHandleObjectAvailable(handle))
 						{
 							RE::BSTSmartPointer<RE::BSScript::Object> object;
-							if (vm->ResolveScriptObject(handle, classType->GetName(), object))
+							if (vm->FindBoundObject(handle, classType->GetName(), object))
 							{
 								return object.get();
 							}
 						}
+#else // FALLOUT
+						const auto handle = vm->GetObjectHandlePolicy().GetHandleForObject(static_cast<VMTypeID>(form->GetFormType()), form);
+						if (vm->GetObjectHandlePolicy().IsHandleObjectAvailable(handle))
+						{
+							RE::BSTSmartPointer<RE::BSScript::Object> object;
+							if (vm->FindBoundObject(handle, classType->GetName(), true, object, false))
+							{
+								return object.get();
+							}
+						}
+#endif
 					}
 
 					return static_cast<RE::BSScript::Object*>(nullptr);
 				}),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, PlayerKnows),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, IsPlayable),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, NeverFades),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, IgnoredBySandbox),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, Has3D),
-			VIRT_FUNC_MEMBER(RE::TESForm, bool, IsMagicItem)
+
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, GetKnown),
+#ifdef SKYRIM
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, GetPlayable),
+#else
+			VIRT_FUNC_MEMBER_ARGS(RE::TESForm, bool, GetPlayable, nullptr),
 #endif
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, IsHeadingMarker),
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, GetIgnoredBySandbox),
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, IsBoundObject),
+			VIRT_FUNC_MEMBER(RE::TESForm, bool, IsMagicItem)
 		);
 	}
 	
-#if SKYRIM
 	template <>
 	inline std::string toDisplayValue<RE::BGSKeyword*>(RE::BGSKeyword* value)
 	{
 		// TODO: Get rid of this manual quoting concatenation crap
-		return "\"" + std::string(value->keyword.c_str()) + "\"";
+		return "\"" + std::string(value->formEditorID.c_str()) + "\"";
 	}
 	
 	template <>
@@ -117,7 +136,7 @@ namespace meta
 	{
 		return members(
 			BASE_TYPE_MEMBER(RE::BGSKeyword, RE::TESForm),
-			member("Keyword", &RE::BGSKeyword::keyword)
+			member("Keyword", &RE::BGSKeyword::formEditorID)
 		);
 	}
 
@@ -137,34 +156,26 @@ namespace meta
 			member("Index", &RE::BGSAction::index)
 		);
 	}
-#endif
 	
 	template <>
 	inline auto registerMembers<RE::TESObject>()
 	{
 		return members(
-			BASE_TYPE_MEMBER(RE::TESObject, RE::TESForm)
-#if SKYRIM
-			,
-			VIRT_FUNC_MEMBER(RE::TESObject, bool, CanAnimate),
-			VIRT_FUNC_GET_MEMBER(RE::TESObject, RE::TESWaterForm*, WaterActivator),
+			BASE_TYPE_MEMBER(RE::TESObject, RE::TESForm),
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsBoundAnimObject),
+			VIRT_FUNC_GET_MEMBER(RE::TESObject, RE::TESWaterForm*, WaterType),
 			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsAutoCalc),
 			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsMarker),
-			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsCullingMarker)
-#endif
+			VIRT_FUNC_MEMBER(RE::TESObject, bool, IsOcclusionMarker)
 		);
 	}
 
 	template <>
-	inline auto registerMembers<RE::TESBoundObject::ObjectBounds>()
+	inline auto registerMembers<RE::TESBoundObject::BOUND_DATA>()
 	{
 		return members(
-			member("x1", &RE::TESBoundObject::ObjectBounds::x1),
-			member("y1", &RE::TESBoundObject::ObjectBounds::y1),
-			member("z1", &RE::TESBoundObject::ObjectBounds::z1),
-			member("x2", &RE::TESBoundObject::ObjectBounds::x2),
-			member("y2", &RE::TESBoundObject::ObjectBounds::y2),
-			member("z2", &RE::TESBoundObject::ObjectBounds::z2)
+			member("boundMin", &RE::TESBoundObject::BOUND_DATA::boundMin),
+			member("boundMax", &RE::TESBoundObject::BOUND_DATA::boundMax)
 		);
 	}
 	
@@ -173,7 +184,7 @@ namespace meta
 	{
 		return members(
 			BASE_TYPE_MEMBER(RE::TESBoundObject, RE::TESObject),
-			member("ObjectBounds", &RE::TESBoundObject::objectBounds)
+			member("BoundData", &RE::TESBoundObject::boundData)
 		);
 	}
 
@@ -203,7 +214,7 @@ namespace meta
 	//inline auto registerMembers<RE::TESTexture>()
 	//{
 	//	return members(
-	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, UInt32, Size),
+	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, uint32_t, Size),
 	//		VIRT_FUNC_GET_MEMBER(RE::TESTexture, std::string, SearchDir),
 	//		member("Texture", &RE::TESTexture::texture)
 	//	);
@@ -220,7 +231,7 @@ namespace meta
 	//		member<RE::BGSTextureSet, std::vector<RE::TESTexture*>>("Textures", [](RE::BGSTextureSet* form)
 	//			{
 	//				// TODO: Is this a correct way to do this?
-	//				const UInt32 elementCount = sizeof(form->textures) / sizeof(RE::TESTexture);
+	//				const uint32_t elementCount = sizeof(form->textures) / sizeof(RE::TESTexture);
 	//			
 	//				std::vector<RE::TESTexture*> elements;
 	//				
@@ -253,7 +264,6 @@ namespace meta
 	//		BASE_TYPE_MEMBER(RE::BGSMenuIcon, RE::TESIcon)
 	//	);
 	//}
-#if SKYRIM
 	template <>
 	inline std::string toDisplayValue<RE::TESGlobal*>(RE::TESGlobal* value)
 	{
@@ -268,7 +278,6 @@ namespace meta
 			member("Value", &RE::TESGlobal::value)
 		);
 	}
-#endif
 	
 	template <>
 	inline auto registerMembers<RE::TESFullName>()
@@ -278,7 +287,6 @@ namespace meta
 		);
 	}
 	
-#if SKYRIM
 	template <>
 	inline auto registerMembers<RE::TESDescription>()
 	{
@@ -286,7 +294,7 @@ namespace meta
 			// TODO
 		);
 	}
-#endif
+
 
 	//// TODO: Skill enum
 	//
@@ -341,7 +349,6 @@ namespace meta
 	//	);
 	//}
 	//
-#if SKYRIM
 	template <>
 	inline auto registerMembers<RE::TESFaction>()
 	{
@@ -351,5 +358,4 @@ namespace meta
 			BASE_TYPE_MEMBER(RE::TESFaction, RE::TESReactionForm)
 		);
 	}
-#endif
 }

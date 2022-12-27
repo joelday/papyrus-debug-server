@@ -1,11 +1,12 @@
 #include "PexCache.h"
 #include "Pex.h"
+#include "Utilities.h"
 
 #include <functional>
 #include <algorithm>
 #include <string>
-#include "Decompiler/PscCoder.hpp"
-#include "Decompiler/StreamWriter.hpp"
+#include <Champollion/Decompiler/PscCoder.hpp>
+#include <Champollion/Decompiler/StreamWriter.hpp>
 
 namespace DarkId::Papyrus::DebugServer
 {
@@ -25,17 +26,16 @@ namespace DarkId::Papyrus::DebugServer
 	{
 		const std::hash<std::string> hasher;
 
-		std::string name = scriptName;
+		std::string name = NormalizeScriptName(scriptName);
 		std::transform(name.begin(), name.end(), name.begin(), ::tolower);
 
-		return std::abs(unrestricted_cast<int>(hasher(name))) + 1;
+		return std::abs(XSE::stl::unrestricted_cast<int>(hasher(name))) + 1;
 	}
 
 	std::shared_ptr<Pex::Binary> PexCache::GetScript(const char* scriptName)
 	{
 		std::lock_guard<std::mutex> scriptLock(m_scriptsMutex);
-		
-		UInt32 reference = GetScriptReference(scriptName);
+		uint32_t reference = GetScriptReference(scriptName);
 
 		const auto entry = m_scripts.find(reference);
 		if (entry == m_scripts.end())
@@ -78,13 +78,13 @@ namespace DarkId::Papyrus::DebugServer
 		{
 			return false;
 		}
-		
-		if (strcmp(binary->getHeader().getSourceFileName().c_str(), "") == 0)
-		{
-			return false;
-		}
+		std::string normname = NormalizeScriptName(scriptName);
 
-		data = Source(scriptName, binary->getHeader().getSourceFileName(), sourceReference);
+		auto headerSrcName = binary->getHeader().getSourceFileName();
+		if (headerSrcName.empty()) {
+			headerSrcName = ScriptNameToPSCPath(normname);
+		}
+		data = Source(normname, headerSrcName, sourceReference);
 
 		return true;
 	}

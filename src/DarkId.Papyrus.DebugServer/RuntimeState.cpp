@@ -2,7 +2,6 @@
 #include "Utilities.h"
 #include "StateNodeBase.h"
 
-#include <boost/algorithm/string.hpp>
 #include "StackStateNode.h"
 #include "ObjectStateNode.h"
 
@@ -11,6 +10,10 @@
 
 #if FALLOUT
 #include "StructStateNode.h"
+#include "RE/Bethesda/BSScriptUtil.h"
+namespace RE {
+	using BSSpinLockGuard = BSAutoLock<BSSpinLock, BSAutoLockDefaultPolicy>;
+}
 #endif
 
 namespace DarkId::Papyrus::DebugServer
@@ -24,7 +27,7 @@ namespace DarkId::Papyrus::DebugServer
 
 	bool RuntimeState::ResolveStateByPath(const std::string requestedPath, std::shared_ptr<StateNodeBase>& node)
 	{
-		const auto path = boost::algorithm::to_lower_copy(requestedPath);
+		const auto path = ToLowerCopy(requestedPath);
 
 		auto elements = Split(path, ".");
 
@@ -58,13 +61,13 @@ namespace DarkId::Papyrus::DebugServer
 
 				for (auto childName : childNames)
 				{
-					boost::algorithm::to_lower(childName);
+					ToLower(childName);
 					auto discoveredElements(currentPathElements);
 					discoveredElements.push_back(childName);
 
 					const auto discoveredPath = Join(discoveredElements, ".");
 
-					UInt32 addedId;
+					uint32_t addedId;
 					m_paths->AddOrGetExisting(discoveredPath, addedId);
 				}
 			}
@@ -90,7 +93,7 @@ namespace DarkId::Papyrus::DebugServer
 
 		if (currentPathElements.size() > 1)
 		{
-			UInt32 id;
+			uint32_t id;
 			m_paths->AddOrGetExisting(path, id);
 			node->SetId(id);
 		}
@@ -102,7 +105,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool RuntimeState::ResolveStateById(const UInt32 id, std::shared_ptr<StateNodeBase>& node)
+	bool RuntimeState::ResolveStateById(const uint32_t id, std::shared_ptr<StateNodeBase>& node)
 	{
 		std::string path;
 
@@ -143,7 +146,7 @@ namespace DarkId::Papyrus::DebugServer
 		return true;
 	}
 
-	bool RuntimeState::ResolveChildrenByParentId(const UInt32 id, std::vector<std::shared_ptr<StateNodeBase>>& nodes)
+	bool RuntimeState::ResolveChildrenByParentId(const uint32_t id, std::vector<std::shared_ptr<StateNodeBase>>& nodes)
 	{
 		std::string path;
 
@@ -155,45 +158,78 @@ namespace DarkId::Papyrus::DebugServer
 		return false;
 	}
 
-	std::shared_ptr<StateNodeBase> RuntimeState::CreateNodeForVariable(std::string name, RE::BSScript::Variable* variable)
+	std::shared_ptr<StateNodeBase> RuntimeState::CreateNodeForVariable(std::string name, const RE::BSScript::Variable* variable)
 	{
+#if SKYRIM
 		if (variable->IsObject())
 		{
-			return std::make_shared<ObjectStateNode>(name, variable->GetObject(), variable->GetClass());
-		}
+			auto obj = variable->GetObject();
+			auto typeinfo = obj ? obj->GetTypeInfo() : variable->GetType().GetTypeInfo();
 
-#if FALLOUT
-		if (variable->IsVariable())
-		{
-			return CreateNodeForVariable(name, variable->GetVariable());
+			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
 		}
-		
-		if (variable->IsStruct())
-		{
-			return std::make_shared<StructStateNode>(name, variable->GetStruct(), variable->GetStructType());
-		}
-#endif
-
 		if (variable->IsArray())
 		{
-			return std::make_shared<ArrayStateNode>(name, variable->GetArray(), variable);
-		}
+			auto arr = variable->GetArray();
+			if (arr){
+				auto &typeinfo = arr->type_info();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &typeinfo);
+			} else {
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, variable->GetType());
+			}
 
+		}
 		if (variable->IsBool() || variable->IsFloat() || variable->IsInt() || variable->IsString())
 		{
 			return std::make_shared<ValueStateNode>(name, variable);
 		}
+#else // FALLOUT
+		if (variable->is<RE::BSScript::Object>())
+		{	
+			auto obj = RE::BSScript::get<RE::BSScript::Object>(*variable);
+			auto typeinfo = obj ? obj->GetTypeInfo() : variable->GetType().GetObjectTypeInfo();
+  
+			return std::make_shared<ObjectStateNode>(name, obj ? obj.get() : nullptr, typeinfo);
+		}
+		if (variable->is<RE::BSScript::Array>())
+		{
+			auto arr = RE::BSScript::get<RE::BSScript::Array>( *variable);
+			if (arr){
+				//auto &typeinfo = arr->type_info();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, &arr->type_info());
+			} else {
+				auto type = variable->GetType();
+				return std::make_shared<ArrayStateNode>(name, arr ? arr.get() : nullptr, type);
+			}
+		}
+		if (variable->is<bool>() || variable->is<float>() || variable->is<std::int32_t>() || variable->is<std::uint32_t>() || variable->is<RE::BSFixedString>())
+		{
+			return std::make_shared<ValueStateNode>(name, variable);
+		}
+		if (variable->is<RE::BSScript::Variable>())
+		{
+			auto var = RE::BSScript::get<RE::BSScript::Variable>(*variable);
+			return CreateNodeForVariable(name, var);
+		}
 		
+		if (variable->is<RE::BSScript::Struct>())
+		{
+			auto _struct = RE::BSScript::get<RE::BSScript::Struct>(*variable);
+			auto typeinfo = _struct ? _struct->type.get() : variable->GetType().GetStructTypeInfo();
+
+			return std::make_shared<StructStateNode>(name, _struct.get(), typeinfo);
+		}
+#endif
 		return nullptr;
 	}
 
-	RE::BSTSmartPointer<RE::BSScript::Stack> RuntimeState::GetStack(UInt32 stackId)
+	RE::BSTSmartPointer<RE::BSScript::Stack> RuntimeState::GetStack(uint32_t stackId)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
-		const auto tableItem = vm->allStacks.find(stackId);
-		if (tableItem == vm->allStacks.end())
+		const auto tableItem = vm->allRunningStacks.find(stackId);
+		if (tableItem == vm->allRunningStacks.end())
 		{
 			return nullptr;
 		}
@@ -201,7 +237,7 @@ namespace DarkId::Papyrus::DebugServer
 		return tableItem->second;
 	}
 
-	RE::BSScript::StackFrame* RuntimeState::GetFrame(const UInt32 stackId, const UInt32 level)
+	RE::BSScript::StackFrame* RuntimeState::GetFrame(const uint32_t stackId, const uint32_t level)
 	{
 		std::vector<RE::BSScript::StackFrame*> frames;
 		GetStackFrames(stackId, frames);
@@ -217,21 +253,21 @@ namespace DarkId::Papyrus::DebugServer
 	void RuntimeState::GetStackFrames(const RE::BSTSmartPointer<RE::BSScript::Stack> stack, std::vector<RE::BSScript::StackFrame*>& frames)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
-		auto frame = stack->current;
+		auto frame = stack->top;
 
 		while (frame)
 		{
 			frames.push_back(frame);
-			frame = frame->parent;
+			frame = frame->previousFrame;
 		}
 	}
 
-	bool RuntimeState::GetStackFrames(const UInt32 stackId, std::vector<RE::BSScript::StackFrame*>& frames)
+	bool RuntimeState::GetStackFrames(const uint32_t stackId, std::vector<RE::BSScript::StackFrame*>& frames)
 	{
 		const auto vm = VirtualMachine::GetSingleton();
-		RE::BSUniqueLockGuard lock(vm->stackLock);
+		RE::BSSpinLockGuard lock(vm->runningStacksLock);
 
 		const auto stack = GetStack(stackId);
 		if (!stack)
