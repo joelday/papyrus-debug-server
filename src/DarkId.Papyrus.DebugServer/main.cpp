@@ -62,7 +62,7 @@ bool InitializeLog()
 	log->flush_on(spdlog::level::debug);
 	spdlog::set_default_logger(std::move(log));
 	spdlog::set_pattern("%H:%M:%S,%e %l %@: %v"s);
-	logger::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_VERSTRING);
+	logger::info("Papyrus Debug Server v{}"sv, DIDPDS_VERSION_SEMVER);
 	log_initialized = true;
 	return true;
 }

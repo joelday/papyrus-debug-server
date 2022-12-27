@@ -29,11 +29,11 @@ BEGIN
         BLOCK "040904b0"
         BEGIN
             VALUE "FileDescription", "Papyrus Debug Server"
-			VALUE "FileVersion", DIDPDS_VERSION_VERSTRING
+			VALUE "FileVersion", DIDPDS_VERSION_WIN_VERSTRING
             VALUE "InternalName", DIDPDS_DLL_NAME
             VALUE "LegalCopyright", "Copyright (c) 2019 Joel Day"
             VALUE "ProductName", DIDPDS_DLL_NAME
-			VALUE "ProductVersion", DIDPDS_VERSION_VERSTRING
+			VALUE "ProductVersion", DIDPDS_VERSION_WIN_VERSTRING
         END
     END
     BLOCK "VarFileInfo"
